@@ -161,7 +161,7 @@ app.delete('/api/users/:id', requireAuth, (req, res) => {
 
 // ===== SERVE APP =====
 app.get('*', requireAuth, (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // ===== START =====
