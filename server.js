@@ -11,7 +11,7 @@ const USERS_FILE = path.join(__dirname, 'users.json');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname));
 app.use(session({
   secret: process.env.SESSION_SECRET || 'crmb-secret-2024-bakery',
   resave: false,
