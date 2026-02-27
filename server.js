@@ -83,7 +83,7 @@ function requireAuth(req, res, next) {
 // ===== AUTH ROUTES =====
 app.get('/login', (req, res) => {
   if (req.session.user) return res.redirect('/');
-  res.sendFile(path.join(__dirname, 'public', 'login.html'));
+res.sendFile(path.join(__dirname, 'login.html'));
 });
 
 app.post('/api/login', (req, res) => {
