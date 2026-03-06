@@ -193,6 +193,7 @@ tbody td{padding:10px 13px;font-size:13px;color:#ddd;vertical-align:middle}
 <div id="layout">
   <div id="sidebar">
     <button class="nav-btn active" onclick="showTab('dashboard')" id="nav-dashboard"><span>📊</span>لوحة التحكم</button>
+    <button class="nav-btn" onclick="showTab('pos')" id="nav-pos"><span>🔫</span>نقطة البيع</button>
     <button class="nav-btn" onclick="showTab('sales')" id="nav-sales"><span>🛒</span>المبيعات اليومية</button>
     <button class="nav-btn" onclick="showTab('revenue')" id="nav-revenue"><span>💰</span>الإيرادات</button>
     <button class="nav-btn" onclick="showTab('materials')" id="nav-materials"><span>🌾</span>المواد الخام</button>
@@ -213,8 +214,8 @@ tbody td{padding:10px 13px;font-size:13px;color:#ddd;vertical-align:middle}
 <!-- BOTTOM NAV -->
 <div id="bottom-nav">
   <button class="bnav-btn active" onclick="showTab('dashboard')" id="bnav-dashboard"><span>📊</span>الرئيسية</button>
+  <button class="bnav-btn" onclick="showTab('pos')" id="bnav-pos"><span>🔫</span>نقطة البيع</button>
   <button class="bnav-btn" onclick="showTab('sales')" id="bnav-sales"><span>🛒</span>المبيعات</button>
-  <button class="bnav-btn" onclick="showTab('barcode')" id="bnav-barcode"><span>🏷️</span>الباركود</button>
   <button class="bnav-btn" onclick="toggleMore()" id="bnav-more-btn"><span>☰</span>المزيد</button>
 </div>
 <div id="more-nav">
@@ -342,6 +343,7 @@ function renderMain() {
   const s=calcStats();
   const renders={
     dashboard:()=>renderDashboard(s),
+    pos:()=>renderPOS(),
     sales:()=>renderSales(),
     revenue:()=>renderRevenue(s),
     materials:()=>renderMaterials(s),
@@ -800,6 +802,268 @@ function renderBarcode(){
       </div>
     </div>`;}).join('')}
   </div>`;
+}
+
+// ---- POS (نقطة البيع) ----
+function renderPOS(){
+  return`
+  <div class="sec-header">
+    <div class="sec-title">🔫 نقطة البيع</div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-red btn-sm" onclick="clearCart()">مسح السلة</button>
+      <button class="btn btn-green" onclick="completeSale()">إتمام البيع ✓</button>
+    </div>
+  </div>
+
+  <!-- SCANNER INPUT -->
+  <div style="background:var(--bg2);border-radius:14px;padding:16px;border:2px solid var(--gold);margin-bottom:16px">
+    <div style="color:var(--gold);font-weight:700;margin-bottom:10px;font-size:13px">امسح الباركود أو أدخله يدوياً</div>
+    <div style="display:flex;gap:8px">
+      <input class="form-input" id="scanInput" placeholder="وجّه القارئ هنا أو اكتب رقم الباركود..." 
+        style="flex:1;font-size:16px;padding:12px 16px;border-color:var(--gold)"
+        onkeydown="if(event.key==='Enter')scanBarcode()"
+        autofocus>
+      <button class="btn btn-gold" onclick="scanBarcode()" style="padding:12px 20px;font-size:18px">🔍</button>
+    </div>
+    <div id="scanMsg" style="margin-top:8px;font-size:13px;min-height:20px"></div>
+  </div>
+
+  <!-- CART -->
+  <div style="display:grid;grid-template-columns:1fr 340px;gap:16px">
+    <!-- Items -->
+    <div style="background:var(--bg2);border-radius:14px;border:1px solid var(--border);overflow:hidden">
+      <div style="padding:14px 18px;border-bottom:1px solid var(--border);color:var(--gold);font-weight:700">
+        سلة المشتريات <span id="cartCount" style="color:#666;font-weight:400;font-size:12px">(0 منتج)</span>
+      </div>
+      <div id="cartItems" style="min-height:200px">
+        <div style="text-align:center;color:#444;padding:60px;font-size:14px">
+          السلة فارغة — امسح باركود لإضافة منتج
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary -->
+    <div>
+      <div style="background:var(--bg2);border-radius:14px;padding:18px;border:1px solid var(--border);margin-bottom:12px">
+        <div style="color:var(--gold);font-weight:700;margin-bottom:14px">ملخص الفاتورة</div>
+        <div class="pnl-row"><span style="color:#aaa">عدد الأصناف</span><span id="posItemCount">0</span></div>
+        <div class="pnl-row"><span style="color:#aaa">إجمالي الكميات</span><span id="posQtyTotal">0</span></div>
+        <div style="border-top:2px solid #333;margin:12px 0;padding-top:12px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="font-size:15px;font-weight:700">الإجمالي</span>
+            <span id="posTotal" style="font-size:26px;font-weight:700;color:var(--green)">0 ر.س</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment Method -->
+      <div style="background:var(--bg2);border-radius:14px;padding:16px;border:1px solid var(--border);margin-bottom:12px">
+        <div style="color:var(--gold);font-weight:700;margin-bottom:10px;font-size:13px">طريقة الدفع</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <button id="payBtn-cash" class="btn btn-green" onclick="setPayment('cash')" style="padding:10px">نقدي</button>
+          <button id="payBtn-mada" class="btn btn-dark" onclick="setPayment('mada')" style="padding:10px;border:1px solid #333">مدى/بطاقة</button>
+        </div>
+      </div>
+
+      <button class="btn btn-green" onclick="completeSale()" 
+        style="width:100%;padding:16px;font-size:16px;font-weight:700;border-radius:12px">
+        ✓ إتمام البيع
+      </button>
+      <button class="btn btn-blue" onclick="printReceipt()" 
+        style="width:100%;padding:10px;font-size:13px;margin-top:8px;border-radius:12px">
+        🖨️ طباعة الفاتورة
+      </button>
+    </div>
+  </div>
+
+  <!-- LAST SALES TODAY -->
+  <div style="margin-top:16px;background:var(--bg2);border-radius:14px;border:1px solid var(--border)">
+    <div style="padding:14px 18px;border-bottom:1px solid var(--border);color:var(--gold);font-weight:700;font-size:13px">
+      آخر المبيعات اليوم
+    </div>
+    <div id="todaySalesList" style="padding:12px">
+      ${(()=>{
+        const today=new Date().toISOString().split('T')[0];
+        const todaySales=(appData.dailySales||[]).filter(s=>s.date===today).slice(-5).reverse();
+        if(!todaySales.length) return '<div style="color:#444;text-align:center;padding:20px;font-size:13px">لا توجد مبيعات اليوم</div>';
+        return todaySales.map(s=>`
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #1a1a1a;font-size:13px">
+            <span style="color:#aaa">${s.note||s.category||'مبيعات'} ${s.payMethod==='mada'?'💳':'💵'}</span>
+            <span style="color:var(--green);font-weight:600">${fc(s.amount)}</span>
+          </div>`).join('');
+      })()}
+    </div>
+  </div>`;
+}
+
+// POS State
+let cart = [];
+let paymentMethod = 'cash';
+
+function setPayment(method){
+  paymentMethod = method;
+  document.getElementById('payBtn-cash').className = method==='cash'?'btn btn-green':'btn btn-dark';
+  document.getElementById('payBtn-mada').className = method==='mada'?'btn btn-blue':'btn btn-dark';
+  if(method==='mada'){
+    document.getElementById('payBtn-mada').style.border='1px solid #3498db';
+    document.getElementById('payBtn-cash').style.border='none';
+  } else {
+    document.getElementById('payBtn-cash').style.border='none';
+    document.getElementById('payBtn-mada').style.border='1px solid #333';
+  }
+}
+
+function scanBarcode(){
+  const input = document.getElementById('scanInput');
+  const bc = (input.value||'').trim();
+  if(!bc){ showScanMsg('أدخل رقم الباركود','#e74c3c'); return; }
+  const product = (appData.products||[]).find(p=>p.barcode===bc);
+  if(!product){
+    showScanMsg('❌ لم يُعثر على منتج بهذا الباركود: '+bc,'#e74c3c');
+    input.value=''; input.focus(); return;
+  }
+  // Add to cart
+  const existing = cart.find(c=>c.id===product.id);
+  if(existing){ existing.qty++; }
+  else { cart.push({...product, qty:1}); }
+  input.value='';
+  input.focus();
+  showScanMsg('✅ تمت إضافة: '+product.name,'#27ae60');
+  updateCart();
+}
+
+function showScanMsg(msg, color){
+  const el = document.getElementById('scanMsg');
+  if(!el) return;
+  el.textContent = msg;
+  el.style.color = color;
+  setTimeout(()=>{ if(el) el.textContent=''; }, 2500);
+}
+
+function updateCart(){
+  const itemsEl = document.getElementById('cartItems');
+  const totalEl = document.getElementById('posTotal');
+  const countEl = document.getElementById('cartCount');
+  const itemCountEl = document.getElementById('posItemCount');
+  const qtyEl = document.getElementById('posQtyTotal');
+  if(!itemsEl) return;
+  const total = cart.reduce((a,c)=>a+c.price*c.qty, 0);
+  const totalQty = cart.reduce((a,c)=>a+c.qty, 0);
+  if(countEl) countEl.textContent = `(${cart.length} منتج)`;
+  if(itemCountEl) itemCountEl.textContent = cart.length;
+  if(qtyEl) qtyEl.textContent = totalQty;
+  if(totalEl) totalEl.textContent = fc(total);
+  if(!cart.length){
+    itemsEl.innerHTML='<div style="text-align:center;color:#444;padding:60px;font-size:14px">السلة فارغة — امسح باركود لإضافة منتج</div>';
+    return;
+  }
+  itemsEl.innerHTML = cart.map((c,i)=>`
+    <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid #1a1a1a">
+      <div style="flex:1">
+        <div style="font-weight:600;font-size:14px">${c.name}</div>
+        <div style="color:#888;font-size:11px">${c.category} • ${fc(c.price)} للوحدة</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <button onclick="changeQty(${i},-1)" style="background:#2a2a2a;border:none;color:#fff;width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:16px">−</button>
+        <span style="font-weight:700;font-size:15px;min-width:24px;text-align:center">${c.qty}</span>
+        <button onclick="changeQty(${i},1)" style="background:#2a2a2a;border:none;color:#fff;width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:16px">+</button>
+      </div>
+      <div style="color:var(--green);font-weight:700;min-width:70px;text-align:left">${fc(c.price*c.qty)}</div>
+      <button onclick="removeItem(${i})" style="background:none;border:none;color:#e74c3c;cursor:pointer;font-size:18px">×</button>
+    </div>`).join('');
+}
+
+function changeQty(i, delta){
+  cart[i].qty += delta;
+  if(cart[i].qty <= 0) cart.splice(i,1);
+  updateCart();
+}
+
+function removeItem(i){
+  cart.splice(i,1);
+  updateCart();
+}
+
+function clearCart(){
+  cart=[];
+  updateCart();
+  const inp=document.getElementById('scanInput');
+  if(inp){ inp.value=''; inp.focus(); }
+}
+
+async function completeSale(){
+  if(!cart.length){ notify('السلة فارغة!','error'); return; }
+  const total = cart.reduce((a,c)=>a+c.price*c.qty, 0);
+  const today = new Date().toISOString().split('T')[0];
+  const saleNote = cart.map(c=>`${c.name}×${c.qty}`).join('، ');
+  if(!appData.dailySales) appData.dailySales=[];
+  appData.dailySales.push({
+    id: Date.now(),
+    date: today,
+    category: 'نقطة البيع',
+    amount: total,
+    note: saleNote,
+    payMethod: paymentMethod,
+    items: cart.map(c=>({id:c.id,name:c.name,qty:c.qty,price:c.price}))
+  });
+  await saveData();
+  notify(`✅ تم البيع! الإجمالي: ${fc(total)}`);
+  const prevCart = [...cart];
+  cart=[];
+  updateCart();
+  // refresh today list
+  renderMain();
+  // re-focus scan input after render
+  setTimeout(()=>{
+    const inp=document.getElementById('scanInput');
+    if(inp) inp.focus();
+  }, 100);
+}
+
+function printReceipt(){
+  if(!cart.length){ notify('السلة فارغة!','error'); return; }
+  const total = cart.reduce((a,c)=>a+c.price*c.qty, 0);
+  const now = new Date().toLocaleString('ar-SA');
+  const rows = cart.map(c=>`
+    <tr>
+      <td>${c.name}</td>
+      <td style="text-align:center">${c.qty}</td>
+      <td style="text-align:left">${fc(c.price)}</td>
+      <td style="text-align:left;font-weight:700">${fc(c.price*c.qty)}</td>
+    </tr>`).join('');
+  const w = window.open('','_blank');
+  w.document.write(`<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    body{margin:0;font-family:Cairo,sans-serif;background:#fff;padding:20px}
+    .receipt{max-width:320px;margin:0 auto;border:1px solid #ddd;border-radius:8px;padding:20px}
+    .header{text-align:center;border-bottom:2px dashed #ddd;padding-bottom:14px;margin-bottom:14px}
+    .brand{font-size:22px;font-weight:900;color:#1a1a1a}
+    .date{font-size:11px;color:#999;margin-top:4px}
+    table{width:100%;border-collapse:collapse;font-size:13px}
+    th{background:#f5f5f5;padding:6px 8px;text-align:right;font-size:11px;color:#888}
+    td{padding:7px 8px;border-bottom:1px solid #f0f0f0}
+    .total-row{border-top:2px solid #333;font-weight:900;font-size:16px}
+    .footer{text-align:center;margin-top:14px;font-size:11px;color:#999;border-top:1px dashed #ddd;padding-top:10px}
+    .pay{text-align:center;margin-top:10px;background:#f0f9f0;border-radius:6px;padding:8px;font-weight:700;color:#27ae60}
+    @media print{body{padding:0}}
+  </style></head><body>
+  <div class="receipt">
+    <div class="header">
+      <div class="brand">CRMB Bakery</div>
+      <div class="date">${now}</div>
+    </div>
+    <table>
+      <thead><tr><th>المنتج</th><th>الكمية</th><th>السعر</th><th>الإجمالي</th></tr></thead>
+      <tbody>${rows}</tbody>
+      <tfoot><tr class="total-row"><td colspan="3">الإجمالي</td><td>${fc(total)}</td></tr></tfoot>
+    </table>
+    <div class="pay">${paymentMethod==='mada'?'💳 دفع بالبطاقة':'💵 دفع نقدي'}</div>
+    <div class="footer">شكراً لزيارتكم<br>السعر شامل الضريبة</div>
+  </div>
+  <script>window.onload=()=>{window.print()}<\/script>
+  </body></html>`);
+  w.document.close();
 }
 
 // ---- SALES (Daily & Weekly) ----
