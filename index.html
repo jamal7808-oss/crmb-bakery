@@ -158,22 +158,23 @@ tbody td{padding:10px 13px;font-size:13px;color:#ddd;vertical-align:middle}
 /* POS PRODUCT TILES */
 .pos-layout{display:grid;grid-template-columns:1fr 360px;gap:16px;height:calc(100vh - 120px)}
 .pos-left{display:flex;flex-direction:column;gap:12px;overflow:hidden}
-.pos-cats{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;flex-shrink:0}
-.pos-cat-btn{background:#1a1a1a;border:1px solid #333;border-radius:20px;color:#aaa;padding:6px 16px;font-size:12px;white-space:nowrap;cursor:pointer;transition:all .2s;font-family:'Cairo',sans-serif}
+.pos-cats{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;flex-shrink:0}
+.pos-cat-btn{background:#1a1a1a;border:1px solid #333;border-radius:24px;color:#aaa;padding:10px 22px;font-size:14px;white-space:nowrap;cursor:pointer;transition:all .2s;font-family:'Cairo',sans-serif;min-height:44px}
 .pos-cat-btn.active{background:var(--gold);color:#000;border-color:var(--gold);font-weight:700}
-.pos-products{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;overflow-y:auto;padding-right:4px}
-.pos-tile{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:14px 10px;text-align:center;cursor:pointer;transition:all .2s;user-select:none}
+.pos-products{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;overflow-y:auto;padding-right:4px}
+.pos-tile{background:#1a1a1a;border:2px solid #2a2a2a;border-radius:16px;padding:18px 12px;text-align:center;cursor:pointer;transition:all .15s;user-select:none;min-height:110px;display:flex;flex-direction:column;justify-content:center;align-items:center}
 .pos-tile:hover{border-color:var(--gold);background:#1a1500}
-.pos-tile:active{transform:scale(.96)}
-.pos-tile-name{font-size:13px;font-weight:700;color:#fff;margin-bottom:4px;line-height:1.2}
-.pos-tile-cat{font-size:10px;color:#888;margin-bottom:6px}
-.pos-tile-price{font-size:15px;font-weight:900;color:var(--green)}
+.pos-tile:active{transform:scale(.93);background:#2a2000;border-color:var(--gold)}
+.pos-tile-name{font-size:15px;font-weight:700;color:#fff;margin-bottom:5px;line-height:1.3}
+.pos-tile-cat{font-size:11px;color:#666;margin-bottom:8px}
+.pos-tile-price{font-size:18px;font-weight:900;color:var(--green)}
 .pos-right{display:flex;flex-direction:column;gap:10px;overflow:hidden}
 .cart-list{flex:1;overflow-y:auto;background:#111;border-radius:12px;border:1px solid #222}
-.cart-item{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid #1a1a1a}
-.cart-item-name{flex:1;font-size:13px;font-weight:600}
-.cart-item-sub{font-size:10px;color:#888}
-.qty-btn{background:#2a2a2a;border:none;color:#fff;width:26px;height:26px;border-radius:6px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center}
+.cart-item{display:flex;align-items:center;gap:8px;padding:12px 14px;border-bottom:1px solid #1a1a1a;min-height:56px}
+.cart-item-name{flex:1;font-size:14px;font-weight:600}
+.cart-item-sub{font-size:11px;color:#888;margin-top:2px}
+.qty-btn{background:#2a2a2a;border:none;color:#fff;width:36px;height:36px;border-radius:8px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.qty-btn:active{background:#D4A843;color:#000}
 .cart-total-box{background:#111;border-radius:12px;padding:14px;border:1px solid #222;flex-shrink:0}
 /* DELIVERY */
 .delivery-tabs{display:flex;gap:8px;margin-bottom:16px}
@@ -197,8 +198,14 @@ tbody td{padding:10px 13px;font-size:13px;color:#ddd;vertical-align:middle}
   .product-grid{grid-template-columns:1fr}
   .sec-title{font-size:16px}
   .pos-layout{grid-template-columns:1fr;height:auto}
-  .pos-right{max-height:55vh}
+  .pos-right{max-height:60vh}
   .pos-products{grid-template-columns:repeat(3,1fr)}
+  .pos-tile{min-height:90px;padding:12px 8px}
+  .pos-tile-name{font-size:13px}
+  .pos-tile-price{font-size:15px}
+}
+@media(min-width:769px) and (max-width:1200px){
+  .pos-products{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
 }
 </style>
 </head>
@@ -217,6 +224,7 @@ tbody td{padding:10px 13px;font-size:13px;color:#ddd;vertical-align:middle}
   </div>
   <div class="hcontrols">
     <div class="sync-badge" id="syncBadge">⏳ جاري المزامنة</div>
+    <button onclick="toggleLang()" id="langBtn" style="background:#1a1a2a;border:1px solid #3498db40;border-radius:8px;padding:4px 12px;color:#3498db;font-size:12px;cursor:pointer;font-family:'Cairo',sans-serif;white-space:nowrap">EN</button>
     <div class="user-badge" onclick="showTab('profile')" id="userBadge">👤 ...</div>
     <button class="btn btn-green" onclick="exportExcel()" style="padding:6px 12px;font-size:12px">📥 Excel</button>
     <select id="monthSelect" class="form-input" style="width:120px;padding:6px 10px;font-size:12px" onchange="changeMonth(this.value)"></select>
@@ -227,30 +235,30 @@ tbody td{padding:10px 13px;font-size:13px;color:#ddd;vertical-align:middle}
 <div id="layout">
   <div id="sidebar">
     <!-- PRIMARY -->
-    <div style="padding:8px 12px;color:#444;font-size:10px;font-weight:700;letter-spacing:1px;margin-top:4px">الرئيسية</div>
-    <button class="nav-btn active" onclick="showTab('dashboard')" id="nav-dashboard"><span>📊</span>لوحة التحكم</button>
-    <button class="nav-btn" onclick="showTab('pos')" id="nav-pos"><span>🖥️</span>نقطة البيع</button>
-    <button class="nav-btn" onclick="showTab('products')" id="nav-products"><span>📦</span>المنتجات</button>
-    <button class="nav-btn" onclick="showTab('purchases')" id="nav-purchases"><span>🛍️</span>المشتريات</button>
-    <button class="nav-btn" onclick="showTab('delivery')" id="nav-delivery"><span>🚴</span>طلبات التوصيل</button>
-    <button class="nav-btn" onclick="showTab('sales')" id="nav-sales"><span>🛒</span>المبيعات اليومية</button>
-    <button class="nav-btn" onclick="showTab('reports')" id="nav-reports"><span>📈</span>التقارير</button>
+    <div id="label-primary" style="padding:8px 12px;color:#444;font-size:10px;font-weight:700;letter-spacing:1px;margin-top:4px">الرئيسية</div>
+    <button class="nav-btn active" onclick="showTab('dashboard')" id="nav-dashboard"><span>📊</span><span id="nt-dashboard">لوحة التحكم</span></button>
+    <button class="nav-btn" onclick="showTab('pos')" id="nav-pos"><span>🖥️</span><span id="nt-pos">نقطة البيع</span></button>
+    <button class="nav-btn" onclick="showTab('products')" id="nav-products"><span>📦</span><span id="nt-products">المنتجات</span></button>
+    <button class="nav-btn" onclick="showTab('purchases')" id="nav-purchases"><span>🛍️</span><span id="nt-purchases">المشتريات</span></button>
+    <button class="nav-btn" onclick="showTab('delivery')" id="nav-delivery"><span>🚴</span><span id="nt-delivery">طلبات التوصيل</span></button>
+    <button class="nav-btn" onclick="showTab('sales')" id="nav-sales"><span>🛒</span><span id="nt-sales">المبيعات اليومية</span></button>
+    <button class="nav-btn" onclick="showTab('reports')" id="nav-reports"><span>📈</span><span id="nt-reports">التقارير</span></button>
     <div class="nav-divider"></div>
     <!-- MANAGEMENT -->
-    <div style="padding:8px 12px;color:#444;font-size:10px;font-weight:700;letter-spacing:1px">الإدارة</div>
-    <button class="nav-btn" onclick="showTab('employees')" id="nav-employees"><span>👥</span>الموظفون</button>
-    <button class="nav-btn" onclick="showTab('revenue')" id="nav-revenue"><span>💰</span>الإيرادات</button>
-    <button class="nav-btn" onclick="showTab('expenses')" id="nav-expenses"><span>📋</span>المصاريف</button>
-    <button class="nav-btn" onclick="showTab('materials')" id="nav-materials"><span>🌾</span>المواد الخام</button>
-    <button class="nav-btn" onclick="showTab('equipment')" id="nav-equipment"><span>⚙️</span>المعدات</button>
-    <button class="nav-btn" onclick="showTab('rent')" id="nav-rent"><span>🏠</span>الإيجار</button>
-    <button class="nav-btn" onclick="showTab('barcode')" id="nav-barcode"><span>🏷️</span>الباركود</button>
+    <div id="label-management" style="padding:8px 12px;color:#444;font-size:10px;font-weight:700;letter-spacing:1px">الإدارة</div>
+    <button class="nav-btn" onclick="showTab('employees')" id="nav-employees"><span>👥</span><span id="nt-employees">الموظفون</span></button>
+    <button class="nav-btn" onclick="showTab('revenue')" id="nav-revenue"><span>💰</span><span id="nt-revenue">الإيرادات</span></button>
+    <button class="nav-btn" onclick="showTab('expenses')" id="nav-expenses"><span>📋</span><span id="nt-expenses">المصاريف</span></button>
+    <button class="nav-btn" onclick="showTab('materials')" id="nav-materials"><span>🌾</span><span id="nt-materials">المواد الخام</span></button>
+    <button class="nav-btn" onclick="showTab('equipment')" id="nav-equipment"><span>⚙️</span><span id="nt-equipment">المعدات</span></button>
+    <button class="nav-btn" onclick="showTab('rent')" id="nav-rent"><span>🏠</span><span id="nt-rent">الإيجار</span></button>
+    <button class="nav-btn" onclick="showTab('barcode')" id="nav-barcode"><span>🏷️</span><span id="nt-barcode">الباركود</span></button>
     <div class="nav-divider"></div>
     <!-- SYSTEM -->
-    <div style="padding:8px 12px;color:#444;font-size:10px;font-weight:700;letter-spacing:1px">النظام</div>
-    <button class="nav-btn" onclick="showTab('users')" id="nav-users"><span>🔑</span>المستخدمون</button>
-    <button class="nav-btn" onclick="showTab('profile')" id="nav-profile"><span>👤</span>حسابي</button>
-    <button class="nav-btn" style="color:#e74c3c" onclick="doLogout()"><span>🚪</span>تسجيل خروج</button>
+    <div id="label-system" style="padding:8px 12px;color:#444;font-size:10px;font-weight:700;letter-spacing:1px">النظام</div>
+    <button class="nav-btn" onclick="showTab('users')" id="nav-users"><span>🔑</span><span id="nt-users">المستخدمون</span></button>
+    <button class="nav-btn" onclick="showTab('profile')" id="nav-profile"><span>👤</span><span id="nt-profile">حسابي</span></button>
+    <button class="nav-btn" style="color:#e74c3c" onclick="doLogout()"><span>🚪</span><span id="nt-logout">تسجيل خروج</span></button>
   </div>
   <div id="main"></div>
 </div>
@@ -277,8 +285,159 @@ tbody td{padding:10px 13px;font-size:13px;color:#ddd;vertical-align:middle}
 
 <script>
 // ==========================================
-//  STATE
+//  LANGUAGE SYSTEM
 // ==========================================
+let lang = localStorage.getItem('crmb_lang') || 'ar';
+
+const T = {
+  ar: {
+    // Nav
+    dashboard:'لوحة التحكم', pos:'نقطة البيع', products:'المنتجات',
+    purchases:'المشتريات', delivery:'طلبات التوصيل', sales:'المبيعات اليومية',
+    reports:'التقارير', employees:'الموظفون', revenue:'الإيرادات',
+    expenses:'المصاريف', materials:'المواد الخام', equipment:'المعدات',
+    rent:'الإيجار', barcode:'الباركود', users:'المستخدمون',
+    profile:'حسابي', logout:'تسجيل خروج',
+    // Sections
+    primary:'الرئيسية', management:'الإدارة', system:'النظام',
+    // POS
+    pos_title:'نقطة البيع', scan_placeholder:'امسح الباركود أو ابحث عن منتج...',
+    search:'بحث', cart_empty:'السلة فارغة', cart_empty_sub:'اضغط على المنتج أو امسح الباركود',
+    all:t('all'), subtotal:'المجموع قبل الضريبة', vat:'ضريبة القيمة المضافة 15%',
+    total_with_vat:'الإجمالي مع الضريبة', payment:'طريقة الدفع',
+    cash:'نقدي', mada:'مدى', complete_sale:'إتمام البيع', print_receipt:'طباعة الفاتورة',
+    clear_cart:'مسح السلة', today_sales:'مبيعات اليوم', last_sales:'آخر المبيعات اليوم',
+    no_sales_today:'لا توجد مبيعات بعد', includes_vat:'شامل ض.ق.م',
+    // Common
+    add:'إضافة', edit:'تعديل', delete:'حذف', save:'حفظ', cancel:'إلغاء',
+    no_data:'لا توجد بيانات', actions:'إجراءات', note:'ملاحظة',
+    total:'الإجمالي', amount:'المبلغ', date:'التاريخ', month:'الشهر',
+    name:'الاسم', category:'الفئة', price:'السعر', cost:'التكلفة',
+    profit:'الربح', unit:'الوحدة', qty:'الكمية', salary:'الراتب',
+    // Dashboard
+    total_revenue:'إجمالي الإيرادات', total_costs:'إجمالي التكاليف',
+    net_profit:'صافي الربح', net_loss:'صافي الخسارة', margin:'هامش',
+    this_month:'هذا الشهر', all_expenses:'جميع المصاريف',
+    salaries:'الرواتب والسكن', raw_materials:'المواد الخام',
+    cost_distribution:'توزيع التكاليف', monthly_revenue:'الإيرادات',
+    month_summary:'ملخص الشهر', item:'البند', percentage:'النسبة',
+    // Delivery
+    new_order:'جديد', preparing:'قيد التحضير', ready:'جاهز', delivered:'تم التسليم',
+    new_delivery:'طلب جديد', today_orders:'طلبات اليوم',
+    delivery_sales:'مبيعات التوصيل', in_progress:'قيد التحضير', total_orders:'إجمالي الطلبات',
+    start_prep:'بدء التحضير', ready_to_deliver:'جاهز للتسليم', mark_delivered:'تم التسليم',
+    // Products
+    products_title:'إدارة المنتجات', new_product:'منتج جديد',
+    total_products:'إجمالي المنتجات', categories:'الفئات',
+    avg_price:'متوسط السعر', avg_margin:'متوسط هامش الربح',
+    price_before_vat:'السعر قبل الضريبة', price_after_vat:'السعر شامل ض.ق.م',
+    vat_amount:'الضريبة 15%', barcode_num:'الباركود',
+    // Purchases
+    purchases_title:'المشتريات', new_purchase:'فاتورة مشتريات',
+    month_purchases:'مشتريات الشهر', input_vat:'ضريبة المدخلات',
+    invoices:'عدد الفواتير', suppliers:'الموردون',
+    supplier:'المورد', before_vat:'المبلغ قبل الضريبة', pay_method:'طريقة الدفع',
+    // Sync
+    synced:'متزامن', syncing:'جاري الحفظ', offline:'غير متصل',
+  },
+  en: {
+    // Nav
+    dashboard:'Dashboard', pos:'Point of Sale', products:'Products',
+    purchases:'Purchases', delivery:'Delivery Orders', sales:'Daily Sales',
+    reports:'Reports', employees:'Employees', revenue:'Revenue',
+    expenses:'Expenses', materials:'Raw Materials', equipment:'Equipment',
+    rent:'Rent', barcode:'Barcode', users:'Users',
+    profile:'My Account', logout:'Logout',
+    // Sections
+    primary:'MAIN', management:'MANAGEMENT', system:'SYSTEM',
+    // POS
+    pos_title:'Point of Sale', scan_placeholder:'Scan barcode or search product...',
+    search:'Search', cart_empty:'Cart is empty', cart_empty_sub:'Tap a product or scan barcode',
+    all:'All', subtotal:'Subtotal (excl. VAT)', vat:'VAT 15%',
+    total_with_vat:'Total (incl. VAT)', payment:'Payment Method',
+    cash:'Cash', mada:'Card / Mada', complete_sale:'Complete Sale', print_receipt:'Print Receipt',
+    clear_cart:'Clear Cart', today_sales:"Today's Sales", last_sales:'Recent Sales Today',
+    no_sales_today:'No sales yet', includes_vat:'incl. VAT',
+    // Common
+    add:'Add', edit:'Edit', delete:'Delete', save:'Save', cancel:'Cancel',
+    no_data:'No data', actions:'Actions', note:'Note',
+    total:'Total', amount:'Amount', date:'Date', month:'Month',
+    name:'Name', category:'Category', price:'Price', cost:'Cost',
+    profit:'Profit', unit:'Unit', qty:'Qty', salary:'Salary',
+    // Dashboard
+    total_revenue:'Total Revenue', total_costs:'Total Costs',
+    net_profit:'Net Profit', net_loss:'Net Loss', margin:'Margin',
+    this_month:'This Month', all_expenses:'All Expenses',
+    salaries:'Salaries & Housing', raw_materials:'Raw Materials',
+    cost_distribution:'Cost Distribution', monthly_revenue:'Revenue',
+    month_summary:'Monthly Summary', item:'Item', percentage:'%',
+    // Delivery
+    new_order:'New', preparing:'Preparing', ready:'Ready', delivered:'Delivered',
+    new_delivery:'New Order', today_orders:"Today's Orders",
+    delivery_sales:'Delivery Sales', in_progress:'In Progress', total_orders:'Total Orders',
+    start_prep:'Start Preparing', ready_to_deliver:'Ready to Deliver', mark_delivered:'Mark Delivered',
+    // Products
+    products_title:'Product Management', new_product:'New Product',
+    total_products:'Total Products', categories:'Categories',
+    avg_price:'Avg Price', avg_margin:'Avg Margin',
+    price_before_vat:'Price (excl. VAT)', price_after_vat:'Price (incl. VAT)',
+    vat_amount:'VAT 15%', barcode_num:'Barcode',
+    // Purchases
+    purchases_title:'Purchases', new_purchase:'New Invoice',
+    month_purchases:'Month Purchases', input_vat:'Input VAT',
+    invoices:'Invoices', suppliers:'Suppliers',
+    supplier:'Supplier', before_vat:'Amount (excl. VAT)', pay_method:'Payment',
+    // Sync
+    synced:'Synced', syncing:'Saving...', offline:'Offline',
+  }
+};
+
+function t(key){ return (T[lang]||T.ar)[key] || key; }
+
+function toggleLang(){
+  lang = lang==='ar' ? 'en' : 'ar';
+  localStorage.setItem('crmb_lang', lang);
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang==='ar' ? 'rtl' : 'ltr';
+  const btn=document.getElementById('langBtn');
+  if(btn) btn.textContent = lang==='ar' ? 'EN' : 'عر';
+  // Update sidebar labels
+  const labelMap={'label-primary':'primary','label-management':'management','label-system':'system'};
+  Object.entries(labelMap).forEach(([id,key])=>{const el=document.getElementById(id);if(el)el.textContent=t(key);});
+  // Update nav text spans
+  const navKeys=['dashboard','pos','products','purchases','delivery','sales','reports','employees','revenue','expenses','materials','equipment','rent','barcode','users','profile'];
+  navKeys.forEach(k=>{const el=document.getElementById('nt-'+k);if(el)el.textContent=t(k);});
+  const lo=document.getElementById('nt-logout');if(lo)lo.textContent=t('logout');
+  // Update logo subtitle
+  const sub=document.querySelector('.logo .sub');
+  if(sub)sub.textContent=lang==='ar'?'نظام محاسبة المخابز':'Bakery Management System';
+  renderMain();
+}
+
+function updateNavLabels(){
+  const navMap = {
+    'nav-dashboard':'dashboard','nav-pos':'pos','nav-products':'products',
+    'nav-purchases':'purchases','nav-delivery':'delivery','nav-sales':'sales',
+    'nav-reports':'reports','nav-employees':'employees','nav-revenue':'revenue',
+    'nav-expenses':'expenses','nav-materials':'materials','nav-equipment':'equipment',
+    'nav-rent':'rent','nav-barcode':'barcode','nav-users':'users','nav-profile':'profile',
+    'bnav-dashboard':'dashboard','bnav-pos':'pos','bnav-delivery':'delivery',
+  };
+  Object.entries(navMap).forEach(([id,key])=>{
+    const el=document.getElementById(id);
+    if(el){
+      const span=el.querySelector('span:last-child')||el.lastChild;
+      if(span && span.nodeType===3) el.lastChild.textContent=t(key);
+      else if(span && span.tagName!=='SPAN') span.textContent=t(key);
+    }
+  });
+  // Update section labels
+  const syncBadge=document.getElementById('syncBadge');
+  if(syncBadge){
+    const map={online:t('synced'),syncing:t('syncing'),offline:t('offline')};
+    if(map[syncStatus]) syncBadge.textContent=(syncStatus==='online'?'🟢 ':syncStatus==='syncing'?'🔄 ':'🔴 ')+map[syncStatus];
+  }
+}
 let appData = null;
 let currentUser = null;
 let currentTab = 'dashboard';
@@ -867,10 +1026,10 @@ function renderPOS(){
   const todayTotal = todaySales.reduce((a,s)=>a+s.amount,0);
   return`
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
-    <div class="sec-title">🖥️ نقطة البيع</div>
+    <div class="sec-title">🖥️ '+t('pos_title')+'</div>
     <div style="display:flex;gap:8px;align-items:center">
-      <div style="background:#1a2a1a;border:1px solid #27ae6040;border-radius:8px;padding:4px 12px;color:#27ae60;font-size:12px">مبيعات اليوم: ${fc(todayTotal)}</div>
-      <button class="btn btn-red btn-sm" onclick="clearCart()">مسح السلة</button>
+      <div style="background:#1a2a1a;border:1px solid #27ae6040;border-radius:8px;padding:4px 12px;color:#27ae60;font-size:12px">${t('today_sales')}: ${fc(todayTotal)}</div>
+      <button class="btn btn-red btn-sm" onclick="clearCart()">${t('clear_cart')}</button>
     </div>
   </div>
 
@@ -879,10 +1038,10 @@ function renderPOS(){
     <div class="pos-left">
       <!-- Scanner -->
       <div style="display:flex;gap:8px">
-        <input class="form-input" id="scanInput" placeholder="امسح الباركود أو ابحث عن منتج..."
+        <input class="form-input" id="scanInput" placeholder="${t('scan_placeholder')}"
           style="flex:1;font-size:14px" onkeydown="if(event.key==='Enter')scanBarcode()" autofocus
           oninput="filterPOSProducts(this.value)">
-        <button class="btn btn-gold" onclick="scanBarcode()" style="padding:10px 16px">بحث</button>
+        <button class="btn btn-gold" onclick="scanBarcode()" style="padding:10px 16px">${t('search')}</button>
       </div>
       <!-- Categories -->
       <div class="pos-cats">
@@ -905,33 +1064,33 @@ function renderPOS(){
     <div class="pos-right">
       <!-- Cart Items -->
       <div class="cart-list" id="cartItems">
-        <div style="text-align:center;color:#444;padding:40px;font-size:13px">السلة فارغة<br><span style="font-size:11px;color:#333">اضغط على المنتج أو امسح الباركود</span></div>
+        <div style="text-align:center;color:#444;padding:40px;font-size:13px">${t('cart_empty')}<br><span style='font-size:11px;color:#333'>${t('cart_empty_sub')}</span></div>
       </div>
 
       <!-- VAT Summary -->
       <div class="cart-total-box">
-        <div class="pnl-row"><span style="color:#aaa;font-size:13px">المجموع قبل الضريبة</span><span id="posSubtotal" style="font-size:13px">0.00</span></div>
-        <div class="pnl-row"><span style="color:#aaa;font-size:13px">ضريبة القيمة المضافة 15%</span><span id="posVat" style="color:var(--orange);font-size:13px">0.00</span></div>
+        <div class="pnl-row"><span style="color:#aaa;font-size:13px">${t('subtotal')}</span><span id="posSubtotal" style="font-size:13px">0.00</span></div>
+        <div class="pnl-row"><span style="color:#aaa;font-size:13px">${t('vat')}</span><span id="posVat" style="color:var(--orange);font-size:13px">0.00</span></div>
         <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:2px solid #333;margin-top:4px">
-          <span style="font-weight:700;font-size:15px">الإجمالي مع الضريبة</span>
+          <span style="font-weight:700;font-size:15px">${t('total_with_vat')}</span>
           <span id="posTotal" style="font-size:24px;font-weight:900;color:var(--green)">0.00</span>
         </div>
       </div>
 
       <!-- Payment -->
       <div style="background:#111;border-radius:12px;padding:12px;border:1px solid #222">
-        <div style="color:#aaa;font-size:12px;margin-bottom:8px;font-weight:600">طريقة الدفع</div>
+        <div style="color:#aaa;font-size:12px;margin-bottom:8px;font-weight:600">${t('payment')}</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
-          <button id="payBtn-cash" class="btn btn-green" onclick="setPayment('cash')" style="padding:10px;border-radius:10px">💵 نقدي</button>
-          <button id="payBtn-mada" class="btn btn-dark" onclick="setPayment('mada')" style="padding:10px;border-radius:10px;border:1px solid #333">💳 مدى</button>
+          <button id="payBtn-cash" class="btn btn-green" onclick="setPayment('cash')" style="padding:14px;border-radius:12px;font-size:15px">${t('cash')}</button>
+          <button id="payBtn-mada" class="btn btn-dark" onclick="setPayment('mada')" style="padding:14px;border-radius:12px;font-size:15px;border:1px solid #333">${t('mada')}</button>
         </div>
-        <button class="btn btn-green" onclick="completeSale()" style="width:100%;padding:14px;font-size:15px;font-weight:700;border-radius:12px;margin-bottom:6px">✓ إتمام البيع</button>
-        <button class="btn btn-dark" onclick="printReceipt()" style="width:100%;padding:9px;font-size:12px;border-radius:10px">🖨️ طباعة الفاتورة</button>
+        <button class="btn btn-green" onclick="completeSale()" style="width:100%;padding:18px;font-size:18px;font-weight:700;border-radius:14px;margin-bottom:8px;letter-spacing:1px">${t('complete_sale')}</button>
+        <button class="btn btn-dark" onclick="printReceipt()" style="width:100%;padding:11px;font-size:13px;border-radius:10px">${t('print_receipt')}</button>
       </div>
 
       <!-- Today's last sales -->
       <div style="background:#111;border-radius:12px;border:1px solid #222;overflow:hidden">
-        <div style="padding:10px 14px;border-bottom:1px solid #1a1a1a;color:#666;font-size:12px;font-weight:600">آخر المبيعات اليوم</div>
+        <div style="padding:10px 14px;border-bottom:1px solid #1a1a1a;color:#666;font-size:12px;font-weight:600">${t('last_sales')}</div>
         <div style="max-height:120px;overflow-y:auto">
           ${todaySales.slice(-5).reverse().map(s=>`
             <div style="display:flex;justify-content:space-between;padding:7px 14px;border-bottom:1px solid #1a1a1a;font-size:12px">
@@ -1771,6 +1930,11 @@ function notify(msg,type='success'){
 //  INIT
 // ==========================================
 async function init(){
+  // Apply saved language
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang==='ar' ? 'rtl' : 'ltr';
+  const langBtn=document.getElementById('langBtn');
+  if(langBtn) langBtn.textContent = lang==='ar' ? 'EN' : 'عر';
   // Load user
   currentUser = await apiFetch('/api/me');
   if(!currentUser){window.location.href='/login';return;}
