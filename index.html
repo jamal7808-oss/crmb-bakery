@@ -317,8 +317,8 @@ const T = {
     // Dashboard
     total_revenue:'إجمالي الإيرادات', total_costs:'إجمالي التكاليف',
     net_profit:'صافي الربح', net_loss:'صافي الخسارة', margin:'هامش',
-    this_month:'هذا الشهر', all_expenses:'جميع المصاريف',
-    salaries:'الرواتب والسكن', raw_materials:'المواد الخام',
+    this_month:t('this_month'), all_expenses:t('all_expenses'),
+    salaries:t('salaries'), raw_materials:'المواد الخام',
     cost_distribution:'توزيع التكاليف', monthly_revenue:'الإيرادات',
     month_summary:'ملخص الشهر', item:'البند', percentage:'النسبة',
     // Delivery
@@ -397,21 +397,8 @@ function t(key){ return (T[lang]||T.ar)[key] || key; }
 function toggleLang(){
   lang = lang==='ar' ? 'en' : 'ar';
   try{localStorage.setItem('crmb_lang', lang);}catch(e){}
-  document.documentElement.lang = lang;
-  document.documentElement.dir = lang==='ar' ? 'rtl' : 'ltr';
-  const btn=document.getElementById('langBtn');
-  if(btn) btn.textContent = lang==='ar' ? 'EN' : 'عر';
-  // Update sidebar labels
-  const labelMap={'label-primary':'primary','label-management':'management','label-system':'system'};
-  Object.entries(labelMap).forEach(([id,key])=>{const el=document.getElementById(id);if(el)el.textContent=t(key);});
-  // Update nav text spans
-  const navKeys=['dashboard','pos','products','purchases','delivery','sales','reports','employees','revenue','expenses','materials','equipment','rent','barcode','users','profile'];
-  navKeys.forEach(k=>{const el=document.getElementById('nt-'+k);if(el)el.textContent=t(k);});
-  const lo=document.getElementById('nt-logout');if(lo)lo.textContent=t('logout');
-  // Update logo subtitle
-  const sub=document.querySelector('.logo .sub');
-  if(sub)sub.textContent=lang==='ar'?'نظام محاسبة المخابز':'Bakery Management System';
-  renderMain();
+  // Reload page to apply language fully
+  window.location.reload();
 }
 
 function updateNavLabels(){
@@ -1963,11 +1950,20 @@ function notify(msg,type='success'){
 //  INIT
 // ==========================================
 async function init(){
-  // Apply saved language
+  // Apply saved language immediately
   document.documentElement.lang = lang;
   document.documentElement.dir = lang==='ar' ? 'rtl' : 'ltr';
   const langBtn=document.getElementById('langBtn');
   if(langBtn) langBtn.textContent = lang==='ar' ? 'EN' : 'عر';
+  // Update nav labels from translation
+  const navKeys=['dashboard','pos','products','purchases','delivery','sales','reports','employees','revenue','expenses','materials','equipment','rent','barcode','users','profile'];
+  navKeys.forEach(k=>{const el=document.getElementById('nt-'+k);if(el)el.textContent=t(k);});
+  const lo=document.getElementById('nt-logout');if(lo)lo.textContent=t('logout');
+  const lp=document.getElementById('label-primary');if(lp)lp.textContent=t('primary');
+  const lm=document.getElementById('label-management');if(lm)lm.textContent=t('management');
+  const ls=document.getElementById('label-system');if(ls)ls.textContent=t('system');
+  const sub=document.querySelector('.logo .sub');
+  if(sub)sub.textContent=lang==='ar'?'نظام محاسبة المخابز':'Bakery Management System';
   // Load user
   currentUser = await apiFetch('/api/me');
   if(!currentUser){window.location.href='/login';return;}
