@@ -1969,57 +1969,58 @@ function startAutoRefresh(){
 async function init(){
   applyLangUI();
 
-  // Show loading screen immediately
   const main = document.getElementById('main');
-  if(main) main.innerHTML = `
-    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:70vh;gap:20px;text-align:center">
-      <div style="font-size:52px">⏳</div>
-      <div style="color:var(--gold);font-size:20px;font-weight:700">${lang==='ar'?'جاري التحميل...':'Loading...'}</div>
-      <div style="color:#555;font-size:13px">${lang==='ar'?'قد يستغرق حتى 60 ثانية في أول فتح':'May take up to 60 seconds on first open'}</div>
-      <div id="retryMsg" style="color:#444;font-size:12px;margin-top:8px">...</div>
+  const setScreen = (msg, sub='') => {
+    if(main) main.innerHTML = `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:70vh;gap:16px;text-align:center;padding:20px">
+      <div style="font-size:44px">⏳</div>
+      <div style="color:var(--gold);font-size:18px;font-weight:700">${msg}</div>
+      <div style="color:#555;font-size:13px">${sub}</div>
     </div>`;
+  };
 
-  const setMsg = m => { const el=document.getElementById('retryMsg'); if(el) el.textContent=m; };
+  setScreen('جاري التحميل...', 'يرجى الانتظار');
 
-  let n = 0;
-  while(true) {
-    n++;
-    setMsg((lang==='ar'?'محاولة ':'Attempt ')+n+'...');
+  // Step 1: Check session
+  let me = null;
+  for(let i=1; i<=20; i++){
+    setScreen('جاري الاتصال...', 'محاولة '+i+' من 20');
+    me = await apiFetch('/api/me');
+    if(me !== null) break;
+    await new Promise(r=>setTimeout(r,4000));
+  }
 
-    // Check if logged in
-    const me = await apiFetch('/api/me');
+  if(!me){ setScreen('تعذر الاتصال', 'تحقق من اتصالك بالإنترنت'); return; }
+  if(me._401){ window.location.href='/login'; return; }
 
-    if(me === null) {
-      // Server sleeping - wait and retry
-      await new Promise(r=>setTimeout(r,4000));
-      continue;
-    }
+  currentUser = me;
+  const ub=document.getElementById('userBadge');
+  if(ub) ub.textContent='👤 '+currentUser.name;
 
-    if(me && me._401) {
-      // Not logged in
-      window.location.href = '/login';
-      return;
-    }
+  // Step 2: Load data
+  let data = null;
+  for(let i=1; i<=20; i++){
+    setScreen('جاري تحميل البيانات...', 'محاولة '+i);
+    data = await apiFetch('/api/data');
+    if(data !== null) break;
+    await new Promise(r=>setTimeout(r,4000));
+  }
 
-    // Logged in - load data
-    currentUser = me;
-    const ub=document.getElementById('userBadge');
-    if(ub) ub.textContent='👤 '+currentUser.name;
+  if(!data){ setScreen('تعذر تحميل البيانات', 'حاول تحديث الصفحة'); return; }
 
-    const data = await apiFetch('/api/data');
-    if(!data) {
-      await new Promise(r=>setTimeout(r,4000));
-      continue;
-    }
+  appData = data;
+  setSyncBadge('online');
+  initMonthSelect();
 
-    // Success!
-    appData = data;
-    setSyncBadge('online');
-    initMonthSelect();
+  // Step 3: Render with error catching
+  try {
     renderMain();
-    startAutoRefresh();
+  } catch(e) {
+    setScreen('خطأ في التطبيق', e.message);
+    console.error('renderMain error:', e);
     return;
   }
+
+  startAutoRefresh();
 }
 
 init();
