@@ -184,71 +184,46 @@ tbody td{padding:10px 13px;font-size:13px;color:#ddd;vertical-align:middle}
 <div id="modal-container"></div>
 <script>
 
-// ===== LANGUAGE =====
-let lang = 'ar';
-try{ lang = localStorage.getItem('crmb_lang')||'ar'; }catch(e){}
 
-const TR = {
-  ar:{
-    dashboard:'لوحة التحكم', pos:'نقطة البيع', products:'المنتجات',
-    purchases:'المشتريات', delivery:'طلبات التوصيل', sales:'المبيعات',
-    reports:'التقارير', employees:'الموظفون', revenue:'الإيرادات',
-    expenses:'المصاريف', materials:'المواد الخام', equipment:'المعدات',
-    rent:'الإيجار', barcode:'الباركود', users:'المستخدمون',
-    profile:'حسابي', logout:'خروج',
-    main_section:'الرئيسية', mgmt_section:'الإدارة', sys_section:'النظام',
-    subtitle:'نظام محاسبة المخابز',
-    loading:tr('loading'), please_wait:tr('please_wait'), attempt:'محاولة',
-  },
-  en:{
-    dashboard:'Dashboard', pos:'Point of Sale', products:'Products',
-    purchases:'Purchases', delivery:'Delivery Orders', sales:'Daily Sales',
-    reports:'Reports', employees:'Employees', revenue:'Revenue',
-    expenses:'Expenses', materials:'Raw Materials', equipment:'Equipment',
-    rent:'Rent', barcode:'Barcode', users:'Users',
-    profile:'My Account', logout:'Logout',
-    main_section:'MAIN', mgmt_section:'MANAGEMENT', sys_section:'SYSTEM',
-    subtitle:'Bakery Management System',
-    loading:'Loading...', please_wait:'Please wait', attempt:'Attempt',
-  }
+
+
+// ===== SIMPLE LANGUAGE TOGGLE =====
+// Works by swapping pre-defined text, no complex initialization
+const NAV_LABELS = {
+  'nav-dashboard': ['لوحة التحكم','Dashboard'],
+  'nav-pos': ['نقطة البيع','Point of Sale'],
+  'nav-products': ['المنتجات','Products'],
+  'nav-purchases': ['المشتريات','Purchases'],
+  'nav-delivery': ['طلبات التوصيل','Delivery'],
+  'nav-sales': ['المبيعات اليومية','Daily Sales'],
+  'nav-reports': ['التقارير','Reports'],
+  'nav-employees': ['الموظفون','Employees'],
+  'nav-revenue': ['الإيرادات','Revenue'],
+  'nav-expenses': ['المصاريف','Expenses'],
+  'nav-materials': ['المواد الخام','Raw Materials'],
+  'nav-equipment': ['المعدات','Equipment'],
+  'nav-rent': ['الإيجار','Rent'],
+  'nav-barcode': ['الباركود','Barcode'],
+  'nav-users': ['المستخدمون','Users'],
+  'nav-profile': ['حسابي','My Account'],
 };
-const tr = k => (TR[lang]||TR.ar)[k]||k;
-
+let isEnglish = false;
 function toggleLang(){
-  lang = lang==='ar'?'en':'ar';
-  try{localStorage.setItem('crmb_lang',lang);}catch(e){}
-  window.location.reload();
-}
-
-function applyLang(){
-  // Only safe DOM-independent operations
-  document.documentElement.dir = lang==='ar'?'rtl':'ltr';
-  document.documentElement.lang = lang;
-}
-
-function applyLangUI(){
-  // Called after DOM is ready
-  try{
-    const btn=document.getElementById('langBtn');
-    if(btn) btn.textContent = lang==='ar'?'EN':'عر';
-    const sub=document.querySelector('.logo-sub');
-    if(sub) sub.textContent=tr('subtitle');
-    const navMap={
-      'nav-dashboard':'dashboard','nav-pos':'pos','nav-products':'products',
-      'nav-purchases':'purchases','nav-delivery':'delivery','nav-sales':'sales',
-      'nav-reports':'reports','nav-employees':'employees','nav-revenue':'revenue',
-      'nav-expenses':'expenses','nav-materials':'materials','nav-equipment':'equipment',
-      'nav-rent':'rent','nav-barcode':'barcode','nav-users':'users','nav-profile':'profile',
-    };
-    Object.entries(navMap).forEach(([id,key])=>{
-      const el=document.getElementById(id);
-      if(el){const spans=el.querySelectorAll('span');if(spans[1])spans[1].textContent=tr(key);}
-    });
-    document.querySelectorAll('.nav-section').forEach((el,i)=>{
-      const keys=['main_section','mgmt_section','sys_section'];
-      if(keys[i])el.textContent=tr(keys[i]);
-    });
-  }catch(e){}
+  isEnglish = !isEnglish;
+  const btn = document.getElementById('langBtn');
+  if(btn) btn.textContent = isEnglish ? 'عر' : 'EN';
+  document.documentElement.dir = isEnglish ? 'ltr' : 'rtl';
+  document.documentElement.lang = isEnglish ? 'en' : 'ar';
+  Object.entries(NAV_LABELS).forEach(([id,[ar,en]])=>{
+    const el=document.getElementById(id);
+    if(el){const spans=el.querySelectorAll('span');if(spans[1])spans[1].textContent=isEnglish?en:ar;}
+  });
+  const sections=document.querySelectorAll('.nav-section');
+  const arSec=['الرئيسية','الإدارة','النظام'];
+  const enSec=['MAIN','MANAGEMENT','SYSTEM'];
+  sections.forEach((el,i)=>{ el.textContent=isEnglish?enSec[i]:arSec[i]; });
+  const sub=document.querySelector('.logo-sub');
+  if(sub) sub.textContent=isEnglish?'Bakery Management System':'نظام محاسبة المخابز';
 }
 
 // STATE
@@ -917,14 +892,6 @@ function initMonthSelect(){
   const sel=document.getElementById('monthSelect');
   if(sel&&appData)sel.innerHTML=MONTHS.map(m=>`<option value="${m}" ${m===appData.currentMonth?'selected':''}>${ml(m)}</option>`).join('');
 }
-
-// Apply direction immediately (safe - no DOM needed)
-applyLang();
-
-// Apply UI labels after DOM is ready
-document.addEventListener('DOMContentLoaded', function(){
-  applyLangUI();
-});
 
 init();
 </script>
