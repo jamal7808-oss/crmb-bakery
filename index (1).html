@@ -155,7 +155,39 @@ tbody td{padding:10px 13px;font-size:13px;color:#ddd;vertical-align:middle}
 .bar-fill{width:100%;border-radius:4px 4px 0 0;min-height:4px;transition:height .8s}
 .bar-lbl{font-size:9px;color:#888;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:50px}
 
-/* RESPONSIVE */
+/* POS PRODUCT TILES */
+.pos-layout{display:grid;grid-template-columns:1fr 360px;gap:16px;height:calc(100vh - 120px)}
+.pos-left{display:flex;flex-direction:column;gap:12px;overflow:hidden}
+.pos-cats{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;flex-shrink:0}
+.pos-cat-btn{background:#1a1a1a;border:1px solid #333;border-radius:24px;color:#aaa;padding:10px 22px;font-size:14px;white-space:nowrap;cursor:pointer;transition:all .2s;font-family:'Cairo',sans-serif;min-height:44px}
+.pos-cat-btn.active{background:var(--gold);color:#000;border-color:var(--gold);font-weight:700}
+.pos-products{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;overflow-y:auto;padding-right:4px}
+.pos-tile{background:#1a1a1a;border:2px solid #2a2a2a;border-radius:16px;padding:18px 12px;text-align:center;cursor:pointer;transition:all .15s;user-select:none;min-height:110px;display:flex;flex-direction:column;justify-content:center;align-items:center}
+.pos-tile:hover{border-color:var(--gold);background:#1a1500}
+.pos-tile:active{transform:scale(.93);background:#2a2000;border-color:var(--gold)}
+.pos-tile-name{font-size:15px;font-weight:700;color:#fff;margin-bottom:5px;line-height:1.3}
+.pos-tile-cat{font-size:11px;color:#666;margin-bottom:8px}
+.pos-tile-price{font-size:18px;font-weight:900;color:var(--green)}
+.pos-right{display:flex;flex-direction:column;gap:10px;overflow:hidden}
+.cart-list{flex:1;overflow-y:auto;background:#111;border-radius:12px;border:1px solid #222}
+.cart-item{display:flex;align-items:center;gap:8px;padding:12px 14px;border-bottom:1px solid #1a1a1a;min-height:56px}
+.cart-item-name{flex:1;font-size:14px;font-weight:600}
+.cart-item-sub{font-size:11px;color:#888;margin-top:2px}
+.qty-btn{background:#2a2a2a;border:none;color:#fff;width:36px;height:36px;border-radius:8px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.qty-btn:active{background:#D4A843;color:#000}
+.cart-total-box{background:#111;border-radius:12px;padding:14px;border:1px solid #222;flex-shrink:0}
+/* DELIVERY */
+.delivery-tabs{display:flex;gap:8px;margin-bottom:16px}
+.del-tab{padding:8px 16px;border-radius:20px;border:1px solid #333;background:#1a1a1a;color:#aaa;cursor:pointer;font-family:'Cairo',sans-serif;font-size:12px}
+.del-tab.active{background:var(--gold);color:#000;border-color:var(--gold);font-weight:700}
+.order-card{background:#1a1a1a;border-radius:12px;padding:14px 16px;border:1px solid #2a2a2a;margin-bottom:10px}
+.order-status{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
+.status-new{background:#1a2a1a;color:#27ae60;border:1px solid #27ae6040}
+.status-preparing{background:#1a1a2a;color:#3498db;border:1px solid #3498db40}
+.status-ready{background:#2a1800;color:#D4A843;border:1px solid #D4A84340}
+.status-delivered{background:#1a1a1a;color:#666;border:1px solid #33333340}
+/* PURCHASES */
+.purchase-card{background:#1a1a1a;border-radius:12px;padding:14px 16px;border:1px solid #2a2a2a;margin-bottom:10px}
 @media(max-width:768px){
   #sidebar{display:none}
   #main{padding:14px;padding-bottom:72px}
@@ -165,6 +197,15 @@ tbody td{padding:10px 13px;font-size:13px;color:#ddd;vertical-align:middle}
   .form-row{grid-template-columns:1fr}
   .product-grid{grid-template-columns:1fr}
   .sec-title{font-size:16px}
+  .pos-layout{grid-template-columns:1fr;height:auto}
+  .pos-right{max-height:60vh}
+  .pos-products{grid-template-columns:repeat(3,1fr)}
+  .pos-tile{min-height:90px;padding:12px 8px}
+  .pos-tile-name{font-size:13px}
+  .pos-tile-price{font-size:15px}
+}
+@media(min-width:769px) and (max-width:1200px){
+  .pos-products{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
 }
 </style>
 </head>
@@ -183,6 +224,7 @@ tbody td{padding:10px 13px;font-size:13px;color:#ddd;vertical-align:middle}
   </div>
   <div class="hcontrols">
     <div class="sync-badge" id="syncBadge">⏳ جاري المزامنة</div>
+    <button onclick="toggleLang()" id="langBtn" style="background:#1a1a2a;border:1px solid #3498db40;border-radius:8px;padding:4px 12px;color:#3498db;font-size:12px;cursor:pointer;font-family:'Cairo',sans-serif;white-space:nowrap">EN</button>
     <div class="user-badge" onclick="showTab('profile')" id="userBadge">👤 ...</div>
     <button class="btn btn-green" onclick="exportExcel()" style="padding:6px 12px;font-size:12px">📥 Excel</button>
     <select id="monthSelect" class="form-input" style="width:120px;padding:6px 10px;font-size:12px" onchange="changeMonth(this.value)"></select>
@@ -192,21 +234,31 @@ tbody td{padding:10px 13px;font-size:13px;color:#ddd;vertical-align:middle}
 <!-- LAYOUT -->
 <div id="layout">
   <div id="sidebar">
-    <button class="nav-btn active" onclick="showTab('dashboard')" id="nav-dashboard"><span>📊</span>لوحة التحكم</button>
-    <button class="nav-btn" onclick="showTab('pos')" id="nav-pos"><span>🔫</span>نقطة البيع</button>
-    <button class="nav-btn" onclick="showTab('sales')" id="nav-sales"><span>🛒</span>المبيعات اليومية</button>
-    <button class="nav-btn" onclick="showTab('revenue')" id="nav-revenue"><span>💰</span>الإيرادات</button>
-    <button class="nav-btn" onclick="showTab('materials')" id="nav-materials"><span>🌾</span>المواد الخام</button>
-    <button class="nav-btn" onclick="showTab('employees')" id="nav-employees"><span>👥</span>الموظفون</button>
-    <button class="nav-btn" onclick="showTab('expenses')" id="nav-expenses"><span>📋</span>المصاريف</button>
-    <button class="nav-btn" onclick="showTab('equipment')" id="nav-equipment"><span>⚙️</span>المعدات والملحقات</button>
-    <button class="nav-btn" onclick="showTab('rent')" id="nav-rent"><span>🏠</span>الإيجار</button>
-    <button class="nav-btn" onclick="showTab('reports')" id="nav-reports"><span>📈</span>التقارير</button>
-    <button class="nav-btn" onclick="showTab('barcode')" id="nav-barcode"><span>🏷️</span>الباركود</button>
+    <!-- PRIMARY -->
+    <div id="label-primary" style="padding:8px 12px;color:#444;font-size:10px;font-weight:700;letter-spacing:1px;margin-top:4px">الرئيسية</div>
+    <button class="nav-btn active" onclick="showTab('dashboard')" id="nav-dashboard"><span>📊</span><span id="nt-dashboard">لوحة التحكم</span></button>
+    <button class="nav-btn" onclick="showTab('pos')" id="nav-pos"><span>🖥️</span><span id="nt-pos">نقطة البيع</span></button>
+    <button class="nav-btn" onclick="showTab('products')" id="nav-products"><span>📦</span><span id="nt-products">المنتجات</span></button>
+    <button class="nav-btn" onclick="showTab('purchases')" id="nav-purchases"><span>🛍️</span><span id="nt-purchases">المشتريات</span></button>
+    <button class="nav-btn" onclick="showTab('delivery')" id="nav-delivery"><span>🚴</span><span id="nt-delivery">طلبات التوصيل</span></button>
+    <button class="nav-btn" onclick="showTab('sales')" id="nav-sales"><span>🛒</span><span id="nt-sales">المبيعات اليومية</span></button>
+    <button class="nav-btn" onclick="showTab('reports')" id="nav-reports"><span>📈</span><span id="nt-reports">التقارير</span></button>
     <div class="nav-divider"></div>
-    <button class="nav-btn" onclick="showTab('users')" id="nav-users"><span>🔑</span>المستخدمون</button>
-    <button class="nav-btn" onclick="showTab('profile')" id="nav-profile"><span>⚙️</span>حسابي</button>
-    <button class="nav-btn" style="color:#e74c3c" onclick="doLogout()"><span>🚪</span>تسجيل خروج</button>
+    <!-- MANAGEMENT -->
+    <div id="label-management" style="padding:8px 12px;color:#444;font-size:10px;font-weight:700;letter-spacing:1px">الإدارة</div>
+    <button class="nav-btn" onclick="showTab('employees')" id="nav-employees"><span>👥</span><span id="nt-employees">الموظفون</span></button>
+    <button class="nav-btn" onclick="showTab('revenue')" id="nav-revenue"><span>💰</span><span id="nt-revenue">الإيرادات</span></button>
+    <button class="nav-btn" onclick="showTab('expenses')" id="nav-expenses"><span>📋</span><span id="nt-expenses">المصاريف</span></button>
+    <button class="nav-btn" onclick="showTab('materials')" id="nav-materials"><span>🌾</span><span id="nt-materials">المواد الخام</span></button>
+    <button class="nav-btn" onclick="showTab('equipment')" id="nav-equipment"><span>⚙️</span><span id="nt-equipment">المعدات</span></button>
+    <button class="nav-btn" onclick="showTab('rent')" id="nav-rent"><span>🏠</span><span id="nt-rent">الإيجار</span></button>
+    <button class="nav-btn" onclick="showTab('barcode')" id="nav-barcode"><span>🏷️</span><span id="nt-barcode">الباركود</span></button>
+    <div class="nav-divider"></div>
+    <!-- SYSTEM -->
+    <div id="label-system" style="padding:8px 12px;color:#444;font-size:10px;font-weight:700;letter-spacing:1px">النظام</div>
+    <button class="nav-btn" onclick="showTab('users')" id="nav-users"><span>🔑</span><span id="nt-users">المستخدمون</span></button>
+    <button class="nav-btn" onclick="showTab('profile')" id="nav-profile"><span>👤</span><span id="nt-profile">حسابي</span></button>
+    <button class="nav-btn" style="color:#e74c3c" onclick="doLogout()"><span>🚪</span><span id="nt-logout">تسجيل خروج</span></button>
   </div>
   <div id="main"></div>
 </div>
@@ -214,17 +266,17 @@ tbody td{padding:10px 13px;font-size:13px;color:#ddd;vertical-align:middle}
 <!-- BOTTOM NAV -->
 <div id="bottom-nav">
   <button class="bnav-btn active" onclick="showTab('dashboard')" id="bnav-dashboard"><span>📊</span>الرئيسية</button>
-  <button class="bnav-btn" onclick="showTab('pos')" id="bnav-pos"><span>🔫</span>نقطة البيع</button>
-  <button class="bnav-btn" onclick="showTab('sales')" id="bnav-sales"><span>🛒</span>المبيعات</button>
+  <button class="bnav-btn" onclick="showTab('pos')" id="bnav-pos"><span>🖥️</span>البيع</button>
+  <button class="bnav-btn" onclick="showTab('delivery')" id="bnav-delivery"><span>🚴</span>التوصيل</button>
   <button class="bnav-btn" onclick="toggleMore()" id="bnav-more-btn"><span>☰</span>المزيد</button>
 </div>
 <div id="more-nav">
-  <button class="bnav-more-btn" onclick="showTab('revenue');toggleMore()"><span>💰</span>الإيرادات</button>
-  <button class="bnav-more-btn" onclick="showTab('materials');toggleMore()"><span>🌾</span>المواد</button>
+  <button class="bnav-more-btn" onclick="showTab('products');toggleMore()"><span>📦</span>المنتجات</button>
+  <button class="bnav-more-btn" onclick="showTab('purchases');toggleMore()"><span>🛍️</span>المشتريات</button>
+  <button class="bnav-more-btn" onclick="showTab('sales');toggleMore()"><span>🛒</span>المبيعات</button>
+  <button class="bnav-more-btn" onclick="showTab('reports');toggleMore()"><span>📈</span>التقارير</button>
   <button class="bnav-more-btn" onclick="showTab('employees');toggleMore()"><span>👥</span>الموظفون</button>
   <button class="bnav-more-btn" onclick="showTab('expenses');toggleMore()"><span>📋</span>المصاريف</button>
-  <button class="bnav-more-btn" onclick="showTab('equipment');toggleMore()"><span>⚙️</span>المعدات</button>
-  <button class="bnav-more-btn" onclick="showTab('reports');toggleMore()"><span>📈</span>التقارير</button>
   <button class="bnav-more-btn" onclick="showTab('profile');toggleMore()"><span>👤</span>حسابي</button>
   <button class="bnav-more-btn" style="color:#e74c3c" onclick="doLogout()"><span>🚪</span>خروج</button>
 </div>
@@ -233,8 +285,159 @@ tbody td{padding:10px 13px;font-size:13px;color:#ddd;vertical-align:middle}
 
 <script>
 // ==========================================
-//  STATE
+//  LANGUAGE SYSTEM
 // ==========================================
+let lang = localStorage.getItem('crmb_lang') || 'ar';
+
+const T = {
+  ar: {
+    // Nav
+    dashboard:'لوحة التحكم', pos:'نقطة البيع', products:'المنتجات',
+    purchases:'المشتريات', delivery:'طلبات التوصيل', sales:'المبيعات اليومية',
+    reports:'التقارير', employees:'الموظفون', revenue:'الإيرادات',
+    expenses:'المصاريف', materials:'المواد الخام', equipment:'المعدات',
+    rent:'الإيجار', barcode:'الباركود', users:'المستخدمون',
+    profile:'حسابي', logout:'تسجيل خروج',
+    // Sections
+    primary:'الرئيسية', management:'الإدارة', system:'النظام',
+    // POS
+    pos_title:'نقطة البيع', scan_placeholder:'امسح الباركود أو ابحث عن منتج...',
+    search:'بحث', cart_empty:'السلة فارغة', cart_empty_sub:'اضغط على المنتج أو امسح الباركود',
+    all:t('all'), subtotal:'المجموع قبل الضريبة', vat:'ضريبة القيمة المضافة 15%',
+    total_with_vat:'الإجمالي مع الضريبة', payment:'طريقة الدفع',
+    cash:'نقدي', mada:'مدى', complete_sale:'إتمام البيع', print_receipt:'طباعة الفاتورة',
+    clear_cart:'مسح السلة', today_sales:'مبيعات اليوم', last_sales:'آخر المبيعات اليوم',
+    no_sales_today:'لا توجد مبيعات بعد', includes_vat:'شامل ض.ق.م',
+    // Common
+    add:'إضافة', edit:'تعديل', delete:'حذف', save:'حفظ', cancel:'إلغاء',
+    no_data:'لا توجد بيانات', actions:'إجراءات', note:'ملاحظة',
+    total:'الإجمالي', amount:'المبلغ', date:'التاريخ', month:'الشهر',
+    name:'الاسم', category:'الفئة', price:'السعر', cost:'التكلفة',
+    profit:'الربح', unit:'الوحدة', qty:'الكمية', salary:'الراتب',
+    // Dashboard
+    total_revenue:'إجمالي الإيرادات', total_costs:'إجمالي التكاليف',
+    net_profit:'صافي الربح', net_loss:'صافي الخسارة', margin:'هامش',
+    this_month:'هذا الشهر', all_expenses:'جميع المصاريف',
+    salaries:'الرواتب والسكن', raw_materials:'المواد الخام',
+    cost_distribution:'توزيع التكاليف', monthly_revenue:'الإيرادات',
+    month_summary:'ملخص الشهر', item:'البند', percentage:'النسبة',
+    // Delivery
+    new_order:'جديد', preparing:'قيد التحضير', ready:'جاهز', delivered:'تم التسليم',
+    new_delivery:'طلب جديد', today_orders:'طلبات اليوم',
+    delivery_sales:'مبيعات التوصيل', in_progress:'قيد التحضير', total_orders:'إجمالي الطلبات',
+    start_prep:'بدء التحضير', ready_to_deliver:'جاهز للتسليم', mark_delivered:'تم التسليم',
+    // Products
+    products_title:'إدارة المنتجات', new_product:'منتج جديد',
+    total_products:'إجمالي المنتجات', categories:'الفئات',
+    avg_price:'متوسط السعر', avg_margin:'متوسط هامش الربح',
+    price_before_vat:'السعر قبل الضريبة', price_after_vat:'السعر شامل ض.ق.م',
+    vat_amount:'الضريبة 15%', barcode_num:'الباركود',
+    // Purchases
+    purchases_title:'المشتريات', new_purchase:'فاتورة مشتريات',
+    month_purchases:'مشتريات الشهر', input_vat:'ضريبة المدخلات',
+    invoices:'عدد الفواتير', suppliers:'الموردون',
+    supplier:'المورد', before_vat:'المبلغ قبل الضريبة', pay_method:'طريقة الدفع',
+    // Sync
+    synced:'متزامن', syncing:'جاري الحفظ', offline:'غير متصل',
+  },
+  en: {
+    // Nav
+    dashboard:'Dashboard', pos:'Point of Sale', products:'Products',
+    purchases:'Purchases', delivery:'Delivery Orders', sales:'Daily Sales',
+    reports:'Reports', employees:'Employees', revenue:'Revenue',
+    expenses:'Expenses', materials:'Raw Materials', equipment:'Equipment',
+    rent:'Rent', barcode:'Barcode', users:'Users',
+    profile:'My Account', logout:'Logout',
+    // Sections
+    primary:'MAIN', management:'MANAGEMENT', system:'SYSTEM',
+    // POS
+    pos_title:'Point of Sale', scan_placeholder:'Scan barcode or search product...',
+    search:'Search', cart_empty:'Cart is empty', cart_empty_sub:'Tap a product or scan barcode',
+    all:'All', subtotal:'Subtotal (excl. VAT)', vat:'VAT 15%',
+    total_with_vat:'Total (incl. VAT)', payment:'Payment Method',
+    cash:'Cash', mada:'Card / Mada', complete_sale:'Complete Sale', print_receipt:'Print Receipt',
+    clear_cart:'Clear Cart', today_sales:"Today's Sales", last_sales:'Recent Sales Today',
+    no_sales_today:'No sales yet', includes_vat:'incl. VAT',
+    // Common
+    add:'Add', edit:'Edit', delete:'Delete', save:'Save', cancel:'Cancel',
+    no_data:'No data', actions:'Actions', note:'Note',
+    total:'Total', amount:'Amount', date:'Date', month:'Month',
+    name:'Name', category:'Category', price:'Price', cost:'Cost',
+    profit:'Profit', unit:'Unit', qty:'Qty', salary:'Salary',
+    // Dashboard
+    total_revenue:'Total Revenue', total_costs:'Total Costs',
+    net_profit:'Net Profit', net_loss:'Net Loss', margin:'Margin',
+    this_month:'This Month', all_expenses:'All Expenses',
+    salaries:'Salaries & Housing', raw_materials:'Raw Materials',
+    cost_distribution:'Cost Distribution', monthly_revenue:'Revenue',
+    month_summary:'Monthly Summary', item:'Item', percentage:'%',
+    // Delivery
+    new_order:'New', preparing:'Preparing', ready:'Ready', delivered:'Delivered',
+    new_delivery:'New Order', today_orders:"Today's Orders",
+    delivery_sales:'Delivery Sales', in_progress:'In Progress', total_orders:'Total Orders',
+    start_prep:'Start Preparing', ready_to_deliver:'Ready to Deliver', mark_delivered:'Mark Delivered',
+    // Products
+    products_title:'Product Management', new_product:'New Product',
+    total_products:'Total Products', categories:'Categories',
+    avg_price:'Avg Price', avg_margin:'Avg Margin',
+    price_before_vat:'Price (excl. VAT)', price_after_vat:'Price (incl. VAT)',
+    vat_amount:'VAT 15%', barcode_num:'Barcode',
+    // Purchases
+    purchases_title:'Purchases', new_purchase:'New Invoice',
+    month_purchases:'Month Purchases', input_vat:'Input VAT',
+    invoices:'Invoices', suppliers:'Suppliers',
+    supplier:'Supplier', before_vat:'Amount (excl. VAT)', pay_method:'Payment',
+    // Sync
+    synced:'Synced', syncing:'Saving...', offline:'Offline',
+  }
+};
+
+function t(key){ return (T[lang]||T.ar)[key] || key; }
+
+function toggleLang(){
+  lang = lang==='ar' ? 'en' : 'ar';
+  localStorage.setItem('crmb_lang', lang);
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang==='ar' ? 'rtl' : 'ltr';
+  const btn=document.getElementById('langBtn');
+  if(btn) btn.textContent = lang==='ar' ? 'EN' : 'عر';
+  // Update sidebar labels
+  const labelMap={'label-primary':'primary','label-management':'management','label-system':'system'};
+  Object.entries(labelMap).forEach(([id,key])=>{const el=document.getElementById(id);if(el)el.textContent=t(key);});
+  // Update nav text spans
+  const navKeys=['dashboard','pos','products','purchases','delivery','sales','reports','employees','revenue','expenses','materials','equipment','rent','barcode','users','profile'];
+  navKeys.forEach(k=>{const el=document.getElementById('nt-'+k);if(el)el.textContent=t(k);});
+  const lo=document.getElementById('nt-logout');if(lo)lo.textContent=t('logout');
+  // Update logo subtitle
+  const sub=document.querySelector('.logo .sub');
+  if(sub)sub.textContent=lang==='ar'?'نظام محاسبة المخابز':'Bakery Management System';
+  renderMain();
+}
+
+function updateNavLabels(){
+  const navMap = {
+    'nav-dashboard':'dashboard','nav-pos':'pos','nav-products':'products',
+    'nav-purchases':'purchases','nav-delivery':'delivery','nav-sales':'sales',
+    'nav-reports':'reports','nav-employees':'employees','nav-revenue':'revenue',
+    'nav-expenses':'expenses','nav-materials':'materials','nav-equipment':'equipment',
+    'nav-rent':'rent','nav-barcode':'barcode','nav-users':'users','nav-profile':'profile',
+    'bnav-dashboard':'dashboard','bnav-pos':'pos','bnav-delivery':'delivery',
+  };
+  Object.entries(navMap).forEach(([id,key])=>{
+    const el=document.getElementById(id);
+    if(el){
+      const span=el.querySelector('span:last-child')||el.lastChild;
+      if(span && span.nodeType===3) el.lastChild.textContent=t(key);
+      else if(span && span.tagName!=='SPAN') span.textContent=t(key);
+    }
+  });
+  // Update section labels
+  const syncBadge=document.getElementById('syncBadge');
+  if(syncBadge){
+    const map={online:t('synced'),syncing:t('syncing'),offline:t('offline')};
+    if(map[syncStatus]) syncBadge.textContent=(syncStatus==='online'?'🟢 ':syncStatus==='syncing'?'🔄 ':'🔴 ')+map[syncStatus];
+  }
+}
 let appData = null;
 let currentUser = null;
 let currentTab = 'dashboard';
@@ -245,7 +448,11 @@ let syncStatus = 'syncing';
 const MONTHS = ["2025-01","2025-02","2025-03","2025-04","2025-05","2025-06","2025-07","2025-08","2025-09","2025-10","2025-11","2025-12","2026-01","2026-02","2026-03","2026-04","2026-05","2026-06","2026-07","2026-08","2026-09","2026-10","2026-11","2026-12","2027-01","2027-02","2027-03","2027-04","2027-05","2027-06"];
 const MN = ["","يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
 const ml = m => { const [y,mo]=m.split('-'); return `${MN[+mo]} ${y}`; };
-const fc = n => new Intl.NumberFormat('ar-SA',{style:'currency',currency:'SAR',minimumFractionDigits:0}).format(n||0);
+const fc = n => new Intl.NumberFormat('ar-SA',{style:'currency',currency:'SAR',minimumFractionDigits:2}).format(n||0);
+const VAT_RATE = 0.15; // ضريبة القيمة المضافة 15%
+const vatAmount = p => p * VAT_RATE;
+const priceWithVat = p => p * (1 + VAT_RATE);
+const fcVat = n => fc(vatAmount(n));
 
 // ==========================================
 //  API CALLS
@@ -281,9 +488,14 @@ function setSyncBadge(status) {
   syncStatus = status;
   const b = document.getElementById('syncBadge');
   if (!b) return;
-  const map = { online:['🟢 متزامن',''], syncing:['🔄 جاري الحفظ','syncing'], offline:['🔴 غير متصل','offline'] };
-  b.textContent = map[status][0];
-  b.className = 'sync-badge' + (map[status][1] ? ' '+map[status][1] : '');
+  const labels = {
+    online: ['🟢 ', t('synced'), ''],
+    syncing: ['🔄 ', t('syncing'), 'syncing'],
+    offline: ['🔴 ', t('offline'), 'offline']
+  };
+  const l = labels[status] || labels.syncing;
+  b.textContent = l[0] + l[1];
+  b.className = 'sync-badge' + (l[2] ? ' '+l[2] : '');
 }
 
 // ==========================================
@@ -344,6 +556,9 @@ function renderMain() {
   const renders={
     dashboard:()=>renderDashboard(s),
     pos:()=>renderPOS(),
+    products:()=>renderProducts(),
+    purchases:()=>renderPurchases(),
+    delivery:()=>renderDelivery(),
     sales:()=>renderSales(),
     revenue:()=>renderRevenue(s),
     materials:()=>renderMaterials(s),
@@ -804,96 +1019,122 @@ function renderBarcode(){
   </div>`;
 }
 
-// ---- POS (نقطة البيع) ----
+// ---- POS (نقطة البيع) - Foodics Style ----
+let posSelectedCat = 'الكل';
+
 function renderPOS(){
+  const prods = appData.products||[];
+  const cats = ['الكل',...[...new Set(prods.map(p=>p.category))]];
+  const filtered = posSelectedCat==='الكل' ? prods : prods.filter(p=>p.category===posSelectedCat);
+  const today = new Date().toISOString().split('T')[0];
+  const todaySales = (appData.dailySales||[]).filter(s=>s.date===today);
+  const todayTotal = todaySales.reduce((a,s)=>a+s.amount,0);
   return`
-  <div class="sec-header">
-    <div class="sec-title">🔫 نقطة البيع</div>
-    <div style="display:flex;gap:8px">
-      <button class="btn btn-red btn-sm" onclick="clearCart()">مسح السلة</button>
-      <button class="btn btn-green" onclick="completeSale()">إتمام البيع ✓</button>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+    <div class="sec-title">🖥️ '+t('pos_title')+'</div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <div style="background:#1a2a1a;border:1px solid #27ae6040;border-radius:8px;padding:4px 12px;color:#27ae60;font-size:12px">${t('today_sales')}: ${fc(todayTotal)}</div>
+      <button class="btn btn-red btn-sm" onclick="clearCart()">${t('clear_cart')}</button>
     </div>
   </div>
 
-  <!-- SCANNER INPUT -->
-  <div style="background:var(--bg2);border-radius:14px;padding:16px;border:2px solid var(--gold);margin-bottom:16px">
-    <div style="color:var(--gold);font-weight:700;margin-bottom:10px;font-size:13px">امسح الباركود أو أدخله يدوياً</div>
-    <div style="display:flex;gap:8px">
-      <input class="form-input" id="scanInput" placeholder="وجّه القارئ هنا أو اكتب رقم الباركود..." 
-        style="flex:1;font-size:16px;padding:12px 16px;border-color:var(--gold)"
-        onkeydown="if(event.key==='Enter')scanBarcode()"
-        autofocus>
-      <button class="btn btn-gold" onclick="scanBarcode()" style="padding:12px 20px;font-size:18px">🔍</button>
+  <div class="pos-layout">
+    <!-- RIGHT: Products Grid -->
+    <div class="pos-left">
+      <!-- Scanner -->
+      <div style="display:flex;gap:8px">
+        <input class="form-input" id="scanInput" placeholder="${t('scan_placeholder')}"
+          style="flex:1;font-size:14px" onkeydown="if(event.key==='Enter')scanBarcode()" autofocus
+          oninput="filterPOSProducts(this.value)">
+        <button class="btn btn-gold" onclick="scanBarcode()" style="padding:10px 16px">${t('search')}</button>
+      </div>
+      <!-- Categories -->
+      <div class="pos-cats">
+        ${cats.map(c=>`<button class="pos-cat-btn ${c===posSelectedCat?'active':''}" onclick="setPOSCat('${c}')">${c}</button>`).join('')}
+      </div>
+      <!-- Product Tiles -->
+      <div class="pos-products" id="posProductGrid">
+        ${filtered.length===0?`<div style="grid-column:1/-1;text-align:center;color:#444;padding:40px">لا توجد منتجات — أضف منتجات من قسم المنتجات</div>`:
+        filtered.map(p=>`
+          <div class="pos-tile" onclick="addToCartById(${p.id})">
+            <div class="pos-tile-name">${p.name}</div>
+            <div class="pos-tile-cat">${p.category}</div>
+            <div class="pos-tile-price">${fc(p.price)}</div>
+            <div style="font-size:10px;color:#555;margin-top:2px">شامل ض.ق.م</div>
+          </div>`).join('')}
+      </div>
     </div>
-    <div id="scanMsg" style="margin-top:8px;font-size:13px;min-height:20px"></div>
-  </div>
 
-  <!-- CART -->
-  <div style="display:grid;grid-template-columns:1fr 340px;gap:16px">
-    <!-- Items -->
-    <div style="background:var(--bg2);border-radius:14px;border:1px solid var(--border);overflow:hidden">
-      <div style="padding:14px 18px;border-bottom:1px solid var(--border);color:var(--gold);font-weight:700">
-        سلة المشتريات <span id="cartCount" style="color:#666;font-weight:400;font-size:12px">(0 منتج)</span>
-      </div>
-      <div id="cartItems" style="min-height:200px">
-        <div style="text-align:center;color:#444;padding:60px;font-size:14px">
-          السلة فارغة — امسح باركود لإضافة منتج
-        </div>
-      </div>
-    </div>
-
-    <!-- Summary -->
-    <div>
-      <div style="background:var(--bg2);border-radius:14px;padding:18px;border:1px solid var(--border);margin-bottom:12px">
-        <div style="color:var(--gold);font-weight:700;margin-bottom:14px">ملخص الفاتورة</div>
-        <div class="pnl-row"><span style="color:#aaa">عدد الأصناف</span><span id="posItemCount">0</span></div>
-        <div class="pnl-row"><span style="color:#aaa">إجمالي الكميات</span><span id="posQtyTotal">0</span></div>
-        <div style="border-top:2px solid #333;margin:12px 0;padding-top:12px">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <span style="font-size:15px;font-weight:700">الإجمالي</span>
-            <span id="posTotal" style="font-size:26px;font-weight:700;color:var(--green)">0 ر.س</span>
-          </div>
-        </div>
+    <!-- LEFT: Cart -->
+    <div class="pos-right">
+      <!-- Cart Items -->
+      <div class="cart-list" id="cartItems">
+        <div style="text-align:center;color:#444;padding:40px;font-size:13px">${t('cart_empty')}<br><span style='font-size:11px;color:#333'>${t('cart_empty_sub')}</span></div>
       </div>
 
-      <!-- Payment Method -->
-      <div style="background:var(--bg2);border-radius:14px;padding:16px;border:1px solid var(--border);margin-bottom:12px">
-        <div style="color:var(--gold);font-weight:700;margin-bottom:10px;font-size:13px">طريقة الدفع</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-          <button id="payBtn-cash" class="btn btn-green" onclick="setPayment('cash')" style="padding:10px">نقدي</button>
-          <button id="payBtn-mada" class="btn btn-dark" onclick="setPayment('mada')" style="padding:10px;border:1px solid #333">مدى/بطاقة</button>
+      <!-- VAT Summary -->
+      <div class="cart-total-box">
+        <div class="pnl-row"><span style="color:#aaa;font-size:13px">${t('subtotal')}</span><span id="posSubtotal" style="font-size:13px">0.00</span></div>
+        <div class="pnl-row"><span style="color:#aaa;font-size:13px">${t('vat')}</span><span id="posVat" style="color:var(--orange);font-size:13px">0.00</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:2px solid #333;margin-top:4px">
+          <span style="font-weight:700;font-size:15px">${t('total_with_vat')}</span>
+          <span id="posTotal" style="font-size:24px;font-weight:900;color:var(--green)">0.00</span>
         </div>
       </div>
 
-      <button class="btn btn-green" onclick="completeSale()" 
-        style="width:100%;padding:16px;font-size:16px;font-weight:700;border-radius:12px">
-        ✓ إتمام البيع
-      </button>
-      <button class="btn btn-blue" onclick="printReceipt()" 
-        style="width:100%;padding:10px;font-size:13px;margin-top:8px;border-radius:12px">
-        🖨️ طباعة الفاتورة
-      </button>
-    </div>
-  </div>
+      <!-- Payment -->
+      <div style="background:#111;border-radius:12px;padding:12px;border:1px solid #222">
+        <div style="color:#aaa;font-size:12px;margin-bottom:8px;font-weight:600">${t('payment')}</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+          <button id="payBtn-cash" class="btn btn-green" onclick="setPayment('cash')" style="padding:14px;border-radius:12px;font-size:15px">${t('cash')}</button>
+          <button id="payBtn-mada" class="btn btn-dark" onclick="setPayment('mada')" style="padding:14px;border-radius:12px;font-size:15px;border:1px solid #333">${t('mada')}</button>
+        </div>
+        <button class="btn btn-green" onclick="completeSale()" style="width:100%;padding:18px;font-size:18px;font-weight:700;border-radius:14px;margin-bottom:8px;letter-spacing:1px">${t('complete_sale')}</button>
+        <button class="btn btn-dark" onclick="printReceipt()" style="width:100%;padding:11px;font-size:13px;border-radius:10px">${t('print_receipt')}</button>
+      </div>
 
-  <!-- LAST SALES TODAY -->
-  <div style="margin-top:16px;background:var(--bg2);border-radius:14px;border:1px solid var(--border)">
-    <div style="padding:14px 18px;border-bottom:1px solid var(--border);color:var(--gold);font-weight:700;font-size:13px">
-      آخر المبيعات اليوم
-    </div>
-    <div id="todaySalesList" style="padding:12px">
-      ${(()=>{
-        const today=new Date().toISOString().split('T')[0];
-        const todaySales=(appData.dailySales||[]).filter(s=>s.date===today).slice(-5).reverse();
-        if(!todaySales.length) return '<div style="color:#444;text-align:center;padding:20px;font-size:13px">لا توجد مبيعات اليوم</div>';
-        return todaySales.map(s=>`
-          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #1a1a1a;font-size:13px">
-            <span style="color:#aaa">${s.note||s.category||'مبيعات'} ${s.payMethod==='mada'?'💳':'💵'}</span>
-            <span style="color:var(--green);font-weight:600">${fc(s.amount)}</span>
-          </div>`).join('');
-      })()}
+      <!-- Today's last sales -->
+      <div style="background:#111;border-radius:12px;border:1px solid #222;overflow:hidden">
+        <div style="padding:10px 14px;border-bottom:1px solid #1a1a1a;color:#666;font-size:12px;font-weight:600">${t('last_sales')}</div>
+        <div style="max-height:120px;overflow-y:auto">
+          ${todaySales.slice(-5).reverse().map(s=>`
+            <div style="display:flex;justify-content:space-between;padding:7px 14px;border-bottom:1px solid #1a1a1a;font-size:12px">
+              <span style="color:#888">${s.note||s.category||'مبيعات'} ${s.payMethod==='mada'?'💳':'💵'}</span>
+              <span style="color:var(--green);font-weight:600">${fc(s.amount)}</span>
+            </div>`).join('')||'<div style="color:#444;text-align:center;padding:14px;font-size:12px">لا توجد مبيعات بعد</div>'}
+        </div>
+      </div>
     </div>
   </div>`;
+}
+
+function setPOSCat(cat){
+  posSelectedCat=cat;
+  renderMain();
+  setTimeout(()=>{const inp=document.getElementById('scanInput');if(inp)inp.focus();},80);
+}
+
+function filterPOSProducts(q){
+  const grid=document.getElementById('posProductGrid');
+  if(!grid)return;
+  const prods=(appData.products||[]).filter(p=>posSelectedCat==='الكل'||p.category===posSelectedCat);
+  const filtered=q?prods.filter(p=>p.name.includes(q)||p.barcode?.includes(q)):prods;
+  if(!filtered.length){grid.innerHTML='<div style="grid-column:1/-1;text-align:center;color:#444;padding:30px;font-size:13px">لا توجد نتائج</div>';return;}
+  grid.innerHTML=filtered.map(p=>`
+    <div class="pos-tile" onclick="addToCartById(${p.id})">
+      <div class="pos-tile-name">${p.name}</div>
+      <div class="pos-tile-cat">${p.category}</div>
+      <div class="pos-tile-price">${fc(p.price)}</div>
+      <div style="font-size:10px;color:#555;margin-top:2px">شامل ض.ق.م</div>
+    </div>`).join('');
+}
+
+function addToCartById(id){
+  const product=(appData.products||[]).find(p=>p.id===id);
+  if(!product)return;
+  const existing=cart.find(c=>c.id===product.id);
+  if(existing){existing.qty++;}else{cart.push({...product,qty:1});}
+  updateCart();
 }
 
 // POS State
@@ -901,170 +1142,272 @@ let cart = [];
 let paymentMethod = 'cash';
 
 function setPayment(method){
-  paymentMethod = method;
-  document.getElementById('payBtn-cash').className = method==='cash'?'btn btn-green':'btn btn-dark';
-  document.getElementById('payBtn-mada').className = method==='mada'?'btn btn-blue':'btn btn-dark';
-  if(method==='mada'){
-    document.getElementById('payBtn-mada').style.border='1px solid #3498db';
-    document.getElementById('payBtn-cash').style.border='none';
-  } else {
-    document.getElementById('payBtn-cash').style.border='none';
-    document.getElementById('payBtn-mada').style.border='1px solid #333';
-  }
+  paymentMethod=method;
+  const cashBtn=document.getElementById('payBtn-cash');
+  const madaBtn=document.getElementById('payBtn-mada');
+  if(cashBtn){cashBtn.className=method==='cash'?'btn btn-green':'btn btn-dark';cashBtn.style.border=method==='cash'?'none':'1px solid #333';}
+  if(madaBtn){madaBtn.className=method==='mada'?'btn btn-blue':'btn btn-dark';madaBtn.style.border=method==='mada'?'none':'1px solid #333';}
 }
 
 function scanBarcode(){
-  const input = document.getElementById('scanInput');
-  const bc = (input.value||'').trim();
-  if(!bc){ showScanMsg('أدخل رقم الباركود','#e74c3c'); return; }
-  const product = (appData.products||[]).find(p=>p.barcode===bc);
-  if(!product){
-    showScanMsg('❌ لم يُعثر على منتج بهذا الباركود: '+bc,'#e74c3c');
-    input.value=''; input.focus(); return;
-  }
-  // Add to cart
-  const existing = cart.find(c=>c.id===product.id);
-  if(existing){ existing.qty++; }
-  else { cart.push({...product, qty:1}); }
-  input.value='';
-  input.focus();
-  showScanMsg('✅ تمت إضافة: '+product.name,'#27ae60');
-  updateCart();
+  const input=document.getElementById('scanInput');
+  const bc=(input.value||'').trim();
+  if(!bc){showScanMsg('أدخل رقم الباركود','#e74c3c');return;}
+  const product=(appData.products||[]).find(p=>p.barcode===bc);
+  if(!product){showScanMsg('لم يُعثر على منتج: '+bc,'#e74c3c');input.value='';input.focus();return;}
+  addToCartById(product.id);
+  input.value='';input.focus();
+  showScanMsg('تمت إضافة: '+product.name,'#27ae60');
 }
 
-function showScanMsg(msg, color){
-  const el = document.getElementById('scanMsg');
-  if(!el) return;
-  el.textContent = msg;
-  el.style.color = color;
-  setTimeout(()=>{ if(el) el.textContent=''; }, 2500);
+function showScanMsg(msg,color){
+  notify(msg, color==='#e74c3c'?'error':'success');
 }
 
 function updateCart(){
-  const itemsEl = document.getElementById('cartItems');
-  const totalEl = document.getElementById('posTotal');
-  const countEl = document.getElementById('cartCount');
-  const itemCountEl = document.getElementById('posItemCount');
-  const qtyEl = document.getElementById('posQtyTotal');
-  if(!itemsEl) return;
-  const total = cart.reduce((a,c)=>a+c.price*c.qty, 0);
-  const totalQty = cart.reduce((a,c)=>a+c.qty, 0);
-  if(countEl) countEl.textContent = `(${cart.length} منتج)`;
-  if(itemCountEl) itemCountEl.textContent = cart.length;
-  if(qtyEl) qtyEl.textContent = totalQty;
-  if(totalEl) totalEl.textContent = fc(total);
+  const itemsEl=document.getElementById('cartItems');
+  const subtotalEl=document.getElementById('posSubtotal');
+  const vatEl=document.getElementById('posVat');
+  const totalEl=document.getElementById('posTotal');
+  if(!itemsEl)return;
+  const subtotal=cart.reduce((a,c)=>a+(c.price/1.15)*c.qty,0); // price already includes VAT
+  const vat=cart.reduce((a,c)=>a+(c.price/1.15*0.15)*c.qty,0);
+  const total=cart.reduce((a,c)=>a+c.price*c.qty,0);
+  if(subtotalEl)subtotalEl.textContent=fc(subtotal);
+  if(vatEl)vatEl.textContent=fc(vat);
+  if(totalEl)totalEl.textContent=fc(total);
   if(!cart.length){
-    itemsEl.innerHTML='<div style="text-align:center;color:#444;padding:60px;font-size:14px">السلة فارغة — امسح باركود لإضافة منتج</div>';
+    itemsEl.innerHTML='<div style="text-align:center;color:#444;padding:40px;font-size:13px">السلة فارغة<br><span style="font-size:11px;color:#333">اضغط على المنتج أو امسح الباركود</span></div>';
     return;
   }
-  itemsEl.innerHTML = cart.map((c,i)=>`
-    <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid #1a1a1a">
+  itemsEl.innerHTML=cart.map((c,i)=>`
+    <div class="cart-item">
       <div style="flex:1">
-        <div style="font-weight:600;font-size:14px">${c.name}</div>
-        <div style="color:#888;font-size:11px">${c.category} • ${fc(c.price)} للوحدة</div>
+        <div class="cart-item-name">${c.name}</div>
+        <div class="cart-item-sub">${fc(c.price)} × ${c.qty}</div>
       </div>
-      <div style="display:flex;align-items:center;gap:8px">
-        <button onclick="changeQty(${i},-1)" style="background:#2a2a2a;border:none;color:#fff;width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:16px">−</button>
-        <span style="font-weight:700;font-size:15px;min-width:24px;text-align:center">${c.qty}</span>
-        <button onclick="changeQty(${i},1)" style="background:#2a2a2a;border:none;color:#fff;width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:16px">+</button>
+      <div style="display:flex;align-items:center;gap:6px">
+        <button class="qty-btn" onclick="changeQty(${i},-1)">−</button>
+        <span style="font-weight:700;font-size:14px;min-width:20px;text-align:center">${c.qty}</span>
+        <button class="qty-btn" onclick="changeQty(${i},1)">+</button>
       </div>
-      <div style="color:var(--green);font-weight:700;min-width:70px;text-align:left">${fc(c.price*c.qty)}</div>
-      <button onclick="removeItem(${i})" style="background:none;border:none;color:#e74c3c;cursor:pointer;font-size:18px">×</button>
+      <div style="color:var(--green);font-weight:700;min-width:65px;text-align:left;font-size:13px">${fc(c.price*c.qty)}</div>
+      <button onclick="removeItem(${i})" style="background:none;border:none;color:#e74c3c;cursor:pointer;font-size:16px;padding:0 4px">×</button>
     </div>`).join('');
 }
 
-function changeQty(i, delta){
-  cart[i].qty += delta;
-  if(cart[i].qty <= 0) cart.splice(i,1);
-  updateCart();
-}
-
-function removeItem(i){
-  cart.splice(i,1);
-  updateCart();
-}
-
-function clearCart(){
-  cart=[];
-  updateCart();
-  const inp=document.getElementById('scanInput');
-  if(inp){ inp.value=''; inp.focus(); }
-}
+function changeQty(i,delta){cart[i].qty+=delta;if(cart[i].qty<=0)cart.splice(i,1);updateCart();}
+function removeItem(i){cart.splice(i,1);updateCart();}
+function clearCart(){cart=[];updateCart();const inp=document.getElementById('scanInput');if(inp){inp.value='';inp.focus();}}
 
 async function completeSale(){
-  if(!cart.length){ notify('السلة فارغة!','error'); return; }
-  const total = cart.reduce((a,c)=>a+c.price*c.qty, 0);
-  const today = new Date().toISOString().split('T')[0];
-  const saleNote = cart.map(c=>`${c.name}×${c.qty}`).join('، ');
-  if(!appData.dailySales) appData.dailySales=[];
+  if(!cart.length){notify('السلة فارغة!','error');return;}
+  const total=cart.reduce((a,c)=>a+c.price*c.qty,0);
+  const subtotal=cart.reduce((a,c)=>a+(c.price/1.15)*c.qty,0);
+  const vat=total-subtotal;
+  const today=new Date().toISOString().split('T')[0];
+  const saleNote=cart.map(c=>`${c.name}×${c.qty}`).join('، ');
+  if(!appData.dailySales)appData.dailySales=[];
   appData.dailySales.push({
-    id: Date.now(),
-    date: today,
-    category: 'نقطة البيع',
-    amount: total,
-    note: saleNote,
-    payMethod: paymentMethod,
-    items: cart.map(c=>({id:c.id,name:c.name,qty:c.qty,price:c.price}))
+    id:Date.now(),date:today,category:'نقطة البيع',
+    amount:total,subtotal,vat,
+    note:saleNote,payMethod:paymentMethod,
+    items:cart.map(c=>({id:c.id,name:c.name,qty:c.qty,price:c.price}))
   });
   await saveData();
-  notify(`✅ تم البيع! الإجمالي: ${fc(total)}`);
-  const prevCart = [...cart];
-  cart=[];
-  updateCart();
-  // refresh today list
-  renderMain();
-  // re-focus scan input after render
-  setTimeout(()=>{
-    const inp=document.getElementById('scanInput');
-    if(inp) inp.focus();
-  }, 100);
+  notify(`تم البيع! ${fc(total)} (ض.ق.م: ${fc(vat)})`);
+  cart=[];renderMain();
+  setTimeout(()=>{const inp=document.getElementById('scanInput');if(inp)inp.focus();},100);
 }
 
 function printReceipt(){
-  if(!cart.length){ notify('السلة فارغة!','error'); return; }
-  const total = cart.reduce((a,c)=>a+c.price*c.qty, 0);
-  const now = new Date().toLocaleString('ar-SA');
-  const rows = cart.map(c=>`
-    <tr>
-      <td>${c.name}</td>
-      <td style="text-align:center">${c.qty}</td>
-      <td style="text-align:left">${fc(c.price)}</td>
-      <td style="text-align:left;font-weight:700">${fc(c.price*c.qty)}</td>
-    </tr>`).join('');
-  const w = window.open('','_blank');
+  if(!cart.length){notify('السلة فارغة!','error');return;}
+  const total=cart.reduce((a,c)=>a+c.price*c.qty,0);
+  const subtotal=cart.reduce((a,c)=>a+(c.price/1.15)*c.qty,0);
+  const vat=total-subtotal;
+  const now=new Date().toLocaleString('ar-SA');
+  const receiptNum='INV-'+Date.now().toString().slice(-6);
+  const rows=cart.map(c=>`<tr><td>${c.name}</td><td style="text-align:center">${c.qty}</td><td style="text-align:left">${fc(c.price/1.15)}</td><td style="text-align:left;font-weight:700">${fc(c.price*c.qty/1.15)}</td></tr>`).join('');
+  const w=window.open('','_blank');
   w.document.write(`<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-  <style>
-    body{margin:0;font-family:Cairo,sans-serif;background:#fff;padding:20px}
-    .receipt{max-width:320px;margin:0 auto;border:1px solid #ddd;border-radius:8px;padding:20px}
-    .header{text-align:center;border-bottom:2px dashed #ddd;padding-bottom:14px;margin-bottom:14px}
-    .brand{font-size:22px;font-weight:900;color:#1a1a1a}
-    .date{font-size:11px;color:#999;margin-top:4px}
-    table{width:100%;border-collapse:collapse;font-size:13px}
-    th{background:#f5f5f5;padding:6px 8px;text-align:right;font-size:11px;color:#888}
-    td{padding:7px 8px;border-bottom:1px solid #f0f0f0}
-    .total-row{border-top:2px solid #333;font-weight:900;font-size:16px}
-    .footer{text-align:center;margin-top:14px;font-size:11px;color:#999;border-top:1px dashed #ddd;padding-top:10px}
-    .pay{text-align:center;margin-top:10px;background:#f0f9f0;border-radius:6px;padding:8px;font-weight:700;color:#27ae60}
-    @media print{body{padding:0}}
-  </style></head><body>
+  <style>body{margin:0;font-family:Cairo,sans-serif;background:#fff;padding:20px}
+  .receipt{max-width:320px;margin:0 auto;border:1px solid #ddd;border-radius:8px;padding:20px}
+  .header{text-align:center;border-bottom:2px dashed #ddd;padding-bottom:14px;margin-bottom:14px}
+  .brand{font-size:22px;font-weight:900}.inv{font-size:11px;color:#999;margin-top:4px}
+  table{width:100%;border-collapse:collapse;font-size:12px}
+  th{background:#f5f5f5;padding:5px 6px;text-align:right;color:#888;font-size:10px}
+  td{padding:6px;border-bottom:1px solid #f0f0f0}
+  .vat-box{background:#fffbf0;border:1px solid #f0d060;border-radius:6px;padding:10px;margin:10px 0;font-size:12px}
+  .total-row{font-size:16px;font-weight:900}
+  .footer{text-align:center;margin-top:12px;font-size:10px;color:#999;border-top:1px dashed #ddd;padding-top:10px}
+  @media print{body{padding:0}}</style></head><body>
   <div class="receipt">
-    <div class="header">
-      <div class="brand">CRMB Bakery</div>
-      <div class="date">${now}</div>
+    <div class="header"><div class="brand">CRMB Bakery</div><div class="inv">${receiptNum} | ${now}</div></div>
+    <table><thead><tr><th>المنتج</th><th>الكمية</th><th>سعر الوحدة</th><th>الإجمالي</th></tr></thead>
+    <tbody>${rows}</tbody></table>
+    <div class="vat-box">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span>المجموع قبل الضريبة</span><span>${fc(subtotal)}</span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px;color:#c0392b"><span>ضريبة القيمة المضافة 15%</span><span>${fc(vat)}</span></div>
+      <div style="display:flex;justify-content:space-between;font-weight:900;font-size:15px;border-top:1px solid #ddd;padding-top:6px;margin-top:4px"><span>الإجمالي مع الضريبة</span><span>${fc(total)}</span></div>
     </div>
-    <table>
-      <thead><tr><th>المنتج</th><th>الكمية</th><th>السعر</th><th>الإجمالي</th></tr></thead>
-      <tbody>${rows}</tbody>
-      <tfoot><tr class="total-row"><td colspan="3">الإجمالي</td><td>${fc(total)}</td></tr></tfoot>
-    </table>
-    <div class="pay">${paymentMethod==='mada'?'💳 دفع بالبطاقة':'💵 دفع نقدي'}</div>
-    <div class="footer">شكراً لزيارتكم<br>السعر شامل الضريبة</div>
+    <div style="text-align:center;background:${paymentMethod==='mada'?'#e8f4ff':'#e8ffe8'};border-radius:6px;padding:8px;font-weight:700;color:${paymentMethod==='mada'?'#2980b9':'#27ae60'}">${paymentMethod==='mada'?'💳 دفع بمدى/البطاقة':'💵 دفع نقدي'}</div>
+    <div class="footer">الرقم الضريبي: [أضف رقمك الضريبي]<br>شكراً لزيارتكم</div>
   </div>
-  <script>window.onload=()=>{window.print()}<\/script>
-  </body></html>`);
+  <script>window.onload=()=>{window.print()}<\/script></body></html>`);
   w.document.close();
 }
+
+// ---- PRODUCTS (Management) ----
+function renderProducts(){
+  const prods=appData.products||[];
+  const cats=[...new Set(prods.map(p=>p.category))];
+  return`<div class="sec-header">
+    <div class="sec-title">📦 إدارة المنتجات</div>
+    <button class="btn btn-gold" onclick="openModal('product')">+ منتج جديد</button>
+  </div>
+  <div class="kpi-grid">
+    ${kpi('إجمالي المنتجات',prods.length+' منتج','📦','var(--blue)','')}
+    ${kpi('الفئات',cats.length+' فئة','🏷️','var(--purple)','')}
+    ${kpi('متوسط السعر',fc(prods.length?prods.reduce((a,p)=>a+p.price,0)/prods.length:0),'💰','var(--green)','')}
+    ${kpi('متوسط هامش الربح',prods.length?(prods.reduce((a,p)=>a+(p.price>0?(p.price-p.cost)/p.price*100:0),0)/prods.length).toFixed(1)+'%':'0%','📊','var(--gold)','')}
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>المنتج</th><th>الفئة</th><th>الوحدة</th><th>السعر شامل ض.ق.م</th><th>السعر قبل الضريبة</th><th>الضريبة 15%</th><th>التكلفة</th><th>الربح</th><th>الباركود</th><th>إجراءات</th></tr></thead>
+    <tbody>
+      ${prods.map(p=>{
+        const beforeVat=p.price/1.15;
+        const vatAmt=p.price-beforeVat;
+        const profit=p.price-p.cost;
+        const margin=p.price>0?((profit/p.price)*100).toFixed(0):0;
+        return`<tr>
+          <td style="font-weight:700">${p.name}</td>
+          <td><span style="background:#2a2a2a;border-radius:6px;padding:2px 8px;font-size:11px">${p.category}</span></td>
+          <td>${p.unit}</td>
+          <td style="color:var(--green);font-weight:700">${fc(p.price)}</td>
+          <td style="color:#aaa">${fc(beforeVat)}</td>
+          <td style="color:var(--orange)">${fc(vatAmt)}</td>
+          <td style="color:var(--red)">${fc(p.cost)}</td>
+          <td style="color:var(--gold)">${fc(profit)} <span style="font-size:10px;color:#666">(${margin}%)</span></td>
+          <td style="font-family:monospace;font-size:11px;color:#888">${p.barcode||'—'}</td>
+          <td><div style="display:flex;gap:5px">
+            <button class="btn btn-blue btn-sm" onclick="openModal('product',${p.id})">تعديل</button>
+            <button class="btn btn-red btn-sm" onclick="del('product',${p.id})">حذف</button>
+          </div></td>
+        </tr>`;}).join('')}
+      ${!prods.length?'<tr><td colspan="10" style="text-align:center;color:#555;padding:28px">لا توجد منتجات</td></tr>':''}
+    </tbody>
+  </table></div>`;
+}
+
+// ---- PURCHASES ----
+function renderPurchases(){
+  const purchases=appData.purchases||[];
+  const cm=appData.currentMonth;
+  const monthPurchases=purchases.filter(p=>p.date?.startsWith(cm));
+  const totalMonth=monthPurchases.reduce((a,p)=>a+p.total,0);
+  const totalVat=monthPurchases.reduce((a,p)=>a+(p.vat||0),0);
+  const suppliers=[...new Set(purchases.map(p=>p.supplier).filter(Boolean))];
+  return`<div class="sec-header">
+    <div class="sec-title">🛍️ المشتريات</div>
+    <button class="btn btn-blue" onclick="openModal('purchase')">+ فاتورة مشتريات</button>
+  </div>
+  <div class="kpi-grid">
+    ${kpi('مشتريات الشهر',fc(totalMonth),'🛍️','var(--blue)',ml(cm))}
+    ${kpi('ضريبة المدخلات',fc(totalVat),'🧾','var(--orange)','قابلة للاسترداد')}
+    ${kpi('عدد الفواتير',monthPurchases.length+' فاتورة','📄','var(--purple)',ml(cm))}
+    ${kpi('الموردون',suppliers.length+' مورد','🏭','var(--green)','')}
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>التاريخ</th><th>المورد</th><th>الفئة</th><th>المبلغ قبل الضريبة</th><th>ضريبة ق.م 15%</th><th>الإجمالي</th><th>طريقة الدفع</th><th>ملاحظة</th><th>إجراءات</th></tr></thead>
+    <tbody>
+      ${purchases.slice().reverse().map(p=>`<tr>
+        <td style="font-family:monospace;color:#888">${p.date}</td>
+        <td style="font-weight:600">${p.supplier||'—'}</td>
+        <td><span style="background:#2a2a2a;border-radius:6px;padding:2px 8px;font-size:11px">${p.category||'—'}</span></td>
+        <td>${fc(p.amount)}</td>
+        <td style="color:var(--orange)">${fc(p.vat||0)}</td>
+        <td style="color:var(--blue);font-weight:700">${fc(p.total)}</td>
+        <td>${p.payMethod==='mada'?'💳 مدى':'💵 نقدي'}</td>
+        <td style="color:#666;font-size:12px">${p.note||'—'}</td>
+        <td><div style="display:flex;gap:5px">
+          <button class="btn btn-red btn-sm" onclick="del('purchase',${p.id})">حذف</button>
+        </div></td>
+      </tr>`).join('')}
+      ${!purchases.length?'<tr><td colspan="9" style="text-align:center;color:#555;padding:28px">لا توجد مشتريات — اضغط "+ فاتورة مشتريات"</td></tr>':''}
+    </tbody>
+  </table></div>`;
+}
+
+// ---- DELIVERY ----
+let deliveryPlatform = 'الكل';
+function renderDelivery(){
+  const orders=appData.deliveryOrders||[];
+  const platforms=['الكل','كيتا','جاهز','هنقرستيشن','أخرى'];
+  const filtered=deliveryPlatform==='الكل'?orders:orders.filter(o=>o.platform===deliveryPlatform);
+  const today=new Date().toISOString().split('T')[0];
+  const todayOrders=orders.filter(o=>o.date===today);
+  const todayTotal=todayOrders.reduce((a,o)=>a+o.total,0);
+  const platformColors={'كيتا':'#e74c3c','جاهز':'#e67e22','هنقرستيشن':'#c0392b','أخرى':'#888'};
+  const statusMap={new:'جديد',preparing:'قيد التحضير',ready:'جاهز',delivered:'تم التسليم'};
+  const statusClass={new:'status-new',preparing:'status-preparing',ready:'status-ready',delivered:'status-delivered'};
+  return`<div class="sec-header">
+    <div class="sec-title">🚴 طلبات التوصيل</div>
+    <button class="btn btn-gold" onclick="openModal('deliveryOrder')">+ طلب جديد</button>
+  </div>
+  <div class="kpi-grid">
+    ${kpi('طلبات اليوم',todayOrders.length+' طلب','🚴','var(--blue)',today)}
+    ${kpi('مبيعات التوصيل',fc(todayTotal),'💰','var(--green)','اليوم')}
+    ${kpi('قيد التحضير',orders.filter(o=>o.status==='preparing').length+' طلب','🔄','var(--orange)','')}
+    ${kpi('إجمالي الطلبات',orders.length+' طلب','📦','var(--purple)','')}
+  </div>
+  <!-- Platform Tabs -->
+  <div class="delivery-tabs">
+    ${platforms.map(p=>`<button class="del-tab ${p===deliveryPlatform?'active':''}" onclick="setDeliveryPlatform('${p}')">${p}</button>`).join('')}
+  </div>
+  <!-- Orders -->
+  <div>
+    ${filtered.length===0?`<div style="text-align:center;color:#444;padding:60px;font-size:14px">لا توجد طلبات<br><span style="font-size:12px;color:#333">اضغط "+ طلب جديد" لإضافة طلب توصيل</span></div>`:
+    filtered.slice().reverse().map(o=>`
+      <div class="order-card">
+        <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px">
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+              <span style="background:${platformColors[o.platform]||'#555'}22;color:${platformColors[o.platform]||'#888'};border:1px solid ${platformColors[o.platform]||'#555'}40;border-radius:8px;padding:2px 10px;font-size:12px;font-weight:700">${o.platform}</span>
+              <span class="order-status ${statusClass[o.status]||'status-new'}">${statusMap[o.status]||'جديد'}</span>
+            </div>
+            <div style="font-size:13px;color:#aaa">#${o.orderNum||o.id} • ${o.date} • ${o.customerName||'عميل'}</div>
+          </div>
+          <div style="text-align:left">
+            <div style="color:var(--green);font-weight:700;font-size:16px">${fc(o.total)}</div>
+            <div style="color:#666;font-size:10px">ض.ق.م: ${fc(o.vat||0)}</div>
+          </div>
+        </div>
+        ${o.items?`<div style="color:#888;font-size:12px;margin-bottom:8px">${o.items}</div>`:''}
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          ${o.status!=='delivered'?`<button class="btn btn-green btn-sm" onclick="updateOrderStatus(${o.id},'${o.status==='new'?'preparing':o.status==='preparing'?'ready':'delivered'}')">
+            ${o.status==='new'?'بدء التحضير':o.status==='preparing'?'جاهز للتسليم':'تم التسليم'}
+          </button>`:''}
+          <button class="btn btn-red btn-sm" onclick="del('deliveryOrder',${o.id})">حذف</button>
+        </div>
+      </div>`).join('')}
+  </div>`;
+}
+
+function setDeliveryPlatform(p){
+  deliveryPlatform=p;
+  renderMain();
+}
+
+function updateOrderStatus(id,newStatus){
+  if(!appData.deliveryOrders)return;
+  const idx=appData.deliveryOrders.findIndex(o=>o.id===id);
+  if(idx===-1)return;
+  appData.deliveryOrders[idx].status=newStatus;
+  scheduleSave();renderMain();
+  notify(newStatus==='delivered'?'تم تسليم الطلب':'تم تحديث الحالة');
+}
+
 
 // ---- SALES (Daily & Weekly) ----
 function renderSales(){
@@ -1249,7 +1592,7 @@ function renderProfile(){
 // ==========================================
 function openModal(type, id=null){
   let item=null;
-  const map={employee:appData.employees,expense:appData.expenses,material:appData.rawMaterials,revenue:appData.revenue,product:appData.products||[],sale:appData.dailySales||[],equipment:appData.equipment||[]};
+  const map={employee:appData.employees,expense:appData.expenses,material:appData.rawMaterials,revenue:appData.revenue,product:appData.products||[],sale:appData.dailySales||[],equipment:appData.equipment||[],purchase:appData.purchases||[],deliveryOrder:appData.deliveryOrders||[]};
   if(id&&map[type]) item=map[type].find(x=>x.id===id);
   if(type==='rent') item=appData.rent;
   document.getElementById('modal-container').innerHTML=`<div class="modal-overlay" onclick="if(event.target===this)closeModal()"><div class="modal-box" onclick="event.stopPropagation()">${buildForm(type,item,id)}</div></div>`;
@@ -1345,6 +1688,53 @@ function buildForm(type,item,id){
     <div class="form-field"><label class="form-label">تاريخ الشراء</label><input class="form-input" id="f-date" type="date" value="${item?.purchaseDate||''}"></div>
     <div class="form-field"><label class="form-label">ملاحظة</label><input class="form-input" id="f-note" value="${item?.note||''}" placeholder="رقم الموديل، المورد..."></div>
     <div style="display:flex;gap:10px"><button class="btn btn-blue" style="flex:1" onclick="saveEquip(${id||'null'})">حفظ</button><button class="btn btn-dark" style="flex:1" onclick="closeModal()">إلغاء</button></div>`;
+  if(type==='purchase') return`
+    <div class="modal-title">فاتورة مشتريات جديدة</div>
+    <div class="form-row">
+      <div class="form-field"><label class="form-label">التاريخ *</label><input class="form-input" id="f-date" type="date" value="${new Date().toISOString().split('T')[0]}"></div>
+      <div class="form-field"><label class="form-label">الفئة</label>
+        <select class="form-input" id="f-cat">${["مواد خام","معدات","خدمات","مستلزمات","أخرى"].map(c=>`<option>${c}</option>`).join('')}</select>
+      </div>
+    </div>
+    <div class="form-field"><label class="form-label">المورد</label><input class="form-input" id="f-supplier" placeholder="اسم المورد..."></div>
+    <div class="form-field"><label class="form-label">المبلغ قبل الضريبة *</label>
+      <input class="form-input" id="f-amount" type="number" step="0.01" placeholder="0.00" oninput="calcPurchaseVat()"></div>
+    <div class="form-row">
+      <div class="form-field"><label class="form-label">ضريبة ق.م 15%</label><input class="form-input" id="f-vat" type="number" step="0.01" readonly style="background:#111;color:var(--orange)"></div>
+      <div class="form-field"><label class="form-label">الإجمالي مع الضريبة</label><input class="form-input" id="f-total" type="number" step="0.01" readonly style="background:#111;color:var(--green);font-weight:700"></div>
+    </div>
+    <div class="form-field"><label class="form-label">طريقة الدفع</label>
+      <select class="form-input" id="f-pay">
+        <option value="cash">نقدي</option><option value="mada">مدى / بطاقة</option>
+        <option value="transfer">تحويل بنكي</option><option value="credit">آجل</option>
+      </select></div>
+    <div class="form-field"><label class="form-label">رقم الفاتورة / ملاحظة</label><input class="form-input" id="f-note" placeholder="رقم الفاتورة..."></div>
+    <div style="display:flex;gap:10px"><button class="btn btn-blue" style="flex:1" onclick="savePurchase()">حفظ</button><button class="btn btn-dark" style="flex:1" onclick="closeModal()">إلغاء</button></div>`;
+  if(type==='deliveryOrder') return`
+    <div class="modal-title">طلب توصيل جديد</div>
+    <div class="form-row">
+      <div class="form-field"><label class="form-label">المنصة *</label>
+        <select class="form-input" id="f-platform">${["كيتا","جاهز","هنقرستيشن","أخرى"].map(p=>`<option>${p}</option>`).join('')}</select>
+      </div>
+      <div class="form-field"><label class="form-label">التاريخ *</label><input class="form-input" id="f-date" type="date" value="${new Date().toISOString().split('T')[0]}"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-field"><label class="form-label">رقم الطلب</label><input class="form-input" id="f-ordernum" placeholder="#12345"></div>
+      <div class="form-field"><label class="form-label">اسم العميل</label><input class="form-input" id="f-customer" placeholder="اسم العميل..."></div>
+    </div>
+    <div class="form-field"><label class="form-label">الأصناف</label><input class="form-input" id="f-items" placeholder="خبز × 2، كرواسان × 3..."></div>
+    <div class="form-field"><label class="form-label">المبلغ قبل الضريبة *</label>
+      <input class="form-input" id="f-amount" type="number" step="0.01" placeholder="0.00" oninput="calcDeliveryVat()"></div>
+    <div class="form-row">
+      <div class="form-field"><label class="form-label">ضريبة ق.م 15%</label><input class="form-input" id="f-vat" type="number" step="0.01" readonly style="background:#111;color:var(--orange)"></div>
+      <div class="form-field"><label class="form-label">الإجمالي</label><input class="form-input" id="f-total" type="number" step="0.01" readonly style="background:#111;color:var(--green);font-weight:700"></div>
+    </div>
+    <div class="form-field"><label class="form-label">الحالة</label>
+      <select class="form-input" id="f-status">
+        <option value="new">جديد</option><option value="preparing">قيد التحضير</option>
+        <option value="ready">جاهز</option><option value="delivered">تم التسليم</option>
+      </select></div>
+    <div style="display:flex;gap:10px"><button class="btn btn-gold" style="flex:1" onclick="saveDeliveryOrder()">حفظ</button><button class="btn btn-dark" style="flex:1" onclick="closeModal()">إلغاء</button></div>`;
   if(type==='newuser') return`
     <div class="modal-title">إضافة مستخدم جديد</div>
     <div class="hint-box hint-gold">يمكن للموظف الدخول على البرنامج من أي مكان بهذا الحساب</div>
@@ -1374,7 +1764,39 @@ function saveSale(id){
   if(!appData.dailySales)appData.dailySales=[];
   const sale={id:id||Date.now(),date,category:gv('f-cat')||'متنوع',amount,note:gv('f-note')};
   if(id)appData.dailySales=appData.dailySales.map(s=>s.id===id?sale:s);else appData.dailySales.push(sale);
-  closeModal();scheduleSave();renderMain();notify(id?'تم التحديث':'تم تسجيل المبيعات ✅');
+  closeModal();scheduleSave();renderMain();notify(id?'تم التحديث':'تم تسجيل المبيعات');
+}
+function calcPurchaseVat(){
+  const a=parseFloat(document.getElementById('f-amount')?.value)||0;
+  const vat=a*0.15;
+  const vf=document.getElementById('f-vat');const tf=document.getElementById('f-total');
+  if(vf)vf.value=vat.toFixed(2);
+  if(tf)tf.value=(a+vat).toFixed(2);
+}
+function calcDeliveryVat(){
+  const a=parseFloat(document.getElementById('f-amount')?.value)||0;
+  const vat=a*0.15;
+  const vf=document.getElementById('f-vat');const tf=document.getElementById('f-total');
+  if(vf)vf.value=vat.toFixed(2);
+  if(tf)tf.value=(a+vat).toFixed(2);
+}
+function savePurchase(){
+  const amount=gn('f-amount'),date=gv('f-date');
+  if(!amount||!date){notify('يرجى ملء الحقول المطلوبة','error');return;}
+  if(!appData.purchases)appData.purchases=[];
+  const vat=amount*0.15;
+  const p={id:Date.now(),date,category:gv('f-cat')||'أخرى',supplier:gv('f-supplier'),amount,vat,total:amount+vat,payMethod:gv('f-pay')||'cash',note:gv('f-note')};
+  appData.purchases.push(p);
+  closeModal();scheduleSave();renderMain();notify('تم حفظ فاتورة المشتريات');
+}
+function saveDeliveryOrder(){
+  const amount=gn('f-amount'),date=gv('f-date');
+  if(!amount||!date){notify('يرجى ملء الحقول المطلوبة','error');return;}
+  if(!appData.deliveryOrders)appData.deliveryOrders=[];
+  const vat=amount*0.15;
+  const o={id:Date.now(),date,platform:gv('f-platform')||'أخرى',orderNum:gv('f-ordernum'),customerName:gv('f-customer'),items:gv('f-items'),amount,vat,total:amount+vat,status:gv('f-status')||'new'};
+  appData.deliveryOrders.push(o);
+  closeModal();scheduleSave();renderMain();notify('تم حفظ طلب التوصيل');
 }
 function saveEquip(id){
   const name=gv('f-name'),cost=gn('f-cost');
@@ -1426,7 +1848,7 @@ function saveProd(id){
   setTimeout(drawAllBarcodes,80);
 }
 function del(type,id){
-  const map={employee:'employees',expense:'expenses',material:'rawMaterials',revenue:'revenue',product:'products',sale:'dailySales',equipment:'equipment'};
+  const map={employee:'employees',expense:'expenses',material:'rawMaterials',revenue:'revenue',product:'products',sale:'dailySales',equipment:'equipment',purchase:'purchases',deliveryOrder:'deliveryOrders'};
   const key=map[type];if(!key)return;
   appData[key]=(appData[key]||[]).filter(x=>x.id!==id);
   scheduleSave();renderMain();notify('تم الحذف');
@@ -1513,6 +1935,11 @@ function notify(msg,type='success'){
 //  INIT
 // ==========================================
 async function init(){
+  // Apply saved language
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang==='ar' ? 'rtl' : 'ltr';
+  const langBtn=document.getElementById('langBtn');
+  if(langBtn) langBtn.textContent = lang==='ar' ? 'EN' : 'عر';
   // Load user
   currentUser = await apiFetch('/api/me');
   if(!currentUser){window.location.href='/login';return;}
