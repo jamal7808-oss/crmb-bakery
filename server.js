@@ -142,6 +142,8 @@ app.delete('/api/users/:id', requireAuth, async (req, res) => {
   res.json({ ok: true });
 });
 
+app.get('/api/ping', (req, res) => { res.json({ ok: true, time: new Date().toISOString() }); });
+
 app.get('*', requireAuth, (req, res) => { res.sendFile(path.join(__dirname, 'index.html')); });
 
 connectDB().then(() => {
@@ -153,3 +155,16 @@ connectDB().then(() => {
     console.log('====================================\n');
   });
 }).catch(err => { console.error('❌ خطأ:', err); process.exit(1); });
+
+// ===== KEEP ALIVE - يمنع Render من النوم =====
+// يضرب السيرفر كل 14 دقيقة حتى لا ينام
+const https = require('https');
+const KEEP_ALIVE_URL = process.env.RENDER_EXTERNAL_URL || '';
+if (KEEP_ALIVE_URL) {
+  setInterval(() => {
+    https.get(KEEP_ALIVE_URL + '/api/ping', (res) => {
+      console.log('Keep-alive ping:', res.statusCode);
+    }).on('error', () => {});
+  }, 14 * 60 * 1000); // كل 14 دقيقة
+  console.log('✅ Keep-alive مفعّل — السيرفر لن ينام');
+}

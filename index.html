@@ -446,15 +446,8 @@ const fcVat = n => fc(vatAmount(n));
 // ==========================================
 async function apiFetch(url, opts={}) {
   try {
-    const ctrl = new AbortController();
-    const tid = setTimeout(()=>ctrl.abort(), 8000);
-    const r = await fetch(url, {
-      headers:{'Content-Type':'application/json'},
-      signal: ctrl.signal,
-      ...opts
-    });
-    clearTimeout(tid);
-    if (r.status === 401) { window.location.href='/login'; return null; }
+    const r = await fetch(url, {headers:{'Content-Type':'application/json'},...opts});
+    if (r.status === 401) return {_401:true};
     return r.json();
   } catch(e) { return null; }
 }
@@ -1976,41 +1969,57 @@ function startAutoRefresh(){
 async function init(){
   applyLangUI();
 
-  // Show wakeup screen IMMEDIATELY before any API calls
-  showWakeupScreen();
+  // Show loading screen immediately
+  const main = document.getElementById('main');
+  if(main) main.innerHTML = `
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:70vh;gap:20px;text-align:center">
+      <div style="font-size:52px">⏳</div>
+      <div style="color:var(--gold);font-size:20px;font-weight:700">${lang==='ar'?'جاري التحميل...':'Loading...'}</div>
+      <div style="color:#555;font-size:13px">${lang==='ar'?'قد يستغرق حتى 60 ثانية في أول فتح':'May take up to 60 seconds on first open'}</div>
+      <div id="retryMsg" style="color:#444;font-size:12px;margin-top:8px">...</div>
+    </div>`;
 
-  // Retry everything until server wakes up
-  let attempts = 0;
-  const tryLoad = async () => {
-    attempts++;
-    const rc = document.getElementById('retryCount');
-    if(rc) rc.textContent = (lang==='ar'?'محاولة ':'Attempt ')+attempts+'...';
+  const setMsg = m => { const el=document.getElementById('retryMsg'); if(el) el.textContent=m; };
 
-    // Try login check
-    if(!currentUser){
-      currentUser = await apiFetch('/api/me');
-      if(!currentUser){
-        setTimeout(tryLoad, 4000);
-        return;
-      }
-      const ub = document.getElementById('userBadge');
-      if(ub) ub.textContent = '👤 '+currentUser.name;
+  let n = 0;
+  while(true) {
+    n++;
+    setMsg((lang==='ar'?'محاولة ':'Attempt ')+n+'...');
+
+    // Check if logged in
+    const me = await apiFetch('/api/me');
+
+    if(me === null) {
+      // Server sleeping - wait and retry
+      await new Promise(r=>setTimeout(r,4000));
+      continue;
     }
 
-    // Try load data
-    const ok = await loadData();
-    if(ok){
-      initMonthSelect();
-      renderMain();
-      startAutoRefresh();
-    } else {
-      setTimeout(tryLoad, 4000);
+    if(me && me._401) {
+      // Not logged in
+      window.location.href = '/login';
+      return;
     }
-  };
-  tryLoad();
+
+    // Logged in - load data
+    currentUser = me;
+    const ub=document.getElementById('userBadge');
+    if(ub) ub.textContent='👤 '+currentUser.name;
+
+    const data = await apiFetch('/api/data');
+    if(!data) {
+      await new Promise(r=>setTimeout(r,4000));
+      continue;
+    }
+
+    // Success!
+    appData = data;
+    setSyncBadge('online');
+    initMonthSelect();
+    renderMain();
+    startAutoRefresh();
+    return;
+  }
 }
 
 init();
-</script>
-</body>
-</html>
