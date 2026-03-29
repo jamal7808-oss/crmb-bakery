@@ -292,7 +292,6 @@ function setLoadMsg(m){const e=document.getElementById('loadMsg');if(e)e.textCon
 
 // INIT
 async function init(){
-  applyLang();
   let attempt=0;
   const tryConnect=async()=>{
     attempt++;
@@ -918,6 +917,7 @@ function initMonthSelect(){
   if(sel&&appData)sel.innerHTML=MONTHS.map(m=>`<option value="${m}" ${m===appData.currentMonth?'selected':''}>${ml(m)}</option>`).join('');
 }
 
+applyLang();
 init();
 </script>
 </body>
