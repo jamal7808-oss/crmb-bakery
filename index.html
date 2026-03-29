@@ -287,7 +287,7 @@ tbody td{padding:10px 13px;font-size:13px;color:#ddd;vertical-align:middle}
 // ==========================================
 //  LANGUAGE SYSTEM
 // ==========================================
-let lang = localStorage.getItem('crmb_lang') || 'ar';
+let lang = 'ar'; try{ lang = localStorage.getItem('crmb_lang') || 'ar'; }catch(e){}
 
 const T = {
   ar: {
@@ -303,7 +303,7 @@ const T = {
     // POS
     pos_title:'نقطة البيع', scan_placeholder:'امسح الباركود أو ابحث عن منتج...',
     search:'بحث', cart_empty:'السلة فارغة', cart_empty_sub:'اضغط على المنتج أو امسح الباركود',
-    all:t('all'), subtotal:'المجموع قبل الضريبة', vat:'ضريبة القيمة المضافة 15%',
+    all:'الكل', subtotal:'المجموع قبل الضريبة', vat:'ضريبة القيمة المضافة 15%',
     total_with_vat:'الإجمالي مع الضريبة', payment:'طريقة الدفع',
     cash:'نقدي', mada:'مدى', complete_sale:'إتمام البيع', print_receipt:'طباعة الفاتورة',
     clear_cart:'مسح السلة', today_sales:'مبيعات اليوم', last_sales:'آخر المبيعات اليوم',
@@ -396,7 +396,7 @@ function t(key){ return (T[lang]||T.ar)[key] || key; }
 
 function toggleLang(){
   lang = lang==='ar' ? 'en' : 'ar';
-  localStorage.setItem('crmb_lang', lang);
+  try{localStorage.setItem('crmb_lang', lang);}catch(e){}
   document.documentElement.lang = lang;
   document.documentElement.dir = lang==='ar' ? 'rtl' : 'ltr';
   const btn=document.getElementById('langBtn');
@@ -462,15 +462,43 @@ async function apiFetch(url, opts={}) {
     const r = await fetch(url, { headers:{'Content-Type':'application/json'}, ...opts });
     if (r.status === 401) { window.location.href='/login'; return null; }
     return r.json();
-  } catch { return null; }
+  } catch(e) { return null; }
 }
 
 async function loadData() {
   setSyncBadge('syncing');
   const data = await apiFetch('/api/data');
-  if (data) { appData = data; setSyncBadge('online'); }
-  else { setSyncBadge('offline'); }
-  return !!data;
+  if (data) { appData = data; setSyncBadge('online'); return true; }
+  setSyncBadge('offline');
+  return false;
+}
+
+let _wakeRetry = null;
+async function loadDataWithWakeup() {
+  setSyncBadge('syncing');
+  const main = document.getElementById('main');
+  if(main && !appData) {
+    main.innerHTML = `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:60vh;gap:16px;text-align:center">
+      <div style="font-size:48px">⏳</div>
+      <div style="color:var(--gold);font-size:18px;font-weight:700">جاري تشغيل السيرفر...</div>
+      <div style="color:#666;font-size:13px">النسخة المجانية تحتاج 30-60 ثانية<br>سيتم التحميل تلقائياً</div>
+      <div id="retryCount" style="color:#444;font-size:12px">جاري المحاولة...</div>
+    </div>`;
+  }
+  let attempts = 0;
+  const tryLoad = async () => {
+    attempts++;
+    const el = document.getElementById('retryCount');
+    if(el) el.textContent = 'محاولة ' + attempts + '...';
+    const ok = await loadData();
+    if(ok) {
+      clearTimeout(_wakeRetry);
+      renderMain();
+    } else {
+      _wakeRetry = setTimeout(tryLoad, 4000);
+    }
+  };
+  tryLoad();
 }
 
 async function saveData() {
@@ -488,9 +516,14 @@ function setSyncBadge(status) {
   syncStatus = status;
   const b = document.getElementById('syncBadge');
   if (!b) return;
-  const map = { online:['🟢 متزامن',''], syncing:['🔄 جاري الحفظ','syncing'], offline:['🔴 غير متصل','offline'] };
-  b.textContent = map[status][0];
-  b.className = 'sync-badge' + (map[status][1] ? ' '+map[status][1] : '');
+  const labels = {
+    online: ['🟢 ', t('synced'), ''],
+    syncing: ['🔄 ', t('syncing'), 'syncing'],
+    offline: ['🔴 ', t('offline'), 'offline']
+  };
+  const l = labels[status] || labels.syncing;
+  b.textContent = l[0] + l[1];
+  b.className = 'sync-badge' + (l[2] ? ' '+l[2] : '');
 }
 
 // ==========================================
@@ -1942,8 +1975,9 @@ async function init(){
 
   // Init month select
   const sel=document.getElementById('monthSelect');
-  // Load data then init
-  await loadData();
+  // Load data then init - with wakeup handling
+  const ok = await loadData();
+  if(!ok){ loadDataWithWakeup(); return; }
   sel.innerHTML=MONTHS.map(m=>`<option value="${m}" ${m===appData.currentMonth?'selected':''}>${ml(m)}</option>`).join('');
 
   renderMain();
