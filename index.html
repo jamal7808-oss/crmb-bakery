@@ -221,33 +221,34 @@ function toggleLang(){
 }
 
 function applyLang(){
+  // Only safe DOM-independent operations
   document.documentElement.dir = lang==='ar'?'rtl':'ltr';
   document.documentElement.lang = lang;
-  const btn=document.getElementById('langBtn');
-  if(btn) btn.textContent = lang==='ar'?'EN':'عر';
-  const sub=document.querySelector('.logo-sub');
-  if(sub) sub.textContent=tr('subtitle');
-  // Nav labels
-  const navMap={
-    'nav-dashboard':'dashboard','nav-pos':'pos','nav-products':'products',
-    'nav-purchases':'purchases','nav-delivery':'delivery','nav-sales':'sales',
-    'nav-reports':'reports','nav-employees':'employees','nav-revenue':'revenue',
-    'nav-expenses':'expenses','nav-materials':'materials','nav-equipment':'equipment',
-    'nav-rent':'rent','nav-barcode':'barcode','nav-users':'users','nav-profile':'profile',
-  };
-  Object.entries(navMap).forEach(([id,key])=>{
-    const el=document.getElementById(id);
-    if(el){ const spans=el.querySelectorAll('span'); if(spans[1]) spans[1].textContent=tr(key); else if(el.childNodes[1]) el.childNodes[1].textContent=tr(key); }
-  });
-  const ls=document.getElementById('nav-sections');
-  // Update section labels
-  document.querySelectorAll('.nav-section').forEach((el,i)=>{
-    const keys=['main_section','mgmt_section','sys_section'];
-    if(keys[i]) el.textContent=tr(keys[i]);
-  });
-  // Logout button
-  const lo=document.querySelector('[onclick="doLogout()"] span:last-child');
-  if(lo) lo.textContent=tr('logout');
+}
+
+function applyLangUI(){
+  // Called after DOM is ready
+  try{
+    const btn=document.getElementById('langBtn');
+    if(btn) btn.textContent = lang==='ar'?'EN':'عر';
+    const sub=document.querySelector('.logo-sub');
+    if(sub) sub.textContent=tr('subtitle');
+    const navMap={
+      'nav-dashboard':'dashboard','nav-pos':'pos','nav-products':'products',
+      'nav-purchases':'purchases','nav-delivery':'delivery','nav-sales':'sales',
+      'nav-reports':'reports','nav-employees':'employees','nav-revenue':'revenue',
+      'nav-expenses':'expenses','nav-materials':'materials','nav-equipment':'equipment',
+      'nav-rent':'rent','nav-barcode':'barcode','nav-users':'users','nav-profile':'profile',
+    };
+    Object.entries(navMap).forEach(([id,key])=>{
+      const el=document.getElementById(id);
+      if(el){const spans=el.querySelectorAll('span');if(spans[1])spans[1].textContent=tr(key);}
+    });
+    document.querySelectorAll('.nav-section').forEach((el,i)=>{
+      const keys=['main_section','mgmt_section','sys_section'];
+      if(keys[i])el.textContent=tr(keys[i]);
+    });
+  }catch(e){}
 }
 
 // STATE
@@ -917,7 +918,14 @@ function initMonthSelect(){
   if(sel&&appData)sel.innerHTML=MONTHS.map(m=>`<option value="${m}" ${m===appData.currentMonth?'selected':''}>${ml(m)}</option>`).join('');
 }
 
+// Apply direction immediately (safe - no DOM needed)
 applyLang();
+
+// Apply UI labels after DOM is ready
+document.addEventListener('DOMContentLoaded', function(){
+  applyLangUI();
+});
+
 init();
 </script>
 </body>
