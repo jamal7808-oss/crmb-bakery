@@ -446,7 +446,14 @@ const fcVat = n => fc(vatAmount(n));
 // ==========================================
 async function apiFetch(url, opts={}) {
   try {
-    const r = await fetch(url, { headers:{'Content-Type':'application/json'}, ...opts });
+    const ctrl = new AbortController();
+    const tid = setTimeout(()=>ctrl.abort(), 8000);
+    const r = await fetch(url, {
+      headers:{'Content-Type':'application/json'},
+      signal: ctrl.signal,
+      ...opts
+    });
+    clearTimeout(tid);
     if (r.status === 401) { window.location.href='/login'; return null; }
     return r.json();
   } catch(e) { return null; }
@@ -1969,18 +1976,28 @@ function startAutoRefresh(){
 async function init(){
   applyLangUI();
 
-  // Load user first
-  currentUser = await apiFetch('/api/me');
-  if(!currentUser){ window.location.href='/login'; return; }
-  document.getElementById('userBadge').textContent = '👤 '+currentUser.name;
-
-  // Try to load data
+  // Show wakeup screen IMMEDIATELY before any API calls
   showWakeupScreen();
+
+  // Retry everything until server wakes up
   let attempts = 0;
   const tryLoad = async () => {
     attempts++;
     const rc = document.getElementById('retryCount');
     if(rc) rc.textContent = (lang==='ar'?'محاولة ':'Attempt ')+attempts+'...';
+
+    // Try login check
+    if(!currentUser){
+      currentUser = await apiFetch('/api/me');
+      if(!currentUser){
+        setTimeout(tryLoad, 4000);
+        return;
+      }
+      const ub = document.getElementById('userBadge');
+      if(ub) ub.textContent = '👤 '+currentUser.name;
+    }
+
+    // Try load data
     const ok = await loadData();
     if(ok){
       initMonthSelect();
