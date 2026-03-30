@@ -135,59 +135,67 @@ tbody td{padding:10px 13px;font-size:13px;color:#ddd;vertical-align:middle}
 <div id="layout">
   <div id="sidebar">
     <div class="nav-section" id="ns-main">الرئيسية</div>
-    <button class="nav-btn active" onclick="showTab('dashboard')" id="nav-dashboard"><span>📊</span>لوحة التحكم</button>
-    <button class="nav-btn" onclick="showTab('pos')" id="nav-pos"><span>🖥️</span>نقطة البيع</button>
-    <button class="nav-btn" onclick="showTab('products')" id="nav-products"><span>📦</span>المنتجات</button>
-    <button class="nav-btn" onclick="showTab('purchases')" id="nav-purchases"><span>🛍️</span>المشتريات</button>
-    <button class="nav-btn" onclick="showTab('delivery')" id="nav-delivery"><span>🚴</span>طلبات التوصيل</button>
-    <button class="nav-btn" onclick="showTab('sales')" id="nav-sales"><span>🛒</span>المبيعات اليومية</button>
-    <button class="nav-btn" onclick="showTab('reports')" id="nav-reports"><span>📈</span>التقارير</button>
+    <button class="nav-btn active" onclick="showTab('dashboard')" id="nav-dashboard"><span>📊</span><span data-ar="لوحة التحكم" data-en="Dashboard">لوحة التحكم</span></button>
+    <button class="nav-btn" onclick="showTab('pos')" id="nav-pos"><span>🖥️</span><span data-ar="نقطة البيع" data-en="Point of Sale">نقطة البيع</span></button>
+    <button class="nav-btn" onclick="showTab('products')" id="nav-products"><span>📦</span><span data-ar="المنتجات" data-en="Products">المنتجات</span></button>
+    <button class="nav-btn" onclick="showTab('purchases')" id="nav-purchases"><span>🛍️</span><span data-ar=t("المشتريات","Purchases") data-en="Purchases">المشتريات</span></button>
+    <button class="nav-btn" onclick="showTab('delivery')" id="nav-delivery"><span>🚴</span><span data-ar="طلبات التوصيل" data-en="Delivery Orders">طلبات التوصيل</span></button>
+    <button class="nav-btn" onclick="showTab('sales')" id="nav-sales"><span>🛒</span><span data-ar=t("المبيعات اليومية","Daily Sales") data-en="Daily Sales">المبيعات اليومية</span></button>
+    <button class="nav-btn" onclick="showTab('reports')" id="nav-reports"><span>📈</span><span data-ar="التقارير" data-en="Reports">التقارير</span></button>
     <div class="nav-divider"></div>
     <div class="nav-section" id="ns-mgmt">الإدارة</div>
-    <button class="nav-btn" onclick="showTab('employees')" id="nav-employees"><span>👥</span>الموظفون</button>
-    <button class="nav-btn" onclick="showTab('revenue')" id="nav-revenue"><span>💰</span>الإيرادات</button>
-    <button class="nav-btn" onclick="showTab('expenses')" id="nav-expenses"><span>📋</span>المصاريف</button>
-    <button class="nav-btn" onclick="showTab('materials')" id="nav-materials"><span>🌾</span>المواد الخام</button>
-    <button class="nav-btn" onclick="showTab('equipment')" id="nav-equipment"><span>⚙️</span>المعدات</button>
-    <button class="nav-btn" onclick="showTab('rent')" id="nav-rent"><span>🏠</span>الإيجار</button>
-    <button class="nav-btn" onclick="showTab('barcode')" id="nav-barcode"><span>🏷️</span>الباركود</button>
+    <button class="nav-btn" onclick="showTab('employees')" id="nav-employees"><span>👥</span><span data-ar=t("الموظفون","Employees") data-en="Employees">الموظفون</span></button>
+    <button class="nav-btn" onclick="showTab('revenue')" id="nav-revenue"><span>💰</span><span data-ar=t("الإيرادات","Revenue") data-en="Revenue">الإيرادات</span></button>
+    <button class="nav-btn" onclick="showTab('expenses')" id="nav-expenses"><span>📋</span><span data-ar=t("المصاريف","Expenses") data-en="Expenses">المصاريف</span></button>
+    <button class="nav-btn" onclick="showTab('materials')" id="nav-materials"><span>🌾</span><span data-ar=t("المواد الخام","Raw Materials") data-en="Raw Materials">المواد الخام</span></button>
+    <button class="nav-btn" onclick="showTab('equipment')" id="nav-equipment"><span>⚙️</span><span data-ar="المعدات" data-en="Equipment">المعدات</span></button>
+    <button class="nav-btn" onclick="showTab('rent')" id="nav-rent"><span>🏠</span><span data-ar="الإيجار" data-en="Rent">الإيجار</span></button>
+    <button class="nav-btn" onclick="showTab('barcode')" id="nav-barcode"><span>🏷️</span><span data-ar="الباركود" data-en="Barcode">الباركود</span></button>
     <div class="nav-divider"></div>
     <div class="nav-section" id="ns-sys">النظام</div>
-    <button class="nav-btn" onclick="showTab('users')" id="nav-users"><span>🔑</span>المستخدمون</button>
-    <button class="nav-btn" onclick="showTab('profile')" id="nav-profile"><span>👤</span>حسابي</button>
+    <button class="nav-btn" onclick="showTab('users')" id="nav-users"><span>🔑</span><span data-ar="المستخدمون" data-en="Users">المستخدمون</span></button>
+    <button class="nav-btn" onclick="showTab('profile')" id="nav-profile"><span>👤</span><span data-ar="حسابي" data-en="My Account">حسابي</span></button>
     <button class="nav-btn" style="color:#e74c3c" onclick="doLogout()"><span>🚪</span><span data-ar="خروج" data-en="Logout">خروج</span></button>
   </div>
   <div id="main">
     <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:70vh;gap:16px;text-align:center">
       <div style="font-size:44px">⏳</div>
-      <div style="color:var(--gold);font-size:18px;font-weight:700">جاري التحميل...</div>
-      <div style="color:#555;font-size:13px" id="loadMsg">يرجى الانتظار</div>
+      <div style="color:var(--gold);font-size:18px;font-weight:700">${t("جاري التحميل...","Loading...")}</div>
+      <div style="color:#555;font-size:13px" id="loadMsg">${t('يرجى الانتظار','Please wait')}</div>
     </div>
   </div>
 </div>
 <div id="bottom-nav">
-  <button class="bnav-btn active" onclick="showTab('dashboard')" id="bnav-dashboard"><span>📊</span>الرئيسية</button>
-  <button class="bnav-btn" onclick="showTab('pos')" id="bnav-pos"><span>🖥️</span>البيع</button>
-  <button class="bnav-btn" onclick="showTab('delivery')" id="bnav-delivery"><span>🚴</span>التوصيل</button>
-  <button class="bnav-btn" onclick="toggleMore()" id="bnav-more-btn"><span>☰</span>المزيد</button>
+  <button class="bnav-btn active" onclick="showTab('dashboard')" id="bnav-dashboard"><span>📊</span><span data-ar="الرئيسية" data-en="Home">الرئيسية</span></button>
+  <button class="bnav-btn" onclick="showTab('pos')" id="bnav-pos"><span>🖥️</span><span data-ar="البيع" data-en="POS">البيع</span></button>
+  <button class="bnav-btn" onclick="showTab('delivery')" id="bnav-delivery"><span>🚴</span><span data-ar="التوصيل" data-en="Delivery">التوصيل</span></button>
+  <button class="bnav-btn" onclick="toggleMore()" id="bnav-more-btn"><span>☰</span><span data-ar="المزيد" data-en="More">المزيد</span></button>
 </div>
 <div id="more-nav">
-  <button class="bnav-more-btn" onclick="showTab('products');toggleMore()"><span>📦</span>المنتجات</button>
-  <button class="bnav-more-btn" onclick="showTab('purchases');toggleMore()"><span>🛍️</span>المشتريات</button>
-  <button class="bnav-more-btn" onclick="showTab('sales');toggleMore()"><span>🛒</span>المبيعات</button>
-  <button class="bnav-more-btn" onclick="showTab('reports');toggleMore()"><span>📈</span>التقارير</button>
-  <button class="bnav-more-btn" onclick="showTab('employees');toggleMore()"><span>👥</span>الموظفون</button>
-  <button class="bnav-more-btn" onclick="showTab('expenses');toggleMore()"><span>📋</span>المصاريف</button>
-  <button class="bnav-more-btn" onclick="showTab('profile');toggleMore()"><span>👤</span>حسابي</button>
+  <button class="bnav-more-btn" onclick="showTab('products');toggleMore()"><span>📦</span><span data-ar="المنتجات" data-en="Products">المنتجات</span></button>
+  <button class="bnav-more-btn" onclick="showTab('purchases');toggleMore()"><span>🛍️</span><span data-ar=t("المشتريات","Purchases") data-en="Purchases">المشتريات</span></button>
+  <button class="bnav-more-btn" onclick="showTab('sales');toggleMore()"><span>🛒</span><span data-ar="المبيعات" data-en="Sales">المبيعات</span></button>
+  <button class="bnav-more-btn" onclick="showTab('reports');toggleMore()"><span>📈</span><span data-ar="التقارير" data-en="Reports">التقارير</span></button>
+  <button class="bnav-more-btn" onclick="showTab('employees');toggleMore()"><span>👥</span><span data-ar=t("الموظفون","Employees") data-en="Employees">الموظفون</span></button>
+  <button class="bnav-more-btn" onclick="showTab('expenses');toggleMore()"><span>📋</span><span data-ar=t("المصاريف","Expenses") data-en="Expenses">المصاريف</span></button>
+  <button class="bnav-more-btn" onclick="showTab('profile');toggleMore()"><span>👤</span><span data-ar="حسابي" data-en="My Account">حسابي</span></button>
   <button class="bnav-more-btn" style="color:#e74c3c" onclick="doLogout()"><span>🚪</span><span data-ar="خروج" data-en="Logout">خروج</span></button>
 </div>
 <div id="modal-container"></div>
 <script>
+// ===== LANGUAGE SYSTEM =====
 const L = (()=>{ try{return localStorage.getItem('crmb_lang')||'ar';}catch(e){return 'ar';} })();
+const t = (a,e) => L==='ar' ? a : e;
+document.documentElement.dir = L==='ar'?'rtl':'ltr';
+document.documentElement.lang = L;
+function setLang(l){ try{localStorage.setItem('crmb_lang',l);}catch(e){} window.location.reload(); }
 
-// Set lang button text
+// Apply nav/UI translations after DOM loads
 document.addEventListener('DOMContentLoaded',()=>{
-  // Apply nav translations
+  // Lang button
+  const b=document.querySelector('[onclick^="setLang"]');
+  if(b) b.textContent=L==='ar'?'EN':'عر';
+  // Nav button spans
   document.querySelectorAll('[data-ar][data-en]').forEach(el=>{
     el.textContent = L==='ar'?el.dataset.ar:el.dataset.en;
   });
@@ -204,14 +212,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   // Logo subtitle
   const sub=document.querySelector('.logo-sub');
   if(sub) sub.textContent=t('نظام محاسبة المخابز','Bakery Management System');
-
-  const b=document.querySelector('[onclick^="setLang"]');
-  if(b) b.textContent=L==='ar'?'EN':'عر';
 });
-const t = (a,e) => L==='ar' ? a : e;
-document.documentElement.dir = L==='ar'?'rtl':'ltr';
-document.documentElement.lang = L;
-function setLang(l){ try{localStorage.setItem('crmb_lang',l);}catch(e){} window.location.reload(); }
 // STATE
 let appData=null,currentUser=null,currentTab='dashboard',moreOpen=false,saveTimer=null,syncStatus='syncing';
 let posSelectedCat=t('الكل','All'),cart=[],paymentMethod='cash',deliveryPlatform=t('الكل','All');
@@ -219,7 +220,7 @@ let posSelectedCat=t('الكل','All'),cart=[],paymentMethod='cash',deliveryPlat
 const MONTHS=["2025-01","2025-02","2025-03","2025-04","2025-05","2025-06","2025-07","2025-08","2025-09","2025-10","2025-11","2025-12","2026-01","2026-02","2026-03","2026-04","2026-05","2026-06","2026-07","2026-08","2026-09","2026-10","2026-11","2026-12","2027-01","2027-02","2027-03","2027-04","2027-05","2027-06"];
 const MN=["","يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"];
 const ml=m=>{const[y,mo]=m.split('-');return`${MN[+mo]} ${y}`;};
-const fc=n=>new Intl.NumberFormat('ar-SA',{style:'currency',currency:'SAR',minimumFractionDigits:2}).format(n||0);
+const fc=n=>new Intl.NumberFormat(L==='ar'?'ar-SA':'en-US',{style:'currency',currency:'SAR',minimumFractionDigits:2}).format(n||0);
 const VAT=0.15;
 
 // API
@@ -334,25 +335,25 @@ function renderDashboard(s){
   const mx=Math.max(...ri.map(r=>r.amount),1);
   return`<div class="sec-header"><div class="sec-title">📊 لوحة التحكم — ${ml(s.cm)}</div></div>
   <div class="kpi-grid">
-    ${kpi(t(t(t('إجمالي الإيرادات','Total Revenue'),'Total Revenue'),'Total Revenue'),fc(s.totalRev),'💰','var(--green)',t(t('هذا الشهر','This Month'),'This Month'))}
-    ${kpi(t(t('إجمالي التكاليف','Total Costs'),'Total Costs'),fc(s.totalCosts),'📉','var(--red)','')}
-    ${kpi(s.netProfit>=0?t('صافي الربح','Net Profit'):t('صافي الخسارة','Net Loss'),fc(Math.abs(s.netProfit)),'📊',s.netProfit>=0?'var(--green)':'var(--red)',`هامش ${s.margin}%`)}
+    ${kpi(t('إجمالي الإيرادات','Total Revenue'),fc(s.totalRev),'💰','var(--green)',t('هذا الشهر','This Month'))}
+    ${kpi(t('إجمالي التكاليف','Total Costs'),fc(s.totalCosts),'📉','var(--red)','')}
+    ${kpi(s.netProfit>=0?t("صافي الربح","Net Profit"):t("صافي الخسارة","Net Loss"),fc(Math.abs(s.netProfit)),'📊',s.netProfit>=0?'var(--green)':'var(--red)',`هامش ${s.margin}%`)}
     ${kpi(t('الرواتب والسكن','Salaries & Housing'),fc(s.totalSalaries),'👥','var(--blue)',appData.employees.length+t(' موظف',' employees'))}
-    ${kpi(t(t('المواد الخام','Raw Materials'),'Raw Materials'),fc(s.totalRaw),'🌾','var(--orange)','')}
+    ${kpi(t('المواد الخام','Raw Materials'),fc(s.totalRaw),'🌾','var(--orange)','')}
     ${kpi(t('الإيجار','Rent'),fc(appData.rent.amount),'🏠','var(--purple)','')}
   </div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px">
     <div style="background:var(--bg2);border-radius:14px;padding:18px;border:1px solid var(--border)">
-      <div style="color:var(--gold);font-weight:700;margin-bottom:14px;font-size:14px">توزيع التكاليف</div>
-      ${[{l:'رواتب',v:s.totalSalaries,c:'var(--blue)'},{l:t(t('مواد خام','Raw Materials'),'Raw Materials'),v:s.totalRaw,c:'var(--orange)'},{l:t('إيجار','Rent'),v:appData.rent.amount,c:'var(--purple)'},{l:t('مصاريف','Expenses'),v:s.totalExp,c:'var(--red)'}].map(i=>{const p=s.totalCosts>0?((i.v/s.totalCosts)*100).toFixed(1):0;return`<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:12px;color:#bbb">${i.l}</span><span style="font-size:12px;color:${i.c};font-weight:600">${fc(i.v)}</span></div><div class="prog-bar"><div class="prog-fill" style="width:${p}%;background:${i.c}"></div></div></div>`;}).join('')}
+      <div style="color:var(--gold);font-weight:700;margin-bottom:14px;font-size:14px">${t("توزيع التكاليف","Cost Distribution")}</div>
+      ${[{l:t("رواتب","Salaries"),v:s.totalSalaries,c:'var(--blue)'},{l:t("مواد خام","Raw Materials"),v:s.totalRaw,c:'var(--orange)'},{l:t("إيجار","Rent"),v:appData.rent.amount,c:'var(--purple)'},{l:t("مصاريف","Expenses"),v:s.totalExp,c:'var(--red)'}].map(i=>{const p=s.totalCosts>0?((i.v/s.totalCosts)*100).toFixed(1):0;return`<div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:12px;color:#bbb">${i.l}</span><span style="font-size:12px;color:${i.c};font-weight:600">${fc(i.v)}</span></div><div class="prog-bar"><div class="prog-fill" style="width:${p}%;background:${i.c}"></div></div></div>`;}).join('')}
     </div>
     <div style="background:var(--bg2);border-radius:14px;padding:18px;border:1px solid var(--border)">
-      <div style="color:var(--gold);font-weight:700;margin-bottom:14px;font-size:14px">الإيرادات</div>
-      <div class="bar-chart">${ri.length===0?'<p style="color:#555;font-size:12px;margin:auto">لا توجد إيرادات</p>':ri.map(r=>`<div class="bar-item"><div class="bar-val">${(r.amount/1000).toFixed(0)}k</div><div class="bar-fill" style="height:${(r.amount/mx*75)}px;background:var(--green)"></div><div class="bar-lbl">${r.source}</div></div>`).join('')}</div>
+      <div style="color:var(--gold);font-weight:700;margin-bottom:14px;font-size:14px">${t("الإيرادات","Revenue")}</div>
+      <div class="bar-chart">${ri.length===0?'<p style="color:#555;font-size:12px;margin:auto">'+t('لا توجد إيرادات','No revenue yet')+'</p>':ri.map(r=>`<div class="bar-item"><div class="bar-val">${(r.amount/1000).toFixed(0)}k</div><div class="bar-fill" style="height:${(r.amount/mx*75)}px;background:var(--green)"></div><div class="bar-lbl">${r.source}</div></div>`).join('')}</div>
     </div>
   </div>
   <div style="background:var(--bg2);border-radius:14px;padding:18px;border:1px solid var(--border)">
-    <div style="color:var(--gold);font-weight:700;margin-bottom:14px;font-size:14px">ملخص الشهر</div>
+    <div style="color:var(--gold);font-weight:700;margin-bottom:14px;font-size:14px">${t("ملخص الشهر","Monthly Summary")}</div>
     <div class="table-wrap"><table><thead><tr><th>البند</th><th>المبلغ</th><th>النسبة</th></tr></thead><tbody>
       <tr><td style="font-weight:700">إجمالي الإيرادات</td><td style="color:var(--green);font-weight:700">${fc(s.totalRev)}</td><td style="color:var(--green)">100%</td></tr>
       <tr><td>رواتب وسكن</td><td style="color:var(--red)">${fc(s.totalSalaries)}</td><td style="color:#888">${s.totalRev>0?((s.totalSalaries/s.totalRev)*100).toFixed(1)+'%':'-'}</td></tr>
@@ -365,6 +366,21 @@ function renderDashboard(s){
 }
 
 // POS
+
+function renderRecentSales(sales){
+  const saleLabel = L==='ar'?'بيع':'Sale';
+  const noSales = L==='ar'?'لا توجد مبيعات':'No sales yet';
+  const items = sales.slice(-5).reverse().map(s=>{
+    const label = s.note||s.category||saleLabel;
+    const pay = s.payMethod==='mada'?'💳':'💵';
+    return '<div style="display:flex;justify-content:space-between;padding:7px 14px;border-bottom:1px solid #1a1a1a;font-size:12px">'
+      +'<span style="color:#888">'+label+' '+pay+'</span>'
+      +'<span style="color:var(--green);font-weight:600">'+fc(s.amount)+'</span>'
+      +'</div>';
+  }).join('');
+  return items || '<div style="color:#444;text-align:center;padding:14px;font-size:12px">'+noSales+'</div>';
+}
+
 function renderPOS(){
   const prods=appData.products||[];
   const cats=[t('الكل','All'),...[...new Set(prods.map(p=>p.category))]];
@@ -387,7 +403,7 @@ function renderPOS(){
       </div>
       <div class="pos-cats">${cats.map(c=>`<button class="pos-cat-btn ${c===posSelectedCat?'active':''}" onclick="setPOSCat('${c}')">${c}</button>`).join('')}</div>
       <div class="pos-products" id="posGrid">
-        ${filtered.length===0?`<div style="grid-column:1/-1;text-align:center;color:#444;padding:40px">لا توجد منتجات<br><span style="font-size:12px">أضف منتجات من قسم المنتجات</span></div>`:
+        ${filtered.length===0?`<div style="grid-column:1/-1;text-align:center;color:#444;padding:40px">${t("لا توجد منتجات","No products yet")}</div>`:
         filtered.map(p=>`<div class="pos-tile" onclick="addToCart(${p.id})">
           <div class="pos-tile-name">${p.name}</div>
           <div class="pos-tile-cat">${p.category}</div>
@@ -397,7 +413,7 @@ function renderPOS(){
       </div>
     </div>
     <div style="display:flex;flex-direction:column;gap:10px">
-      <div class="cart-list" id="cartItems"><div style="text-align:center;color:#444;padding:40px;font-size:13px">السلة فارغة<br><span style="font-size:11px;color:#333">اضغط على المنتج</span></div></div>
+      <div class="cart-list" id="cartItems"><div style="text-align:center;color:#444;padding:40px;font-size:13px">${t('السلة فارغة','Cart Empty')}<br><span style="font-size:11px;color:#333">${t('اضغط على المنتج','Tap a product')}</span></div></div>
       <div style="background:#111;border-radius:12px;padding:14px;border:1px solid #222">
         <div class="pnl-row"><span style="color:#aaa;font-size:12px">المجموع قبل الضريبة</span><span id="posSubtotal" style="font-size:12px">0.00</span></div>
         <div class="pnl-row"><span style="color:#aaa;font-size:12px">ضريبة ق.م 15%</span><span id="posVat" style="color:var(--orange);font-size:12px">0.00</span></div>
@@ -416,8 +432,8 @@ function renderPOS(){
         <button class="btn btn-dark" onclick="printReceipt()" style="width:100%;padding:10px;font-size:12px;border-radius:10px">🖨️ طباعة الفاتورة</button>
       </div>
       <div style="background:#111;border-radius:12px;border:1px solid #222;overflow:hidden">
-        <div style="padding:8px 14px;border-bottom:1px solid #1a1a1a;color:#666;font-size:12px">آخر مبيعات اليوم</div>
-        <div>${todaySales.slice(-5).reverse().map(s=>`<div style="display:flex;justify-content:space-between;padding:7px 14px;border-bottom:1px solid #1a1a1a;font-size:12px"><span style="color:#888">${s.note||s.category||'بيع'} ${s.payMethod==='mada'?'💳':'💵'}</span><span style="color:var(--green);font-weight:600">${fc(s.amount)}</span></div>`).join('')||'<div style="color:#444;text-align:center;padding:14px;font-size:12px">لا توجد مبيعات</div>'}</div>
+        <div style="padding:8px 14px;border-bottom:1px solid #1a1a1a;color:#666;font-size:12px">${t("آخر مبيعات اليوم","Recent Sales")}</div>
+        <div>${renderRecentSales(todaySales)}</div>
       </div>
     </div>
   </div>`;
@@ -428,7 +444,7 @@ function filterPOSTiles(q){
   const g=document.getElementById('posGrid');if(!g)return;
   const prods=(appData.products||[]).filter(p=>posSelectedCat===t('الكل','All')||p.category===posSelectedCat);
   const f=q?prods.filter(p=>p.name.includes(q)||(p.barcode||'').includes(q)):prods;
-  if(!f.length){g.innerHTML='<div style="grid-column:1/-1;text-align:center;color:#444;padding:30px">لا توجد نتائج</div>';return;}
+  if(!f.length){g.innerHTML='<div style="grid-column:1/-1;text-align:center;color:#444;padding:30px">'+t('لا توجد نتائج','No results')+'</div>';return;}
   g.innerHTML=f.map(p=>`<div class="pos-tile" onclick="addToCart(${p.id})"><div class="pos-tile-name">${p.name}</div><div class="pos-tile-cat">${p.category}</div><div class="pos-tile-price">${fc(p.price)}</div><div style="font-size:10px;color:#555;margin-top:2px">شامل ض.ق.م</div></div>`).join('');
 }
 function addToCart(id){
@@ -438,10 +454,10 @@ function addToCart(id){
 }
 function scanBarcode(){
   const inp=document.getElementById('scanInput');const bc=(inp.value||'').trim();
-  if(!bc){notify('أدخل رقم الباركود','error');return;}
+  if(!bc){notify(t('أدخل رقم الباركود','Enter barcode'),'error');return;}
   const p=(appData.products||[]).find(x=>x.barcode===bc);
-  if(!p){notify('لم يُعثر على منتج','error');inp.value='';inp.focus();return;}
-  addToCart(p.id);inp.value='';inp.focus();notify('تمت إضافة: '+p.name);
+  if(!p){notify(t('لم يُعثر على منتج','Product not found'),'error');inp.value='';inp.focus();return;}
+  addToCart(p.id);inp.value='';inp.focus();notify(t('تمت إضافة: ','Added: ')+p.name);
 }
 function updateCart(){
   const el=document.getElementById('cartItems');
@@ -452,7 +468,7 @@ function updateCart(){
   const total=cart.reduce((a,c)=>a+c.price*c.qty,0);
   const sub=total/1.15;const vat=total-sub;
   if(st)st.textContent=fc(sub);if(vt)vt.textContent=fc(vat);if(tt)tt.textContent=fc(total);
-  if(!cart.length){el.innerHTML='<div style="text-align:center;color:#444;padding:40px;font-size:13px">السلة فارغة<br><span style="font-size:11px;color:#333">اضغط على المنتج</span></div>';return;}
+  if(!cart.length){el.innerHTML='<div style="text-align:center;color:#444;padding:40px;font-size:13px">'+t('السلة فارغة','Cart Empty')+'<br><span style="font-size:11px;color:#333">'+t('اضغط على المنتج','Tap a product')+'</span></div>';return;}
   el.innerHTML=cart.map((c,i)=>`<div class="cart-item">
     <div style="flex:1"><div style="font-size:13px;font-weight:600">${c.name}</div><div style="font-size:11px;color:#888">${fc(c.price)} × ${c.qty}</div></div>
     <div style="display:flex;align-items:center;gap:6px">
@@ -480,7 +496,7 @@ async function completeSale(){
   const today=new Date().toISOString().split('T')[0];
   const note=cart.map(c=>`${c.name}×${c.qty}`).join('، ');
   if(!appData.dailySales)appData.dailySales=[];
-  appData.dailySales.push({id:Date.now(),date:today,category:'نقطة البيع',amount:total,subtotal:sub,vat,note,payMethod:paymentMethod,items:cart.map(c=>({id:c.id,name:c.name,qty:c.qty,price:c.price}))});
+  appData.dailySales.push({id:Date.now(),date:today,category:t('نقطة البيع','Point of Sale'),amount:total,subtotal:sub,vat,note,payMethod:paymentMethod,items:cart.map(c=>({id:c.id,name:c.name,qty:c.qty,price:c.price}))});
   await saveData();notify(t('تم البيع! ','Sale complete! ')+fc(total));cart=[];renderMain();
   setTimeout(()=>{const i=document.getElementById('scanInput');if(i)i.focus();},100);
 }
@@ -491,7 +507,7 @@ function printReceipt(){
   const now=new Date().toLocaleString('ar-SA');
   const rows=cart.map(c=>`<tr><td>${c.name}</td><td style="text-align:center">${c.qty}</td><td style="text-align:left">${fc(c.price/1.15)}</td><td style="text-align:left;font-weight:700">${fc(c.price*c.qty/1.15)}</td></tr>`).join('');
   const w=window.open('','_blank');
-  w.document.write(`<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet"><style>body{margin:0;font-family:Cairo,sans-serif;padding:20px}.r{max-width:320px;margin:0 auto;border:1px solid #ddd;border-radius:8px;padding:20px}.h{text-align:center;border-bottom:2px dashed #ddd;padding-bottom:12px;margin-bottom:12px}.brand{font-size:20px;font-weight:900}.dt{font-size:11px;color:#999}table{width:100%;border-collapse:collapse;font-size:12px}th{background:#f5f5f5;padding:5px;text-align:right;color:#888;font-size:10px}td{padding:6px;border-bottom:1px solid #f0f0f0}.vb{background:#fffbf0;border:1px solid #f0d060;border-radius:6px;padding:8px;margin:8px 0;font-size:12px}.ft{text-align:center;margin-top:12px;font-size:10px;color:#999;border-top:1px dashed #ddd;padding-top:8px}@media print{body{padding:0}}</style></head><body><div class="r"><div class="h"><div class="brand">CRMB Bakery</div><div class="dt">${now}</div></div><table><thead><tr><th>المنتج</th><th>الكمية</th><th>السعر</th><th>الإجمالي</th></tr></thead><tbody>${rows}</tbody></table><div class="vb"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span>قبل الضريبة</span><span>${fc(sub)}</span></div><div style="display:flex;justify-content:space-between;margin-bottom:3px;color:#c0392b"><span>ضريبة 15%</span><span>${fc(vat)}</span></div><div style="display:flex;justify-content:space-between;font-weight:900;font-size:14px;border-top:1px solid #ddd;padding-top:4px;margin-top:4px"><span>الإجمالي</span><span>${fc(total)}</span></div></div><div style="text-align:center;background:${paymentMethod==='mada'?'#e8f4ff':'#e8ffe8'};border-radius:6px;padding:8px;font-weight:700;color:${paymentMethod==='mada'?'#2980b9':'#27ae60'}">${paymentMethod==='mada'?t(t('💳 مدى','💳 Card'),'💳 Card'):t(t('💵 نقدي','💵 Cash'),'💵 Cash')}</div><div class="ft">شكراً لزيارتكم</div></div><script>window.onload=()=>{window.print()}<\/script></body></html>`);
+  w.document.write(`<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet"><style>body{margin:0;font-family:Cairo,sans-serif;padding:20px}.r{max-width:320px;margin:0 auto;border:1px solid #ddd;border-radius:8px;padding:20px}.h{text-align:center;border-bottom:2px dashed #ddd;padding-bottom:12px;margin-bottom:12px}.brand{font-size:20px;font-weight:900}.dt{font-size:11px;color:#999}table{width:100%;border-collapse:collapse;font-size:12px}th{background:#f5f5f5;padding:5px;text-align:right;color:#888;font-size:10px}td{padding:6px;border-bottom:1px solid #f0f0f0}.vb{background:#fffbf0;border:1px solid #f0d060;border-radius:6px;padding:8px;margin:8px 0;font-size:12px}.ft{text-align:center;margin-top:12px;font-size:10px;color:#999;border-top:1px dashed #ddd;padding-top:8px}@media print{body{padding:0}}</style></head><body><div class="r"><div class="h"><div class="brand">CRMB Bakery</div><div class="dt">${now}</div></div><table><thead><tr><th>المنتج</th><th>الكمية</th><th>السعر</th><th>الإجمالي</th></tr></thead><tbody>${rows}</tbody></table><div class="vb"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span>قبل الضريبة</span><span>${fc(sub)}</span></div><div style="display:flex;justify-content:space-between;margin-bottom:3px;color:#c0392b"><span>ضريبة 15%</span><span>${fc(vat)}</span></div><div style="display:flex;justify-content:space-between;font-weight:900;font-size:14px;border-top:1px solid #ddd;padding-top:4px;margin-top:4px"><span>الإجمالي</span><span>${fc(total)}</span></div></div><div style="text-align:center;background:${paymentMethod==='mada'?'#e8f4ff':'#e8ffe8'};border-radius:6px;padding:8px;font-weight:700;color:${paymentMethod==='mada'?'#2980b9':'#27ae60'}">${paymentMethod==='mada'?t("💳 مدى","💳 Card"):t("💵 نقدي","💵 Cash")}</div><div class="ft">شكراً لزيارتكم</div></div><script>window.onload=()=>{window.print()}<\/script></body></html>`);
   w.document.close();
 }
 
@@ -504,8 +520,8 @@ function renderProducts(){
     ${kpi(t('متوسط السعر','Avg Price'),fc(prods.length?prods.reduce((a,p)=>a+p.price,0)/prods.length:0),'💰','var(--green)','')}
   </div>
   <div class="table-wrap"><table><thead><tr><th>المنتج</th><th>الفئة</th><th>الوحدة</th><th>السعر شامل ض.ق.م</th><th>قبل الضريبة</th><th>الضريبة 15%</th><th>التكلفة</th><th>الربح</th><th>الباركود</th><th>إجراءات</th></tr></thead><tbody>
-    ${prods.map(p=>{const bv=p.price/1.15;const vt=p.price-bv;const pr=p.price-p.cost;const mg=p.price>0?((pr/p.price)*100).toFixed(0):0;return`<tr><td style="font-weight:700">${p.name}</td><td>${p.category}</td><td>${p.unit}</td><td style="color:var(--green);font-weight:700">${fc(p.price)}</td><td style="color:#aaa">${fc(bv)}</td><td style="color:var(--orange)">${fc(vt)}</td><td style="color:var(--red)">${fc(p.cost)}</td><td style="color:var(--gold)">${fc(pr)} (${mg}%)</td><td style="font-family:monospace;font-size:11px;color:#888">${p.barcode||'—'}</td><td><div style="display:flex;gap:5px"><button class="btn btn-blue btn-sm" onclick="openModal('product',${p.id})">تعديل</button><button class="btn btn-red btn-sm" onclick="del('product',${p.id})">حذف</button></div></td></tr>`;}).join('')}
-    ${!prods.length?'<tr><td colspan="10" style="text-align:center;color:#555;padding:28px">لا توجد منتجات</td></tr>':''}
+    ${prods.map(p=>{const bv=p.price/1.15;const vt=p.price-bv;const pr=p.price-p.cost;const mg=p.price>0?((pr/p.price)*100).toFixed(0):0;return`<tr><td style="font-weight:700">${p.name}</td><td>${p.category}</td><td>${p.unit}</td><td style="color:var(--green);font-weight:700">${fc(p.price)}</td><td style="color:#aaa">${fc(bv)}</td><td style="color:var(--orange)">${fc(vt)}</td><td style="color:var(--red)">${fc(p.cost)}</td><td style="color:var(--gold)">${fc(pr)} (${mg}%)</td><td style="font-family:monospace;font-size:11px;color:#888">${p.barcode||'—'}</td><td><div style="display:flex;gap:5px"><button class="btn btn-blue btn-sm" onclick="openModal('product',${p.id})">${t("تعديل","Edit")}</button><button class="btn btn-red btn-sm" onclick="del('product',${p.id})">${t("حذف","Delete")}</button></div></td></tr>`;}).join('')}
+    ${!prods.length?'\1'+t('\2','\3')+'\4':''}
   </tbody></table></div>`;
 }
 
@@ -520,30 +536,30 @@ function renderPurchases(){
     ${kpi(t('عدد الفواتير','Invoices'),mp.length+t(' فاتورة',' invoices'),'📄','var(--purple)','')}
   </div>
   <div class="table-wrap"><table><thead><tr><th>التاريخ</th><th>المورد</th><th>الفئة</th><th>قبل الضريبة</th><th>ضريبة 15%</th><th>الإجمالي</th><th>الدفع</th><th>ملاحظة</th><th>إجراءات</th></tr></thead><tbody>
-    ${pur.slice().reverse().map(p=>`<tr><td style="font-family:monospace;color:#888">${p.date}</td><td style="font-weight:600">${p.supplier||'—'}</td><td>${p.category||'—'}</td><td>${fc(p.amount)}</td><td style="color:var(--orange)">${fc(p.vat||0)}</td><td style="color:var(--blue);font-weight:700">${fc(p.total)}</td><td>${p.payMethod==='mada'?t(t('💳 مدى','💳 Card'),'💳 Card'):t(t('💵 نقدي','💵 Cash'),'💵 Cash')}</td><td style="color:#666;font-size:12px">${p.note||'—'}</td><td><button class="btn btn-red btn-sm" onclick="del('purchase',${p.id})">حذف</button></td></tr>`).join('')}
-    ${!pur.length?'<tr><td colspan="9" style="text-align:center;color:#555;padding:28px">لا توجد مشتريات</td></tr>':''}
+    ${pur.slice().reverse().map(p=>`<tr><td style="font-family:monospace;color:#888">${p.date}</td><td style="font-weight:600">${p.supplier||'—'}</td><td>${p.category||'—'}</td><td>${fc(p.amount)}</td><td style="color:var(--orange)">${fc(p.vat||0)}</td><td style="color:var(--blue);font-weight:700">${fc(p.total)}</td><td>${p.payMethod==='mada'?t("💳 مدى","💳 Card"):t("💵 نقدي","💵 Cash")}</td><td style="color:#666;font-size:12px">${p.note||'—'}</td><td><button class="btn btn-red btn-sm" onclick="del('purchase',${p.id})">${t("حذف","Delete")}</button></td></tr>`).join('')}
+    ${!pur.length?'\1'+t('\2','\3')+'\4':''}
   </tbody></table></div>`;
 }
 
 // DELIVERY
 function renderDelivery(){
   const ords=appData.deliveryOrders||[];
-  const platforms=[t('الكل','All'),'كيتا','جاهز','هنقرستيشن','أخرى'];
+  const platforms=L==='ar'?[t('الكل','All'),'كيتا','جاهز','هنقرستيشن','أخرى']:[t('الكل','All'),'Keeta','Jahez','HungerStation','Other'];
   const fil=deliveryPlatform===t('الكل','All')?ords:ords.filter(o=>o.platform===deliveryPlatform);
   const today=new Date().toISOString().split('T')[0];
   const to=ords.filter(o=>o.date===today);
-  const pc={'كيتا':'#e74c3c','جاهز':'#e67e22','هنقرستيشن':'#c0392b','أخرى':'#888'};
-  const sm={new:t('جديد','New'),preparing:t('قيد التحضير','Preparing'),ready:'جاهز',delivered:t('تم التسليم','Delivered')};
+  const pc=L==='ar'?{'كيتا':'#e74c3c','جاهز':'#e67e22','هنقرستيشن':'#c0392b','أخرى':'#888'}:{'Keeta':'#e74c3c','Jahez':'#e67e22','HungerStation':'#c0392b','Other':'#888'};
+  const sm={new:t('جديد','New'),preparing:t('قيد التحضير','Preparing'),ready:t('جاهز','Ready'),delivered:t('تم التسليم','Delivered')};
   const sc={new:'background:#1a2a1a;color:#27ae60',preparing:'background:#1a1a2a;color:#3498db',ready:'background:#2a1800;color:#D4A843',delivered:'background:#1a1a1a;color:#666'};
   return`<div class="sec-header"><div class="sec-title">🚴 طلبات التوصيل</div><button class="btn btn-gold" onclick="openModal('deliveryOrder')">+ طلب جديد</button></div>
   <div class="kpi-grid">
     ${kpi(t('طلبات اليوم','Today Orders'),to.length+t(' طلب',' orders'),'🚴','var(--blue)',today)}
-    ${kpi(t('مبيعات التوصيل','Delivery Sales'),fc(to.reduce((a,o)=>a+o.total,0)),'💰','var(--green)',t(t('اليوم','Day'),'Today'))}
+    ${kpi(t('مبيعات التوصيل','Delivery Sales'),fc(to.reduce((a,o)=>a+o.total,0)),'💰','var(--green)',t('اليوم','Day'))}
   </div>
   <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
     ${platforms.map(p=>`<button class="del-tab ${p===deliveryPlatform?'active':''}" onclick="setDelPlatform('${p}')">${p}</button>`).join('')}
   </div>
-  <div>${fil.length===0?`<div style="text-align:center;color:#444;padding:40px">لا توجد طلبات — اضغط "+ طلب جديد"</div>`:
+  <div>${fil.length===0?`<div style="text-align:center;color:#444;padding:40px">لا توجد طلبات طلب جديد"</div>`:
   fil.slice().reverse().map(o=>`<div class="order-card">
     <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px">
       <div>
@@ -557,13 +573,13 @@ function renderDelivery(){
     </div>
     ${o.items?`<div style="color:#888;font-size:12px;margin-bottom:8px">${o.items}</div>`:''}
     <div style="display:flex;gap:6px">
-      ${o.status!=='delivered'?`<button class="btn btn-green btn-sm" onclick="updOrder(${o.id},'${o.status==='new'?'preparing':o.status==='preparing'?'ready':'delivered'}')">${o.status==='new'?t('بدء التحضير','Start Prep'):o.status==='preparing'?t('جاهز للتسليم','Ready to Deliver'):t('تم التسليم','Delivered')}</button>`:''}
-      <button class="btn btn-red btn-sm" onclick="del('deliveryOrder',${o.id})">حذف</button>
+      ${o.status!=='delivered'?`<button class="btn btn-green btn-sm" onclick="updOrder(${o.id},'${o.status==='new'?'preparing':o.status==='preparing'?'ready':'delivered'}')">${o.status==='new'?t("بدء التحضير","Start Prep"):o.status==='preparing'?t("جاهز للتسليم","Ready to Deliver"):t("تم التسليم","Delivered")}</button>`:''}
+      <button class="btn btn-red btn-sm" onclick="del('deliveryOrder',${o.id})">${t('حذف','Delete')}</button>
     </div>
   </div>`).join('')}</div>`;
 }
 function setDelPlatform(p){deliveryPlatform=p;renderMain();}
-function updOrder(id,s){const i=appData.deliveryOrders?.findIndex(o=>o.id===id);if(i!==-1&&i!==undefined){appData.deliveryOrders[i].status=s;scheduleSave();renderMain();notify(s==='delivered'?t('تم تسليم الطلب','Order delivered'):t(t('تم تحديث الحالة','Status updated'),'Status updated'));}}
+function updOrder(id,s){const i=appData.deliveryOrders?.findIndex(o=>o.id===id);if(i!==-1&&i!==undefined){appData.deliveryOrders[i].status=s;scheduleSave();renderMain();notify(s==='delivered'?t('تم تسليم الطلب','Order delivered'):t('تم تحديث الحالة','Status updated'));}}
 
 // SALES
 function renderSales(){
@@ -573,7 +589,7 @@ function renderSales(){
   const sw=new Date();sw.setDate(sw.getDate()-sw.getDay());
   const ws=sales.filter(s=>new Date(s.date)>=sw);
   const ms=sales.filter(s=>s.date.startsWith(appData.currentMonth));
-  const dn=['أحد','اثنين','ثلاثاء','أربعاء','خميس','جمعة','سبت'];
+  const dn=L==='ar'?['أحد','اثنين','ثلاثاء','أربعاء','خميس','جمعة','سبت']:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   const bd=sales.slice(-14).reduce((a,s)=>{a[s.date]=(a[s.date]||0)+s.amount;return a},{});
   const dk=Object.keys(bd).sort().slice(-7);const mx=Math.max(...dk.map(d=>bd[d]),1);
   return`<div class="sec-header"><div class="sec-title">🛒 المبيعات اليومية</div><button class="btn btn-green" onclick="openModal('sale')">+ إضافة</button></div>
@@ -584,11 +600,11 @@ function renderSales(){
   </div>
   <div style="background:var(--bg2);border-radius:14px;padding:18px;border:1px solid var(--border);margin-bottom:16px">
     <div style="color:var(--gold);font-weight:700;margin-bottom:12px;font-size:14px">آخر 7 أيام</div>
-    <div class="bar-chart">${dk.length===0?'<p style="color:#555;font-size:12px;margin:auto">لا توجد بيانات</p>':dk.map(d=>`<div class="bar-item"><div class="bar-val">${(bd[d]/1000).toFixed(1)}k</div><div class="bar-fill" style="height:${(bd[d]/mx*75)}px;background:${d===today?'var(--gold)':'var(--green)'}"></div><div class="bar-lbl">${dn[new Date(d).getDay()]}</div></div>`).join('')}</div>
+    <div class="bar-chart">${dk.length===0?'<p style="color:#555;font-size:12px;margin:auto">${t("لا توجد بيانات","No data")}</p>':dk.map(d=>`<div class="bar-item"><div class="bar-val">${(bd[d]/1000).toFixed(1)}k</div><div class="bar-fill" style="height:${(bd[d]/mx*75)}px;background:${d===today?'var(--gold)':'var(--green)'}"></div><div class="bar-lbl">${dn[new Date(d).getDay()]}</div></div>`).join('')}</div>
   </div>
   <div class="table-wrap"><table><thead><tr><th>التاريخ</th><th>اليوم</th><th>الفئة</th><th>المبلغ</th><th>ملاحظة</th><th>إجراءات</th></tr></thead><tbody>
-    ${sales.slice().reverse().slice(0,50).map(s=>`<tr><td style="font-family:monospace">${s.date}</td><td style="color:#888">${dn[new Date(s.date).getDay()]}</td><td>${s.category||'—'}</td><td style="color:var(--green);font-weight:600">${fc(s.amount)}</td><td style="color:#666;font-size:12px">${s.note||'—'}</td><td><div style="display:flex;gap:5px"><button class="btn btn-blue btn-sm" onclick="openModal('sale',${s.id})">تعديل</button><button class="btn btn-red btn-sm" onclick="del('sale',${s.id})">حذف</button></div></td></tr>`).join('')}
-    ${!sales.length?'<tr><td colspan="6" style="text-align:center;color:#555;padding:28px">لا توجد مبيعات</td></tr>':''}
+    ${sales.slice().reverse().slice(0,50).map(s=>`<tr><td style="font-family:monospace">${s.date}</td><td style="color:#888">${dn[new Date(s.date).getDay()]}</td><td>${s.category||'—'}</td><td style="color:var(--green);font-weight:600">${fc(s.amount)}</td><td style="color:#666;font-size:12px">${s.note||'—'}</td><td><div style="display:flex;gap:5px"><button class="btn btn-blue btn-sm" onclick="openModal('sale',${s.id})">${t("تعديل","Edit")}</button><button class="btn btn-red btn-sm" onclick="del('sale',${s.id})">${t("حذف","Delete")}</button></div></td></tr>`).join('')}
+    ${!sales.length?`<tr><td colspan="6" style="text-align:center;color:#555;padding:28px">${t('لا توجد مبيعات','No sales yet')}</td></tr>`:''}
   </tbody></table></div>`;
 }
 
@@ -596,10 +612,10 @@ function renderSales(){
 function renderRevenue(s){
   const items=appData.revenue.filter(r=>r.month===s.cm);
   return`<div class="sec-header"><div class="sec-title">💰 الإيرادات — ${ml(s.cm)}</div><button class="btn btn-green" onclick="openModal('revenue')">+ إضافة</button></div>
-  <div class="kpi-grid" style="grid-template-columns:1fr">${kpi(t(t(t('إجمالي الإيرادات','Total Revenue'),'Total Revenue'),'Total Revenue'),fc(s.totalRev),'💰','var(--green)')}</div>
+  <div class="kpi-grid" style="grid-template-columns:1fr">${kpi(t('إجمالي الإيرادات','Total Revenue'),fc(s.totalRev),'💰','var(--green)')}</div>
   <div class="table-wrap"><table><thead><tr><th>المصدر</th><th>الشهر</th><th>المبلغ</th><th>إجراءات</th></tr></thead><tbody>
-    ${items.map(r=>`<tr><td style="font-weight:600">${r.source}</td><td>${ml(r.month)}</td><td style="color:var(--green);font-weight:600">${fc(r.amount)}</td><td><div style="display:flex;gap:5px"><button class="btn btn-blue btn-sm" onclick="openModal('revenue',${r.id})">تعديل</button><button class="btn btn-red btn-sm" onclick="del('revenue',${r.id})">حذف</button></div></td></tr>`).join('')}
-    ${!items.length?'<tr><td colspan="4" style="text-align:center;color:#555;padding:28px">لا توجد إيرادات</td></tr>':''}
+    ${items.map(r=>`<tr><td style="font-weight:600">${r.source}</td><td>${ml(r.month)}</td><td style="color:var(--green);font-weight:600">${fc(r.amount)}</td><td><div style="display:flex;gap:5px"><button class="btn btn-blue btn-sm" onclick="openModal('revenue',${r.id})">${t("تعديل","Edit")}</button><button class="btn btn-red btn-sm" onclick="del('revenue',${r.id})">${t("حذف","Delete")}</button></div></td></tr>`).join('')}
+    ${!items.length?'\1'+t('\2','\3')+'\4':''}
   </tbody></table></div>`;
 }
 
@@ -609,8 +625,8 @@ function renderMaterials(s){
   return`<div class="sec-header"><div class="sec-title">🌾 المواد الخام — ${ml(s.cm)}</div><button class="btn btn-orange" onclick="openModal('material')">+ إضافة</button></div>
   <div class="kpi-grid" style="grid-template-columns:1fr">${kpi(t('إجمالي التكلفة','Total Cost'),fc(s.totalRaw),'🌾','var(--orange)')}</div>
   <div class="table-wrap"><table><thead><tr><th>المادة</th><th>الكمية</th><th>الوحدة</th><th>سعر الوحدة</th><th>الإجمالي</th><th>إجراءات</th></tr></thead><tbody>
-    ${items.map(r=>`<tr><td style="font-weight:600">${r.name}</td><td>${r.qty}</td><td>${r.unit}</td><td>${fc(r.unitCost)}</td><td style="color:var(--orange);font-weight:600">${fc(r.qty*r.unitCost)}</td><td><div style="display:flex;gap:5px"><button class="btn btn-blue btn-sm" onclick="openModal('material',${r.id})">تعديل</button><button class="btn btn-red btn-sm" onclick="del('material',${r.id})">حذف</button></div></td></tr>`).join('')}
-    ${!items.length?'<tr><td colspan="6" style="text-align:center;color:#555;padding:28px">لا توجد مواد</td></tr>':''}
+    ${items.map(r=>`<tr><td style="font-weight:600">${r.name}</td><td>${r.qty}</td><td>${r.unit}</td><td>${fc(r.unitCost)}</td><td style="color:var(--orange);font-weight:600">${fc(r.qty*r.unitCost)}</td><td><div style="display:flex;gap:5px"><button class="btn btn-blue btn-sm" onclick="openModal('material',${r.id})">${t("تعديل","Edit")}</button><button class="btn btn-red btn-sm" onclick="del('material',${r.id})">${t("حذف","Delete")}</button></div></td></tr>`).join('')}
+    ${!items.length?'\1'+t('\2','\3')+'\4':''}
   </tbody></table></div>`;
 }
 
@@ -623,8 +639,8 @@ function renderEmployees(s){
     ${kpi(t('الإجمالي','Total'),fc(s.totalSalaries),'👥','var(--orange)',appData.employees.length+t(' موظف',' employees'))}
   </div>
   <div class="table-wrap"><table><thead><tr><th>الاسم</th><th>المنصب</th><th>الراتب</th><th>السكن</th><th>الإجمالي</th><th>إجراءات</th></tr></thead><tbody>
-    ${appData.employees.map(e=>`<tr><td style="font-weight:600">${e.name}</td><td style="color:#aaa">${e.role}</td><td>${fc(e.salary)}</td><td style="color:var(--purple)">${fc(e.housing)}</td><td style="color:var(--blue);font-weight:600">${fc(e.salary+e.housing)}</td><td><div style="display:flex;gap:5px"><button class="btn btn-blue btn-sm" onclick="openModal('employee',${e.id})">تعديل</button><button class="btn btn-red btn-sm" onclick="del('employee',${e.id})">حذف</button></div></td></tr>`).join('')}
-    ${!appData.employees.length?'<tr><td colspan="6" style="text-align:center;color:#555;padding:28px">لا يوجد موظفون</td></tr>':''}
+    ${appData.employees.map(e=>`<tr><td style="font-weight:600">${e.name}</td><td style="color:#aaa">${e.role}</td><td>${fc(e.salary)}</td><td style="color:var(--purple)">${fc(e.housing)}</td><td style="color:var(--blue);font-weight:600">${fc(e.salary+e.housing)}</td><td><div style="display:flex;gap:5px"><button class="btn btn-blue btn-sm" onclick="openModal('employee',${e.id})">${t("تعديل","Edit")}</button><button class="btn btn-red btn-sm" onclick="del('employee',${e.id})">${t("حذف","Delete")}</button></div></td></tr>`).join('')}
+    ${!appData.employees.length?'\1'+t('\2','\3')+'\4':''}
   </tbody></table></div>`;
 }
 
@@ -634,8 +650,8 @@ function renderExpenses(s){
   return`<div class="sec-header"><div class="sec-title">📋 المصاريف — ${ml(s.cm)}</div><button class="btn btn-red" onclick="openModal('expense')">+ إضافة</button></div>
   <div class="kpi-grid" style="grid-template-columns:1fr">${kpi(t('إجمالي المصاريف','Total Expenses'),fc(s.totalExp),'📋','var(--red)')}</div>
   <div class="table-wrap"><table><thead><tr><th>التصنيف</th><th>الشهر</th><th>المبلغ</th><th>ملاحظة</th><th>إجراءات</th></tr></thead><tbody>
-    ${items.map(e=>`<tr><td style="font-weight:600">${e.category}</td><td>${ml(e.month)}</td><td style="color:var(--red);font-weight:600">${fc(e.amount)}</td><td style="color:#666">${e.note||'—'}</td><td><div style="display:flex;gap:5px"><button class="btn btn-blue btn-sm" onclick="openModal('expense',${e.id})">تعديل</button><button class="btn btn-red btn-sm" onclick="del('expense',${e.id})">حذف</button></div></td></tr>`).join('')}
-    ${!items.length?'<tr><td colspan="5" style="text-align:center;color:#555;padding:28px">لا توجد مصاريف</td></tr>':''}
+    ${items.map(e=>`<tr><td style="font-weight:600">${e.category}</td><td>${ml(e.month)}</td><td style="color:var(--red);font-weight:600">${fc(e.amount)}</td><td style="color:#666">${e.note||'—'}</td><td><div style="display:flex;gap:5px"><button class="btn btn-blue btn-sm" onclick="openModal('expense',${e.id})">${t("تعديل","Edit")}</button><button class="btn btn-red btn-sm" onclick="del('expense',${e.id})">${t("حذف","Delete")}</button></div></td></tr>`).join('')}
+    ${!items.length?'\1'+t('\2','\3')+'\4':''}
   </tbody></table></div>`;
 }
 
@@ -649,8 +665,8 @@ function renderEquipment(){
     ${kpi(t('تكاليف الصيانة','Maintenance Costs'),fc(eq.reduce((a,e)=>a+(e.maintenanceCost||0),0)),'🔧','var(--orange)','')}
   </div>
   <div class="table-wrap"><table><thead><tr><th>المعدة</th><th>النوع</th><th>سعر الشراء</th><th>الصيانة</th><th>الحالة</th><th>تاريخ الشراء</th><th>إجراءات</th></tr></thead><tbody>
-    ${eq.map(e=>`<tr><td style="font-weight:600">${e.name}</td><td style="color:#aaa">${e.type||'—'}</td><td style="color:var(--blue);font-weight:600">${fc(e.purchaseCost)}</td><td style="color:var(--orange)">${fc(e.maintenanceCost||0)}</td><td><span style="background:${cc[e.condition]||'#333'}22;color:${cc[e.condition]||'#888'};border-radius:6px;padding:3px 8px;font-size:11px">${e.condition||'—'}</span></td><td style="color:#888">${e.purchaseDate||'—'}</td><td><div style="display:flex;gap:5px"><button class="btn btn-blue btn-sm" onclick="openModal('equipment',${e.id})">تعديل</button><button class="btn btn-red btn-sm" onclick="del('equipment',${e.id})">حذف</button></div></td></tr>`).join('')}
-    ${!eq.length?'<tr><td colspan="7" style="text-align:center;color:#555;padding:28px">لا توجد معدات</td></tr>':''}
+    ${eq.map(e=>`<tr><td style="font-weight:600">${e.name}</td><td style="color:#aaa">${e.type||'—'}</td><td style="color:var(--blue);font-weight:600">${fc(e.purchaseCost)}</td><td style="color:var(--orange)">${fc(e.maintenanceCost||0)}</td><td><span style="background:${cc[e.condition]||'#333'}22;color:${cc[e.condition]||'#888'};border-radius:6px;padding:3px 8px;font-size:11px">${e.condition||'—'}</span></td><td style="color:#888">${e.purchaseDate||'—'}</td><td><div style="display:flex;gap:5px"><button class="btn btn-blue btn-sm" onclick="openModal('equipment',${e.id})">${t("تعديل","Edit")}</button><button class="btn btn-red btn-sm" onclick="del('equipment',${e.id})">${t("حذف","Delete")}</button></div></td></tr>`).join('')}
+    ${!eq.length?'\1'+t('\2','\3')+'\4':''}
   </tbody></table></div>`;
 }
 
@@ -673,15 +689,15 @@ function renderReports(s){
   const ec=appData.expenses.filter(e=>e.month===s.cm).reduce((a,e)=>{a[e.category]=(a[e.category]||0)+e.amount;return a},{});
   return`<div class="sec-header"><div class="sec-title">📈 التقارير — ${ml(s.cm)}</div></div>
   <div class="kpi-grid">
-    ${kpi(t('الإيرادات','Revenue'),fc(s.totalRev),'💰','var(--green)',`هامش ${s.margin}%`)}
+    ${kpi(t("الإيرادات","Revenue"),fc(s.totalRev),'💰','var(--green)',`هامش ${s.margin}%`)}
     ${kpi('التكاليف',fc(s.totalCosts),'📉','var(--red)','')}
     ${kpi(s.netProfit>=0?t('صافي الربح','Net Profit'):t('صافي الخسارة','Net Loss'),fc(Math.abs(s.netProfit)),'📊',s.netProfit>=0?'var(--green)':'var(--red)','')}
   </div>
   <div style="background:var(--bg2);border-radius:14px;padding:20px;border:1px solid var(--border);margin-bottom:18px">
-    <div style="color:var(--gold);font-weight:700;margin-bottom:16px">قائمة الدخل الشهرية</div>
+    <div style="color:var(--gold);font-weight:700;margin-bottom:16px">${t("قائمة الدخل الشهرية","Monthly Income Statement")}</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
       <div>
-        <div style="color:var(--green);font-weight:700;margin-bottom:10px;font-size:14px">الإيرادات</div>
+        <div style="color:var(--green);font-weight:700;margin-bottom:10px;font-size:14px">${t("الإيرادات","Revenue")}</div>
         ${appData.revenue.filter(r=>r.month===s.cm).map(r=>`<div class="pnl-row"><span style="color:#bbb">${r.source}</span><span style="color:var(--green);font-weight:600">${fc(r.amount)}</span></div>`).join('')}
         <div class="pnl-total"><span>الإجمالي</span><span style="color:var(--green)">${fc(s.totalRev)}</span></div>
       </div>
@@ -715,7 +731,7 @@ function drawAllBarcodes(){(appData.products||[]).forEach(p=>{if(p.barcode)drawB
 function renderBarcode(){
   const prods=appData.products||[];
   return`<div class="sec-header"><div class="sec-title">🏷️ الباركود</div><div style="display:flex;gap:8px"><button class="btn btn-blue" onclick="printAllBC()">🖨️ طباعة الكل</button><button class="btn btn-gold" onclick="openModal('product')">+ منتج</button></div></div>
-  <div class="product-grid">${prods.map(p=>{const m=p.price>0?(((p.price-p.cost)/p.price)*100).toFixed(0):0;return`<div class="product-card"><div class="product-card-head"><div><div style="color:#fff;font-weight:700;font-size:14px">${p.name}</div><div style="color:var(--gold);font-size:11px">${p.category} • ${p.unit}</div></div><div style="text-align:left"><div style="color:var(--green);font-size:17px;font-weight:700">${fc(p.price)}</div><div style="color:#666;font-size:10px">هامش: ${m}%</div></div></div><div class="product-card-body"><canvas id="bc-${p.id}"></canvas></div><div class="product-card-stats"><div class="stat-item"><div class="stat-label">البيع</div><div class="stat-value" style="color:var(--green)">${fc(p.price)}</div></div><div class="stat-item"><div class="stat-label">التكلفة</div><div class="stat-value" style="color:var(--red)">${fc(p.cost)}</div></div><div class="stat-item"><div class="stat-label">الربح</div><div class="stat-value" style="color:var(--gold)">${fc(p.price-p.cost)}</div></div></div><div class="product-card-actions"><button class="btn btn-blue btn-sm" style="flex:1" onclick="printLabel(${p.id})">🖨️ طباعة</button><button class="btn btn-dark btn-sm" onclick="openModal('product',${p.id})">تعديل</button><button class="btn btn-red btn-sm" onclick="del('product',${p.id})">حذف</button></div></div>`;}).join('')}</div>`;
+  <div class="product-grid">${prods.map(p=>{const m=p.price>0?(((p.price-p.cost)/p.price)*100).toFixed(0):0;return`<div class="product-card"><div class="product-card-head"><div><div style="color:#fff;font-weight:700;font-size:14px">${p.name}</div><div style="color:var(--gold);font-size:11px">${p.category} • ${p.unit}</div></div><div style="text-align:left"><div style="color:var(--green);font-size:17px;font-weight:700">${fc(p.price)}</div><div style="color:#666;font-size:10px">هامش: ${m}%</div></div></div><div class="product-card-body"><canvas id="bc-${p.id}"></canvas></div><div class="product-card-stats"><div class="stat-item"><div class="stat-label">البيع</div><div class="stat-value" style="color:var(--green)">${fc(p.price)}</div></div><div class="stat-item"><div class="stat-label">التكلفة</div><div class="stat-value" style="color:var(--red)">${fc(p.cost)}</div></div><div class="stat-item"><div class="stat-label">الربح</div><div class="stat-value" style="color:var(--gold)">${fc(p.price-p.cost)}</div></div></div><div class="product-card-actions"><button class="btn btn-blue btn-sm" style="flex:1" onclick="printLabel(${p.id})">🖨️ طباعة</button><button class="btn btn-dark btn-sm" onclick="openModal('product',${p.id})">${t("تعديل","Edit")}</button><button class="btn btn-red btn-sm" onclick="del('product',${p.id})">${t("حذف","Delete")}</button></div></div>`;}).join('')}</div>`;
 }
 
 function printLabel(id){
@@ -738,17 +754,17 @@ function renderUsers(){
   if(!currentUser||currentUser.role!=='admin')return`<div style="text-align:center;padding:60px;color:#555"><div style="font-size:36px;margin-bottom:12px">🔒</div><div>هذا القسم للمدير فقط</div></div>`;
   return`<div class="sec-header"><div class="sec-title">🔑 المستخدمون</div><button class="btn btn-green" onclick="openModal('newuser')">+ مستخدم جديد</button></div>
   <div class="hint-gold">كل شخص يدخل بكلمة مروره الخاصة من أي مكان</div>
-  <div id="users-list" style="margin-top:14px"><div style="text-align:center;color:#555;padding:20px">جاري التحميل...</div></div>`;
+  <div id="users-list" style="margin-top:14px"><div style="text-align:center;color:#555;padding:20px">${t("جاري التحميل...","Loading...")}</div></div>`;
 }
 async function loadUsersList(){
   if(currentTab!=='users')return;
   const users=await apiFetch('/api/users');
   const list=document.getElementById('users-list');if(!list)return;
   if(!users||users._401){list.innerHTML='<div style="color:var(--red);text-align:center">خطأ في التحميل</div>';return;}
-  list.innerHTML=(Array.isArray(users)?users:[]).map(u=>`<div class="user-card"><div><div style="font-weight:600;font-size:15px">${u.name}</div><div style="color:#888;font-size:12px">@${u.username} • ${u.role==='admin'?'<span style="color:var(--gold)">مدير</span>':t('موظف','Employee')}</div></div><div style="display:flex;gap:8px">${u.id!==currentUser.id?`<button class="btn btn-red btn-sm" onclick="deleteUser(${u.id})">حذف</button>`:'<span style="color:#555;font-size:12px">أنت</span>'}</div></div>`).join('');
+  list.innerHTML=(Array.isArray(users)?users:[]).map(u=>`<div class="user-card"><div><div style="font-weight:600;font-size:15px">${u.name}</div><div style="color:#888;font-size:12px">@${u.username} • ${u.role==='admin'?'<span style="color:var(--gold)">مدير</span>':t("موظف","Employee")}</div></div><div style="display:flex;gap:8px">${u.id!==currentUser.id?`<button class="btn btn-red btn-sm" onclick="deleteUser(${u.id})">${t("حذف","Delete")}</button>`:'<span style="color:#555;font-size:12px">أنت</span>'}</div></div>`).join('');
 }
 async function deleteUser(id){
-  if(!confirm('هل تريد حذف هذا المستخدم؟'))return;
+  if(!confirm(t('هل تريد حذف هذا المستخدم؟','Delete this user?')))return;
   const r=await apiFetch('/api/users/'+id,{method:'DELETE'});
   if(r?.ok){notify('تم حذف المستخدم');loadUsersList();}else notify(r?.error||'خطأ','error');
 }
@@ -761,7 +777,7 @@ function renderProfile(){
       <div style="font-size:40px;margin-bottom:12px">👤</div>
       <div style="font-size:18px;font-weight:700;color:var(--gold)">${currentUser?.name||''}</div>
       <div style="color:#888;font-size:13px;margin-top:4px">@${currentUser?.username||''}</div>
-      <div style="color:var(--purple);font-size:12px;margin-top:4px">${currentUser?.role==='admin'?'🔑 مدير':'👷 موظف'}</div>
+      <div style="color:var(--purple);font-size:12px;margin-top:4px">${currentUser?.role==='admin'?t('🔑 مدير','🔑 Admin'):t('👷 موظف','👷 Employee')}</div>
     </div>
     <div style="background:var(--bg2);border-radius:14px;padding:22px;border:1px solid var(--border)">
       <div style="color:var(--gold);font-weight:700;margin-bottom:14px">تغيير كلمة المرور</div>
@@ -779,7 +795,7 @@ async function changePassword(){
   if(np!==cp){showPwMsg(t('كلمات المرور لا تتطابق','Passwords do not match'),'var(--red)');return;}
   if(np.length<6){showPwMsg(t('كلمة المرور قصيرة جداً','Password too short'),'var(--red)');return;}
   const r=await apiFetch('/api/change-password',{method:'POST',body:JSON.stringify({oldPassword:op,newPassword:np})});
-  showPwMsg(r?.ok?'تم تغيير كلمة المرور':r?.error||'خطأ',r?.ok?'var(--green)':'var(--red)');
+  showPwMsg(r?.ok?t('تم تغيير كلمة المرور','Password changed'):r?.error||'خطأ',r?.ok?'var(--green)':'var(--red)');
 }
 function showPwMsg(m,c){const e=document.getElementById('pw-msg');if(!e)return;e.style.display='block';e.style.color=c;e.textContent=m;}
 async function doLogout(){await apiFetch('/api/logout',{method:'POST'});window.location.href='/login';}
@@ -799,14 +815,14 @@ function buildForm(type,item,id){
   const cm=appData.currentMonth;
   const mOpts=MONTHS.map(m=>`<option value="${m}" ${(item?.month||cm)===m?'selected':''}>${ml(m)}</option>`).join('');
   const isEdit=!!id;
-  if(type==='employee')return`<div class="modal-title">${isEdit?t('تعديل','Edit'):'إضافة'} موظف</div><div class="form-field"><label class="form-label">الاسم *</label><input class="form-input" id="f-name" value="${item?.name||''}"></div><div class="form-field"><label class="form-label">المنصب</label><input class="form-input" id="f-role" value="${item?.role||''}"></div><div class="form-row"><div class="form-field"><label class="form-label">الراتب *</label><input class="form-input" id="f-salary" type="number" value="${item?.salary||''}"></div><div class="form-field"><label class="form-label">السكن</label><input class="form-input" id="f-housing" type="number" value="${item?.housing||''}"></div></div><div style="display:flex;gap:10px"><button class="btn btn-blue" style="flex:1" onclick="saveEmp(${id||'null'})">حفظ</button><button class="btn btn-dark" style="flex:1" onclick="closeModal()">إلغاء</button></div>`;
-  if(type==='expense')return`<div class="modal-title">${isEdit?t('تعديل','Edit'):'إضافة'} مصروف</div><div class="form-field"><label class="form-label">التصنيف *</label><select class="form-input" id="f-cat">${["كهرباء","ماء","غاز","إنترنت","هاتف","صيانة","تأمين","نظافة","مواصلات","تسويق","أخرى"].map(c=>`<option ${item?.category===c?'selected':''}>${c}</option>`).join('')}</select></div><div class="form-field"><label class="form-label">المبلغ *</label><input class="form-input" id="f-amount" type="number" value="${item?.amount||''}"></div><div class="form-field"><label class="form-label">الشهر</label><select class="form-input" id="f-month">${mOpts}</select></div><div class="form-field"><label class="form-label">ملاحظة</label><input class="form-input" id="f-note" value="${item?.note||''}"></div><div style="display:flex;gap:10px"><button class="btn btn-red" style="flex:1" onclick="saveExp(${id||'null'})">حفظ</button><button class="btn btn-dark" style="flex:1" onclick="closeModal()">إلغاء</button></div>`;
-  if(type==='material')return`<div class="modal-title">${isEdit?t('تعديل','Edit'):'إضافة'} مادة خام</div><div class="form-field"><label class="form-label">الاسم *</label><input class="form-input" id="f-name" value="${item?.name||''}"></div><div class="form-row"><div class="form-field"><label class="form-label">الكمية *</label><input class="form-input" id="f-qty" type="number" value="${item?.qty||''}"></div><div class="form-field"><label class="form-label">الوحدة</label><select class="form-input" id="f-unit">${["كيلو","لتر","علبة","كرتون","كيس","قطعة"].map(u=>`<option ${item?.unit===u?'selected':''}>${u}</option>`).join('')}</select></div></div><div class="form-field"><label class="form-label">سعر الوحدة *</label><input class="form-input" id="f-uc" type="number" step="0.01" value="${item?.unitCost||''}"></div><div class="form-field"><label class="form-label">الشهر</label><select class="form-input" id="f-month">${mOpts}</select></div><div style="display:flex;gap:10px"><button class="btn btn-orange" style="flex:1" onclick="saveMat(${id||'null'})">حفظ</button><button class="btn btn-dark" style="flex:1" onclick="closeModal()">إلغاء</button></div>`;
-  if(type==='revenue')return`<div class="modal-title">${isEdit?t('تعديل','Edit'):'إضافة'} إيراد</div><div class="form-field"><label class="form-label">المصدر *</label><input class="form-input" id="f-source" value="${item?.source||''}"></div><div class="form-field"><label class="form-label">المبلغ *</label><input class="form-input" id="f-amount" type="number" value="${item?.amount||''}"></div><div class="form-field"><label class="form-label">الشهر</label><select class="form-input" id="f-month">${mOpts}</select></div><div style="display:flex;gap:10px"><button class="btn btn-green" style="flex:1" onclick="saveRev(${id||'null'})">حفظ</button><button class="btn btn-dark" style="flex:1" onclick="closeModal()">إلغاء</button></div>`;
+  if(type==='employee')return`<div class="modal-title">${isEdit?t("تعديل","Edit"):'إضافة'} موظف</div><div class="form-field"><label class="form-label">الاسم *</label><input class="form-input" id="f-name" value="${item?.name||''}"></div><div class="form-field"><label class="form-label">المنصب</label><input class="form-input" id="f-role" value="${item?.role||''}"></div><div class="form-row"><div class="form-field"><label class="form-label">الراتب *</label><input class="form-input" id="f-salary" type="number" value="${item?.salary||''}"></div><div class="form-field"><label class="form-label">السكن</label><input class="form-input" id="f-housing" type="number" value="${item?.housing||''}"></div></div><div style="display:flex;gap:10px"><button class="btn btn-blue" style="flex:1" onclick="saveEmp(${id||'null'})">حفظ</button><button class="btn btn-dark" style="flex:1" onclick="closeModal()">إلغاء</button></div>`;
+  if(type==='expense')return`<div class="modal-title">${isEdit?t("تعديل","Edit"):'إضافة'} مصروف</div><div class="form-field"><label class="form-label">التصنيف *</label><select class="form-input" id="f-cat">${["كهرباء","ماء","غاز","إنترنت","هاتف","صيانة","تأمين","نظافة","مواصلات","تسويق","أخرى"].map(c=>`<option ${item?.category===c?'selected':''}>${c}</option>`).join('')}</select></div><div class="form-field"><label class="form-label">المبلغ *</label><input class="form-input" id="f-amount" type="number" value="${item?.amount||''}"></div><div class="form-field"><label class="form-label">الشهر</label><select class="form-input" id="f-month">${mOpts}</select></div><div class="form-field"><label class="form-label">ملاحظة</label><input class="form-input" id="f-note" value="${item?.note||''}"></div><div style="display:flex;gap:10px"><button class="btn btn-red" style="flex:1" onclick="saveExp(${id||'null'})">حفظ</button><button class="btn btn-dark" style="flex:1" onclick="closeModal()">إلغاء</button></div>`;
+  if(type==='material')return`<div class="modal-title">${isEdit?t("تعديل","Edit"):'إضافة'} مادة خام</div><div class="form-field"><label class="form-label">الاسم *</label><input class="form-input" id="f-name" value="${item?.name||''}"></div><div class="form-row"><div class="form-field"><label class="form-label">الكمية *</label><input class="form-input" id="f-qty" type="number" value="${item?.qty||''}"></div><div class="form-field"><label class="form-label">الوحدة</label><select class="form-input" id="f-unit">${["كيلو","لتر","علبة","كرتون","كيس","قطعة"].map(u=>`<option ${item?.unit===u?'selected':''}>${u}</option>`).join('')}</select></div></div><div class="form-field"><label class="form-label">سعر الوحدة *</label><input class="form-input" id="f-uc" type="number" step="0.01" value="${item?.unitCost||''}"></div><div class="form-field"><label class="form-label">الشهر</label><select class="form-input" id="f-month">${mOpts}</select></div><div style="display:flex;gap:10px"><button class="btn btn-orange" style="flex:1" onclick="saveMat(${id||'null'})">حفظ</button><button class="btn btn-dark" style="flex:1" onclick="closeModal()">إلغاء</button></div>`;
+  if(type==='revenue')return`<div class="modal-title">${isEdit?t("تعديل","Edit"):'إضافة'} إيراد</div><div class="form-field"><label class="form-label">المصدر *</label><input class="form-input" id="f-source" value="${item?.source||''}"></div><div class="form-field"><label class="form-label">المبلغ *</label><input class="form-input" id="f-amount" type="number" value="${item?.amount||''}"></div><div class="form-field"><label class="form-label">الشهر</label><select class="form-input" id="f-month">${mOpts}</select></div><div style="display:flex;gap:10px"><button class="btn btn-green" style="flex:1" onclick="saveRev(${id||'null'})">حفظ</button><button class="btn btn-dark" style="flex:1" onclick="closeModal()">إلغاء</button></div>`;
   if(type==='rent')return`<div class="modal-title">تعديل الإيجار</div><div class="form-field"><label class="form-label">القيمة</label><input class="form-input" id="f-amount" type="number" value="${appData.rent.amount}"></div><div class="form-field"><label class="form-label">يوم الاستحقاق</label><input class="form-input" id="f-dueday" type="number" min="1" max="31" value="${appData.rent.dueDay}"></div><div class="form-field"><label class="form-label">ملاحظة</label><input class="form-input" id="f-note" value="${appData.rent.note||''}"></div><div style="display:flex;gap:10px"><button class="btn btn-purple" style="flex:1" onclick="saveRent()">حفظ</button><button class="btn btn-dark" style="flex:1" onclick="closeModal()">إلغاء</button></div>`;
-  if(type==='product')return`<div class="modal-title">${isEdit?t('تعديل','Edit'):'إضافة'} منتج</div><div class="form-field"><label class="form-label">الاسم *</label><input class="form-input" id="f-name" value="${item?.name||''}"></div><div class="form-row"><div class="form-field"><label class="form-label">الفئة</label><select class="form-input" id="f-cat">${["خبز","معجنات","حلويات","مشروبات","إضافات","عام"].map(c=>`<option ${item?.category===c?'selected':''}>${c}</option>`).join('')}</select></div><div class="form-field"><label class="form-label">الوحدة</label><select class="form-input" id="f-unit">${["قطعة","رغيف","كيس","كيلو","علبة","لتر","دزينة"].map(u=>`<option ${item?.unit===u?'selected':''}>${u}</option>`).join('')}</select></div></div><div class="form-row"><div class="form-field"><label class="form-label">سعر البيع *</label><input class="form-input" id="f-price" type="number" step="0.01" value="${item?.price||''}"></div><div class="form-field"><label class="form-label">تكلفة الإنتاج</label><input class="form-input" id="f-cost" type="number" step="0.01" value="${item?.cost||''}"></div></div><div class="form-field"><label class="form-label">الباركود</label><div style="display:flex;gap:7px"><input class="form-input" id="f-bc" style="flex:1" value="${item?.barcode||''}" oninput="refreshMBC()"><button class="btn btn-dark btn-sm" onclick="document.getElementById('f-bc').value=genBC();refreshMBC()">🔄 توليد</button></div></div><div id="mbc-wrap" style="background:#fff;border-radius:8px;padding:10px;margin-bottom:12px;display:${item?.barcode?'flex':'none'};justify-content:center"><canvas id="mbc"></canvas></div><div style="display:flex;gap:10px"><button class="btn btn-gold" style="flex:1" onclick="saveProd(${id||'null'})">حفظ</button><button class="btn btn-dark" style="flex:1" onclick="closeModal()">إلغاء</button></div>`;
-  if(type==='sale')return`<div class="modal-title">${isEdit?t('تعديل','Edit'):'إضافة'} مبيعات</div><div class="form-field"><label class="form-label">التاريخ *</label><input class="form-input" id="f-date" type="date" value="${item?.date||new Date().toISOString().split('T')[0]}"></div><div class="form-field"><label class="form-label">الفئة</label><select class="form-input" id="f-cat">${["خبز","معجنات","حلويات","مشروبات","طلبات خاصة","متنوع"].map(c=>`<option ${item?.category===c?'selected':''}>${c}</option>`).join('')}</select></div><div class="form-field"><label class="form-label">المبلغ *</label><input class="form-input" id="f-amount" type="number" step="0.01" value="${item?.amount||''}"></div><div class="form-field"><label class="form-label">ملاحظة</label><input class="form-input" id="f-note" value="${item?.note||''}"></div><div style="display:flex;gap:10px"><button class="btn btn-green" style="flex:1" onclick="saveSale(${id||'null'})">حفظ</button><button class="btn btn-dark" style="flex:1" onclick="closeModal()">إلغاء</button></div>`;
-  if(type==='equipment')return`<div class="modal-title">${isEdit?t('تعديل','Edit'):'إضافة'} معدة</div><div class="form-field"><label class="form-label">الاسم *</label><input class="form-input" id="f-name" value="${item?.name||''}"></div><div class="form-row"><div class="form-field"><label class="form-label">النوع</label><select class="form-input" id="f-type">${["معدات خبز","معدات تبريد","معدات تسخين","أدوات","أجهزة كهربائية","أثاث","أخرى"].map(t=>`<option ${item?.type===t?'selected':''}>${t}</option>`).join('')}</select></div><div class="form-field"><label class="form-label">الحالة</label><select class="form-input" id="f-cond">${["ممتاز","جيد","متوسط","يحتاج_صيانة"].map(c=>`<option ${item?.condition===c?'selected':''}>${c}</option>`).join('')}</select></div></div><div class="form-row"><div class="form-field"><label class="form-label">سعر الشراء *</label><input class="form-input" id="f-cost" type="number" value="${item?.purchaseCost||''}"></div><div class="form-field"><label class="form-label">الصيانة</label><input class="form-input" id="f-maint" type="number" value="${item?.maintenanceCost||''}"></div></div><div class="form-field"><label class="form-label">تاريخ الشراء</label><input class="form-input" id="f-date" type="date" value="${item?.purchaseDate||''}"></div><div class="form-field"><label class="form-label">ملاحظة</label><input class="form-input" id="f-note" value="${item?.note||''}"></div><div style="display:flex;gap:10px"><button class="btn btn-blue" style="flex:1" onclick="saveEquip(${id||'null'})">حفظ</button><button class="btn btn-dark" style="flex:1" onclick="closeModal()">إلغاء</button></div>`;
+  if(type==='product')return`<div class="modal-title">${isEdit?t("تعديل","Edit"):'إضافة'} منتج</div><div class="form-field"><label class="form-label">الاسم *</label><input class="form-input" id="f-name" value="${item?.name||''}"></div><div class="form-row"><div class="form-field"><label class="form-label">الفئة</label><select class="form-input" id="f-cat">${["خبز","معجنات","حلويات","مشروبات","إضافات","عام"].map(c=>`<option ${item?.category===c?'selected':''}>${c}</option>`).join('')}</select></div><div class="form-field"><label class="form-label">الوحدة</label><select class="form-input" id="f-unit">${["قطعة","رغيف","كيس","كيلو","علبة","لتر","دزينة"].map(u=>`<option ${item?.unit===u?'selected':''}>${u}</option>`).join('')}</select></div></div><div class="form-row"><div class="form-field"><label class="form-label">سعر البيع *</label><input class="form-input" id="f-price" type="number" step="0.01" value="${item?.price||''}"></div><div class="form-field"><label class="form-label">تكلفة الإنتاج</label><input class="form-input" id="f-cost" type="number" step="0.01" value="${item?.cost||''}"></div></div><div class="form-field"><label class="form-label">الباركود</label><div style="display:flex;gap:7px"><input class="form-input" id="f-bc" style="flex:1" value="${item?.barcode||''}" oninput="refreshMBC()"><button class="btn btn-dark btn-sm" onclick="document.getElementById('f-bc').value=genBC();refreshMBC()">🔄 توليد</button></div></div><div id="mbc-wrap" style="background:#fff;border-radius:8px;padding:10px;margin-bottom:12px;display:${item?.barcode?'flex':'none'};justify-content:center"><canvas id="mbc"></canvas></div><div style="display:flex;gap:10px"><button class="btn btn-gold" style="flex:1" onclick="saveProd(${id||'null'})">حفظ</button><button class="btn btn-dark" style="flex:1" onclick="closeModal()">إلغاء</button></div>`;
+  if(type==='sale')return`<div class="modal-title">${isEdit?t("تعديل","Edit"):'إضافة'} مبيعات</div><div class="form-field"><label class="form-label">التاريخ *</label><input class="form-input" id="f-date" type="date" value="${item?.date||new Date().toISOString().split('T')[0]}"></div><div class="form-field"><label class="form-label">الفئة</label><select class="form-input" id="f-cat">${["خبز","معجنات","حلويات","مشروبات","طلبات خاصة","متنوع"].map(c=>`<option ${item?.category===c?'selected':''}>${c}</option>`).join('')}</select></div><div class="form-field"><label class="form-label">المبلغ *</label><input class="form-input" id="f-amount" type="number" step="0.01" value="${item?.amount||''}"></div><div class="form-field"><label class="form-label">ملاحظة</label><input class="form-input" id="f-note" value="${item?.note||''}"></div><div style="display:flex;gap:10px"><button class="btn btn-green" style="flex:1" onclick="saveSale(${id||'null'})">حفظ</button><button class="btn btn-dark" style="flex:1" onclick="closeModal()">إلغاء</button></div>`;
+  if(type==='equipment')return`<div class="modal-title">${isEdit?t("تعديل","Edit"):'إضافة'} معدة</div><div class="form-field"><label class="form-label">الاسم *</label><input class="form-input" id="f-name" value="${item?.name||''}"></div><div class="form-row"><div class="form-field"><label class="form-label">النوع</label><select class="form-input" id="f-type">${["معدات خبز","معدات تبريد","معدات تسخين","أدوات","أجهزة كهربائية","أثاث","أخرى"].map(t=>`<option ${item?.type===t?'selected':''}>${t}</option>`).join('')}</select></div><div class="form-field"><label class="form-label">الحالة</label><select class="form-input" id="f-cond">${["ممتاز","جيد","متوسط","يحتاج_صيانة"].map(c=>`<option ${item?.condition===c?'selected':''}>${c}</option>`).join('')}</select></div></div><div class="form-row"><div class="form-field"><label class="form-label">سعر الشراء *</label><input class="form-input" id="f-cost" type="number" value="${item?.purchaseCost||''}"></div><div class="form-field"><label class="form-label">الصيانة</label><input class="form-input" id="f-maint" type="number" value="${item?.maintenanceCost||''}"></div></div><div class="form-field"><label class="form-label">تاريخ الشراء</label><input class="form-input" id="f-date" type="date" value="${item?.purchaseDate||''}"></div><div class="form-field"><label class="form-label">ملاحظة</label><input class="form-input" id="f-note" value="${item?.note||''}"></div><div style="display:flex;gap:10px"><button class="btn btn-blue" style="flex:1" onclick="saveEquip(${id||'null'})">حفظ</button><button class="btn btn-dark" style="flex:1" onclick="closeModal()">إلغاء</button></div>`;
   if(type==='purchase')return`<div class="modal-title">فاتورة مشتريات</div><div class="form-row"><div class="form-field"><label class="form-label">التاريخ *</label><input class="form-input" id="f-date" type="date" value="${new Date().toISOString().split('T')[0]}"></div><div class="form-field"><label class="form-label">الفئة</label><select class="form-input" id="f-cat">${["مواد خام","معدات","خدمات","مستلزمات","أخرى"].map(c=>`<option>${c}</option>`).join('')}</select></div></div><div class="form-field"><label class="form-label">المورد</label><input class="form-input" id="f-supplier" placeholder="اسم المورد..."></div><div class="form-field"><label class="form-label">المبلغ قبل الضريبة *</label><input class="form-input" id="f-amount" type="number" step="0.01" oninput="calcPVat()"></div><div class="form-row"><div class="form-field"><label class="form-label">ضريبة 15%</label><input class="form-input" id="f-vat" type="number" readonly style="background:#111;color:var(--orange)"></div><div class="form-field"><label class="form-label">الإجمالي</label><input class="form-input" id="f-total" type="number" readonly style="background:#111;color:var(--green);font-weight:700"></div></div><div class="form-field"><label class="form-label">الدفع</label><select class="form-input" id="f-pay"><option value="cash">نقدي</option><option value="mada">مدى</option><option value="transfer">تحويل</option><option value="credit">آجل</option></select></div><div class="form-field"><label class="form-label">ملاحظة</label><input class="form-input" id="f-note"></div><div style="display:flex;gap:10px"><button class="btn btn-blue" style="flex:1" onclick="savePurchase()">حفظ</button><button class="btn btn-dark" style="flex:1" onclick="closeModal()">إلغاء</button></div>`;
   if(type==='deliveryOrder')return`<div class="modal-title">طلب توصيل جديد</div><div class="form-row"><div class="form-field"><label class="form-label">المنصة *</label><select class="form-input" id="f-platform">${["كيتا","جاهز","هنقرستيشن","أخرى"].map(p=>`<option>${p}</option>`).join('')}</select></div><div class="form-field"><label class="form-label">التاريخ *</label><input class="form-input" id="f-date" type="date" value="${new Date().toISOString().split('T')[0]}"></div></div><div class="form-row"><div class="form-field"><label class="form-label">رقم الطلب</label><input class="form-input" id="f-ordernum"></div><div class="form-field"><label class="form-label">اسم العميل</label><input class="form-input" id="f-customer"></div></div><div class="form-field"><label class="form-label">الأصناف</label><input class="form-input" id="f-items" placeholder="خبز × 2..."></div><div class="form-field"><label class="form-label">المبلغ قبل الضريبة *</label><input class="form-input" id="f-amount" type="number" step="0.01" oninput="calcDVat()"></div><div class="form-row"><div class="form-field"><label class="form-label">ضريبة 15%</label><input class="form-input" id="f-vat" type="number" readonly style="background:#111;color:var(--orange)"></div><div class="form-field"><label class="form-label">الإجمالي</label><input class="form-input" id="f-total" type="number" readonly style="background:#111;color:var(--green);font-weight:700"></div></div><div class="form-field"><label class="form-label">الحالة</label><select class="form-input" id="f-status"><option value="new">جديد</option><option value="preparing">قيد التحضير</option><option value="ready">جاهز</option><option value="delivered">تم التسليم</option></select></div><div style="display:flex;gap:10px"><button class="btn btn-gold" style="flex:1" onclick="saveDelivery()">حفظ</button><button class="btn btn-dark" style="flex:1" onclick="closeModal()">إلغاء</button></div>`;
   if(type==='newuser')return`<div class="modal-title">مستخدم جديد</div><div class="hint-gold">يمكن للموظف الدخول من أي مكان بهذا الحساب</div><div class="form-field"><label class="form-label">الاسم *</label><input class="form-input" id="f-name"></div><div class="form-field"><label class="form-label">اسم المستخدم * (إنجليزي)</label><input class="form-input" id="f-uname" dir="ltr"></div><div class="form-field"><label class="form-label">كلمة المرور *</label><input class="form-input" id="f-pw" type="password"></div><div class="form-field"><label class="form-label">الصلاحية</label><select class="form-input" id="f-role"><option value="user">موظف</option><option value="admin">مدير</option></select></div><div style="display:flex;gap:10px"><button class="btn btn-green" style="flex:1" onclick="saveUser()">حفظ</button><button class="btn btn-dark" style="flex:1" onclick="closeModal()">إلغاء</button></div>`;
@@ -831,7 +847,7 @@ async function saveUser(){const name=gv('f-name'),username=gv('f-uname'),passwor
 
 // DELETE
 function del(type,id){
-  if(!confirm('هل تريد الحذف؟'))return;
+  if(!confirm(t('هل تريد الحذف؟','Are you sure you want to delete?')))return;
   const map={employee:'employees',expense:'expenses',material:'rawMaterials',revenue:'revenue',product:'products',sale:'dailySales',equipment:'equipment',purchase:'purchases',deliveryOrder:'deliveryOrders'};
   const key=map[type];if(!key||!appData[key])return;
   appData[key]=appData[key].filter(x=>x.id!==id);
@@ -843,13 +859,13 @@ function exportExcel(){
   const s=calcStats();const cm=appData.currentMonth;
   const wb=XLSX.utils.book_new();
   const add=(name,rows)=>XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(rows),name);
-  add("الملخص",[["CRMB Bakery"],["التقرير: "+ml(cm)],[],["البند","المبلغ"],["إجمالي الإيرادات",s.totalRev],["رواتب وسكن",s.totalSalaries],["مواد خام",s.totalRaw],["إيجار",appData.rent.amount],["مصاريف",s.totalExp],["إجمالي التكاليف",s.totalCosts],[],[s.netProfit>=0?"صافي الربح":"صافي الخسارة",Math.abs(s.netProfit)],["هامش الربح %",s.margin+"%"]]);
-  add("الإيرادات",[["المصدر","الشهر","المبلغ"],...appData.revenue.map(r=>[r.source,ml(r.month),r.amount])]);
-  add("الموظفون",[["الاسم","المنصب","الراتب","السكن","الإجمالي"],...appData.employees.map(e=>[e.name,e.role,e.salary,e.housing,e.salary+e.housing])]);
-  add("المواد الخام",[["المادة","الكمية","الوحدة","سعر الوحدة","الإجمالي","الشهر"],...appData.rawMaterials.map(r=>[r.name,r.qty,r.unit,r.unitCost,r.qty*r.unitCost,ml(r.month)])]);
-  add("المصاريف",[["التصنيف","المبلغ","الشهر","ملاحظة"],...appData.expenses.map(e=>[e.category,e.amount,ml(e.month),e.note||""])]);
-  add("المشتريات",[["التاريخ","المورد","الفئة","قبل الضريبة","الضريبة","الإجمالي"],...(appData.purchases||[]).map(p=>[p.date,p.supplier||"",p.category||"",p.amount,p.vat||0,p.total])]);
-  add("المبيعات اليومية",[["التاريخ","الفئة","المبلغ","ملاحظة"],...(appData.dailySales||[]).map(s=>[s.date,s.category||"",s.amount,s.note||""])]);
+  add(t("الملخص","Summary"),[["CRMB Bakery"],[t("التقرير: ","Report: ")+ml(cm)],[],[t("البند","Item"),t("المبلغ","Amount")],["إجمالي الإيرادات",s.totalRev],["رواتب وسكن",s.totalSalaries],["مواد خام",s.totalRaw],["إيجار",appData.rent.amount],["مصاريف",s.totalExp],["إجمالي التكاليف",s.totalCosts],[],[s.netProfit>=0?t("صافي الربح","Net Profit"):t("صافي الخسارة","Net Loss"),Math.abs(s.netProfit)],[t("هامش الربح %","Profit Margin %"),s.margin+"%"]]);
+  add(t("الإيرادات","Revenue"),[[t("المصدر","Source"),t("الشهر","Month"),t("المبلغ","Amount")],...appData.revenue.map(r=>[r.source,ml(r.month),r.amount])]);
+  add(t("الموظفون","Employees"),[[t("الاسم","Name"),t("المنصب","Position"),t("الراتب","Salary"),t("السكن","Housing"),t("الإجمالي","Total")],...appData.employees.map(e=>[e.name,e.role,e.salary,e.housing,e.salary+e.housing])]);
+  add(t("المواد الخام","Raw Materials"),[[t("المادة","Material"),t("الكمية","Qty"),t("الوحدة","Unit"),t("سعر الوحدة","Unit Price"),t("الإجمالي","Total"),t("الشهر","Month")],...appData.rawMaterials.map(r=>[r.name,r.qty,r.unit,r.unitCost,r.qty*r.unitCost,ml(r.month)])]);
+  add(t("المصاريف","Expenses"),[[t("التصنيف","Category"),t("المبلغ","Amount"),t("الشهر","Month"),t("ملاحظة","Note")],...appData.expenses.map(e=>[e.category,e.amount,ml(e.month),e.note||""])]);
+  add(t("المشتريات","Purchases"),[[t("التاريخ","Date"),t("المورد","Supplier"),t("الفئة","Category"),t("قبل الضريبة","Excl. VAT"),t("الضريبة","VAT"),t("الإجمالي","Total")],...(appData.purchases||[]).map(p=>[p.date,p.supplier||"",p.category||"",p.amount,p.vat||0,p.total])]);
+  add(t("المبيعات اليومية","Daily Sales"),[[t("التاريخ","Date"),t("الفئة","Category"),t("المبلغ","Amount"),t("ملاحظة","Note")],...(appData.dailySales||[]).map(s=>[s.date,s.category||"",s.amount,s.note||""])]);
   XLSX.writeFile(wb,`CRMB_${ml(cm).replace(' ','_')}.xlsx`);
   notify(t('تم تصدير Excel!','Excel exported!'));
 }
